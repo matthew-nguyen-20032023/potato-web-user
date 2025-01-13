@@ -1,4 +1,7 @@
 import { removeAccessToken, removeRefreshToken } from "../utils/storage.ts";
+import { useEffect, useState } from "react";
+import { getProfileAPI } from "../api/user.ts";
+import { UserProfile } from "../types.ts";
 
 export default function UserMenu() {
   const logout = () => {
@@ -6,6 +9,13 @@ export default function UserMenu() {
     removeRefreshToken();
     window.location.reload();
   };
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+
+  useEffect(() => {
+    getProfileAPI().then((response) => {
+      setProfile(response.data);
+    });
+  }, []);
 
   return (
     <>
@@ -18,7 +28,7 @@ export default function UserMenu() {
         <span className="sr-only">Open user menu</span>
         <img
           className="w-11 h-11 rounded-full"
-          src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
+          src={profile?.profile_img_url}
           alt="user photo"
         />
       </button>
@@ -27,8 +37,8 @@ export default function UserMenu() {
         className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-white-700 dark:divide-white-600"
       >
         <div className="px-4 py-3 text-sm text-white-900 dark:text-black">
-          <div>Bonnie Green</div>
-          <div className="font-medium truncate">name@flowbite.com</div>
+          <div>Hi {profile?.name}!</div>
+          <div className="font-medium truncate">{profile?.email}</div>
         </div>
         <ul
           className="py-2 text-sm text-white-700 dark:text-white-200"
@@ -47,7 +57,7 @@ export default function UserMenu() {
               href="#"
               className="block px-4 py-2 hover:bg-white-100 dark:hover:bg-white-600 dark:hover:text-white"
             >
-              Settings
+              Edit Profile
             </a>
           </li>
         </ul>
@@ -59,7 +69,7 @@ export default function UserMenu() {
               logout();
             }}
           >
-            Sign out
+            Log out
           </a>
         </div>
       </div>
