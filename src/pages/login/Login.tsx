@@ -33,7 +33,7 @@ export function Login() {
       toast.success(response.message);
       setAccessToken(response.data.access_token);
       setRefreshToken(response.data.refresh_token);
-      navigate("/");
+      window.location.href = "/";
     } catch (err) {
       toast.warning(
         err?.response?.data?.message || "An unknown error occurred."
