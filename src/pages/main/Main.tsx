@@ -1,10 +1,16 @@
 import { RiShoppingBag3Line } from "react-icons/ri";
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { getAccessToken } from "../../utils/storage.ts";
 import UserMenu from "../../components/UserMenu.tsx";
+import ProductList from "../../components/ProductList.tsx";
+// import Footer from "../../components/Footer.tsx";
 
 export function Main() {
+  const location = useLocation();
+  const showProductListRoutes = ["/"];
+  const showProductList = showProductListRoutes.includes(location.pathname);
+
   return (
     <div>
       <nav className="bg-white border-gray-200">
@@ -49,8 +55,10 @@ export function Main() {
           </div>
         </div>
       </nav>
+      {showProductList && <ProductList />}
       <ToastContainer />
       <Outlet />
+      {/*<Footer />*/}
     </div>
   );
 }
