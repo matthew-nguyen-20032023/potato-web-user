@@ -1,5 +1,6 @@
 import { RiShoppingBag3Line } from "react-icons/ri";
 import { Outlet, Link } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 export function Main() {
   return (
@@ -37,6 +38,7 @@ export function Main() {
           </div>
         </div>
       </nav>
+      <ToastContainer />
       <Outlet />
     </div>
   );

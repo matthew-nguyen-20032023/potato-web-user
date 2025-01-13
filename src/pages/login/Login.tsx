@@ -1,6 +1,48 @@
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { loginAPI } from "../../api/auth.ts";
+import {
+  getAccessToken,
+  setAccessToken,
+  setRefreshToken,
+} from "../../utils/storage.ts";
+
 export function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  // if user already login, redirect to home page
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (getAccessToken()) {
+      navigate("/");
+    }
+  }, [navigate]);
+
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!email || !password) {
+      toast.warning("Please input email and password.");
+      return;
+    }
+
+    try {
+      const response = await loginAPI(email, password);
+      toast.success(response.message);
+      setAccessToken(response.data.access_token);
+      setRefreshToken(response.data.refresh_token);
+      navigate("/");
+    } catch (err) {
+      toast.warning(
+        err?.response?.data?.message || "An unknown error occurred."
+      );
+    }
+  };
+
   return (
-    <form className="max-w-md mx-auto">
+    <form onSubmit={handleLogin} className="max-w-md mx-auto">
       <div className="relative z-0 w-full mb-5 group">
         <input
           type="email"
@@ -8,6 +50,8 @@ export function Login() {
           id="floating_email"
           className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-b-orange-300 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
           placeholder=" "
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           required
         />
         <label
@@ -24,6 +68,8 @@ export function Login() {
           id="floating_password"
           className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-b-orange-300 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
           placeholder=" "
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           required
         />
         <label
