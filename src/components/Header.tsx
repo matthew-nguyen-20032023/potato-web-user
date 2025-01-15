@@ -4,6 +4,7 @@ import { IoSearchOutline } from "react-icons/io5";
 import { RiShoppingBag3Line } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import UserMenu from "./UserMenu.tsx";
+import { TbEyeSpark } from "react-icons/tb";
 
 export default function Header() {
   return (
@@ -70,22 +71,7 @@ export default function Header() {
                   className="hover:scale-110 py-2 px-3 flex items-center"
                   to="/Products"
                 >
-                  Products
-                  <svg
-                    className="w-2.5 h-2.5 ms-1"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 10 6"
-                  >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="m1 1 4 4 4-4"
-                    />
-                  </svg>
+                  Products <TbEyeSpark className="pl-1" />
                 </Link>
               </li>
               <li>
