@@ -1,7 +1,7 @@
 export function NotFound() {
   return (
-    <div>
-      <h1>NotFound</h1>
+    <div className="m-8">
+      <h1 className="secondary-color">Not Found</h1>
     </div>
   );
 }
