@@ -22,7 +22,8 @@ export default function UserMenu() {
       <button
         id="dropdownUserAvatarButton"
         data-dropdown-toggle="dropdownAvatar"
-        className="flex text-sm bg-white rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-white-600"
+        data-dropdown-trigger="hover"
+        className="flex text-sm"
         type="button"
       >
         <span className="sr-only">Open user menu</span>
@@ -36,7 +37,7 @@ export default function UserMenu() {
         id="dropdownAvatar"
         className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-white-700 dark:divide-white-600"
       >
-        <div className="px-4 py-3 text-sm text-white-900 dark:text-black">
+        <div className="px-4 py-3 text-sm dark:text-black">
           <div>Hi {profile?.name}!</div>
           <div className="font-medium truncate">{profile?.email}</div>
         </div>
@@ -45,18 +46,12 @@ export default function UserMenu() {
           aria-labelledby="dropdownUserAvatarButton"
         >
           <li>
-            <a
-              href="#"
-              className="block px-4 py-2 hover:bg-white-100 dark:hover:bg-white-600 dark:hover:text-white"
-            >
+            <a href="#" className="block px-4 py-2">
               History
             </a>
           </li>
           <li>
-            <a
-              href="#"
-              className="block px-4 py-2 hover:bg-white-100 dark:hover:bg-white-600 dark:hover:text-white"
-            >
+            <a href="#" className="block px-4 py-2">
               Edit Profile
             </a>
           </li>
@@ -64,7 +59,7 @@ export default function UserMenu() {
         <div className="py-2">
           <a
             href="#"
-            className="block px-4 py-2 text-sm text-white-700 hover:bg-white-100 dark:hover:bg-white-600 dark:text-white-200 dark:hover:text-white"
+            className="block px-4 py-2 text-sm"
             onClick={() => {
               logout();
             }}

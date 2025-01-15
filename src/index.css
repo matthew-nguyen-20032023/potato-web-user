@@ -18,12 +18,13 @@
 }
 
 a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+  color: #4a4b4cbf;
+}
+button {
+  color: #4a4b4cbf;
 }
 a:hover {
-  color: #535bf2;
+  border-bottom: 1px solid #4a4b4cbf;
 }
 
 body {
@@ -31,7 +32,7 @@ body {
   display: flex;
   min-width: 320px;
   min-height: 100vh;
-  font-family: 'Pacifico', cursive;
+  font-family: cursive;
 }
 
 h1 {
@@ -40,19 +41,37 @@ h1 {
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
   cursor: pointer;
-  transition: border-color 0.25s;
 }
+
 button:hover {
-  border-color: #646cff;
+  transform: scale(1.1);
 }
+
+.bg-main-color {
+  background-color: #656E37
+}
+
+.main-color {
+  color: #656E37
+}
+
+.secondary-color {
+  color: #4a4b4cbf;
+}
+
+.bg-secondary-color {
+  background-color: #fdf8f1
+}
+
+.bg-list-product-color {
+  background-color: #F3E1BE
+}
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
