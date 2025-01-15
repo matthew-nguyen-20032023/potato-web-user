@@ -66,11 +66,11 @@ export default function Header() {
                 </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
                   className="hover:scale-110 py-2 px-3 flex items-center"
+                  to="/Products"
                 >
-                  Catalog
+                  Products
                   <svg
                     className="w-2.5 h-2.5 ms-1"
                     aria-hidden="true"
@@ -86,22 +86,28 @@ export default function Header() {
                       d="m1 1 4 4 4-4"
                     />
                   </svg>
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:scale-110 block py-2 px-3 ">
+                <Link
+                  className="hover:scale-110 block py-2 px-3"
+                  to="/about-us"
+                >
                   About Us
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:scale-110 block py-2 px-3 ">
+                <Link className="hover:scale-110 block py-2 px-3 " to="/FAQ">
                   FAQ
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:scale-110 block py-2 px-3 ">
+                <Link
+                  className="hover:scale-110 block py-2 px-3 "
+                  to="/contact"
+                >
                   Contact
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

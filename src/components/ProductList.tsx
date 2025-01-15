@@ -3,7 +3,7 @@ import Info from "./Info.tsx";
 export default function ProductCarousel() {
   return (
     <div className="w-full flex justify-center bg-list-product-color">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6 bg-list-product-color w-2/3">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-list-product-color w-2/3">
         <div className="grid gap-4">
           <div className="relative overflow-hidden shadow-lg group">
             <img
