@@ -2,32 +2,59 @@ import { loadScript } from "@paypal/paypal-js";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getProductDetailById } from "../api/product.ts";
-import { IProductDetail } from "../types.ts";
+import { IProduct, IProductDetail } from "../types.ts";
 
 export default function ProductDetail() {
   const { id } = useParams();
+  const [imgs, setImgs] = useState<string[]>([]);
+  const [imgIndex, setImgIndex] = useState<number>(0);
+  const [productDetails, setProductDetails] = useState<IProductDetail[]>();
   const [productDetail, setProductDetail] = useState<IProductDetail>();
-  const [price, setPrice] = useState<number>(0);
+  const [product, setProduct] = useState<IProduct>();
   const [quantity, setQuantity] = useState<number>(1);
-  const [totalPrice, setTotalPrice] = useState(price); // Total price
+  const [totalPrice, setTotalPrice] = useState(
+    productDetail?.price ? productDetail?.price : 0
+  );
 
   useEffect(() => {
-    setTotalPrice(quantity * price);
-  }, [quantity, price]);
+    const imageURL = imgs[imgIndex];
+    const productDetailFound = productDetails?.find((detail) =>
+      detail.img_urls.includes(imageURL)
+    );
+    if (productDetailFound !== productDetail) {
+      setProductDetail(productDetailFound);
+    }
+  }, [imgIndex, imgs, productDetail, productDetails]);
+
+  useEffect(() => {
+    setTotalPrice(
+      (isNaN(quantity) ? 0 : quantity) *
+        (productDetail?.price ? productDetail?.price : 0)
+    );
+  }, [quantity, productDetail]);
 
   useEffect(() => {
     getProductDetailById(id).then((response) => {
-      setProductDetail(response.data[0]);
-      setPrice(response.data[0].price);
+      const { product } = response.data;
+      setProduct(product);
+      setProductDetail(response.data.details[0]);
+      setProductDetails(response.data.details);
+      response.data.details.forEach((detail: IProductDetail) => {
+        setImgs((imgs) => [...imgs, ...detail.img_urls.split(",")]);
+      });
     });
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     loadScript({
       clientId: "test",
     })
       .then((paypal) => {
-        if (paypal) paypal.Buttons().render("#paypal-button-container");
+        if (paypal) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-expect-error
+          paypal.Buttons().render("#paypal-button-container");
+        }
       })
       .catch((error) => {
         console.error("failed to load the PayPal JS SDK script", error);
@@ -39,26 +66,23 @@ export default function ProductDetail() {
       <div className="w-full flex justify-center">
         <div className="flex justify-center bg-list-product-color w-2/3">
           <div className="p-6">
-            <img
-              src={productDetail?.img_urls.split(",")[0]}
-              alt=""
-              className="rounded-xl"
-            />
-            <div className="mt-5 flex items-center justify-between">
-              {productDetail?.img_urls.split(",").map((img) => {
+            <img src={imgs[imgIndex]} alt="" className="rounded-xl" />
+            <div className="mt-5 flex items-center justify-start">
+              {imgs.map((img, index) => {
                 return (
                   <img
-                    key={img}
+                    key={index}
                     src={img}
                     alt=""
-                    className="rounded-xl w-1/6 max-h-28"
+                    className="rounded-xl w-1/6 max-h-28 mr-3 hover:cursor-pointer"
+                    onClick={() => setImgIndex(index)}
                   />
                 );
               })}
             </div>
           </div>
           <div className="p-6 max-w-xl">
-            <h1 className="mb-5">Babybara with Orange</h1>
+            <h1 className="mb-5 flex">{product?.name}</h1>
             <h3 className="secondary-color size-4 w-full flex mb-5">
               ${totalPrice} USD
             </h3>
@@ -93,7 +117,7 @@ export default function ProductDetail() {
                   </svg>
                 </button>
                 <input
-                  type="text"
+                  type="number"
                   id="quantity-input"
                   aria-describedby="helper-text-explanation"
                   className="bg-main-color border-0 border-gray-300 h-11 text-center text-white text-sm block w-full py-2.5 dark:text-white"
@@ -138,13 +162,10 @@ export default function ProductDetail() {
 
             <div className="mt-5">
               <div className="flex mb-5">
-                <h3 style={{ fontSize: 25 }}>Sleepy Baby Capybara! ʕ •ɷ•ʔฅ</h3>
+                <h3 style={{ fontSize: 25 }}>Custome by Potato! ʕ •ɷ•ʔฅ</h3>
               </div>
               <div className="flex whitespace-pre-wrap text-left">
-                Meet our adorable Sleepy babybara keychain, crafted with love
-                from polymer clay. This little guy is the perfect addition to
-                your keychain or backpack. His sleepy face and chubby cheeks are
-                sure to bring a smile to your face.
+                {product?.story}
               </div>
             </div>
           </div>

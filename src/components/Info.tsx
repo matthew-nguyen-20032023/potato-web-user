@@ -6,7 +6,7 @@ export default function Info({ productInfo }: { productInfo: IProduct }) {
     <div className="absolute w-full bottom-0 left-0 bg-secondary-color secondary-color px-3 py-1 rounded-lg text-sm font-medium opacity-0 group-hover:opacity-80 transition-opacity duration-300">
       <a href="#">
         <h5 className="text-xl font-semibold tracking-tight">
-          Amazing Product (Custom By Potato)
+          {productInfo.name}
         </h5>
       </a>
       <div className="flex items-center mt-2.5 mb-5">
