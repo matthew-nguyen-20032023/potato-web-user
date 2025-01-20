@@ -1,15 +1,30 @@
 import { loadScript } from "@paypal/paypal-js";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getProductDetailById } from "../api/product.ts";
+import { IProductDetail } from "../types.ts";
 
 export default function ProductDetail() {
-  try {
+  const { id } = useParams();
+  const [productDetail, setProductDetail] = useState<IProductDetail>();
+
+  useEffect(() => {
+    getProductDetailById(id).then((response) => {
+      setProductDetail(response.data[0]);
+    });
+  }, []);
+
+  useEffect(() => {
     loadScript({
       clientId: "test",
-    }).then((paypal) => {
-      if (paypal) paypal.Buttons().render("#paypal-button-container");
-    });
-  } catch (error) {
-    console.error("failed to load the PayPal JS SDK script", error);
-  }
+    })
+      .then((paypal) => {
+        if (paypal) paypal.Buttons().render("#paypal-button-container");
+      })
+      .catch((error) => {
+        console.error("failed to load the PayPal JS SDK script", error);
+      });
+  }, []);
 
   return (
     <div className="bg-list-product-color">
@@ -17,42 +32,27 @@ export default function ProductDetail() {
         <div className="flex justify-center bg-list-product-color w-2/3">
           <div className="p-6">
             <img
-              src="/src/assets/IMG_0013.webp"
+              src={productDetail?.img_urls.split(",")[0]}
               alt=""
               className="rounded-xl"
             />
             <div className="mt-5 flex items-center justify-between">
-              <img
-                src="/src/assets/IMG_0013.webp"
-                alt=""
-                className="rounded-xl w-1/6 max-h-28"
-              />
-              <img
-                src="/src/assets/IMG_0013.webp"
-                alt=""
-                className="rounded-xl w-1/6 max-h-28"
-              />
-              <img
-                src="/src/assets/IMG_0013.webp"
-                alt=""
-                className="rounded-xl w-1/6 max-h-28"
-              />
-              <img
-                src="/src/assets/IMG_0013.webp"
-                alt=""
-                className="rounded-xl w-1/6 max-h-28"
-              />
-              <img
-                src="/src/assets/IMG_0013.webp"
-                alt=""
-                className="rounded-xl w-1/6 max-h-28"
-              />
+              {productDetail?.img_urls.split(",").map((img) => {
+                return (
+                  <img
+                    key={img}
+                    src={img}
+                    alt=""
+                    className="rounded-xl w-1/6 max-h-28"
+                  />
+                );
+              })}
             </div>
           </div>
           <div className="p-6 max-w-xl">
             <h1 className="mb-5">Babybara with Orange</h1>
             <h3 className="secondary-color size-4 w-full flex mb-5">
-              $19.00 USD
+              ${productDetail.price} USD
             </h3>
             <h3 className="secondary-color size-4 w-full flex mb-3">
               Quantity

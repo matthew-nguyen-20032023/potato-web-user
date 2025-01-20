@@ -1,9 +1,9 @@
 import { Outlet, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import ProductList from "../../components/ProductList.tsx";
 import Welcome from "../../components/Welcome.tsx";
 import Header from "../../components/Header.tsx";
 import Intro from "../../components/Intro.tsx";
+import Event from "../../components/Event.tsx";
 // import Footer from "../../components/Footer.tsx";
 
 export function Main() {
@@ -16,7 +16,7 @@ export function Main() {
       <Welcome />
       <Header />
       <Intro />
-      {showProductList && <ProductList />}
+      {showProductList && <Event />}
       <ToastContainer />
       <Outlet />
       {/*<Footer />*/}
