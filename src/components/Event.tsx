@@ -61,7 +61,7 @@ export default function Event() {
                           src={product.img_urls}
                           alt=""
                         />
-                        <Info />
+                        <Info productInfo={product} />
                       </div>
                     );
                   })}
