@@ -7,10 +7,18 @@ import { IProductDetail } from "../types.ts";
 export default function ProductDetail() {
   const { id } = useParams();
   const [productDetail, setProductDetail] = useState<IProductDetail>();
+  const [price, setPrice] = useState<number>(0);
+  const [quantity, setQuantity] = useState<number>(1);
+  const [totalPrice, setTotalPrice] = useState(price); // Total price
+
+  useEffect(() => {
+    setTotalPrice(quantity * price);
+  }, [quantity, price]);
 
   useEffect(() => {
     getProductDetailById(id).then((response) => {
       setProductDetail(response.data[0]);
+      setPrice(response.data[0].price);
     });
   }, []);
 
@@ -52,7 +60,7 @@ export default function ProductDetail() {
           <div className="p-6 max-w-xl">
             <h1 className="mb-5">Babybara with Orange</h1>
             <h3 className="secondary-color size-4 w-full flex mb-5">
-              ${productDetail.price} USD
+              ${totalPrice} USD
             </h3>
             <h3 className="secondary-color size-4 w-full flex mb-3">
               Quantity
@@ -64,6 +72,9 @@ export default function ProductDetail() {
                   id="decrement-button"
                   data-input-counter-decrement="quantity-input"
                   className="bg-main-color border-x-0 border-gray-300 rounded-s-lg p-3 h-11"
+                  onClick={() =>
+                    setQuantity(quantity - 1 > 0 ? quantity - 1 : 1)
+                  }
                 >
                   <svg
                     className="w-3 h-3 text-white"
@@ -87,6 +98,8 @@ export default function ProductDetail() {
                   aria-describedby="helper-text-explanation"
                   className="bg-main-color border-0 border-gray-300 h-11 text-center text-white text-sm block w-full py-2.5 dark:text-white"
                   placeholder="0"
+                  value={quantity}
+                  onChange={(e) => setQuantity(parseInt(e.target.value))}
                   required
                 />
                 <button
@@ -94,6 +107,7 @@ export default function ProductDetail() {
                   id="increment-button"
                   data-input-counter-increment="quantity-input"
                   className="bg-main-color border-x-0 border-gray-300 rounded-e-lg p-3 h-11"
+                  onClick={() => setQuantity(quantity + 1)}
                 >
                   <svg
                     className="w-3 h-3 text-gray-900 dark:text-white"
