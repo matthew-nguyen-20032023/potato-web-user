@@ -93,7 +93,7 @@ export default function Header() {
               <li>
                 <Link
                   className="hover:scale-110 py-2 px-3 flex items-center"
-                  to="/Products"
+                  to="/products"
                 >
                   Products <TbEyeSpark className="pl-1" />
                 </Link>

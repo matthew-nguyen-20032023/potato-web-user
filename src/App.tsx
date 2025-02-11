@@ -7,6 +7,7 @@ import { NotFound } from "./pages/not-found/NotFound.tsx";
 import { Register } from "./pages/register/Register.tsx";
 import { Cart } from "./pages/cart/Cart.tsx";
 import ProductDetail from "./components/ProductDetail.tsx";
+import { ProductList } from "./pages/product-list/ProductList.tsx";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/" element={<Main />}>
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
+          <Route path="products" element={<ProductList />} />
           <Route path="cart" element={<Cart />} />
           <Route path="product-detail/:id" element={<ProductDetail />} />
           <Route path="*" element={<NotFound />} />
