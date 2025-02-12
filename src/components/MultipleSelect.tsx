@@ -12,7 +12,7 @@ const MultiSelect = ({
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
 
-  const toggleDropdown = () => setIsOpen(!isOpen);
+  const toggleDropdown = () => setIsOpen((prev) => !prev);
 
   const toggleOption = (value: string) => {
     setSelected((prev) =>
@@ -28,6 +28,7 @@ const MultiSelect = ({
 
   return (
     <div className="relative w-full max-w-sm secondary-color m-1">
+      {/* Button */}
       <button
         type="button"
         className="relative py-3 ps-4 pe-9 flex gap-x-2 w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm"
@@ -42,37 +43,44 @@ const MultiSelect = ({
           )}
         </div>
       </button>
-      {isOpen && (
-        <div className="mt-2 z-50 w-full max-h-72 p-1 bg-white border border-gray-200 rounded-lg overflow-hidden">
-          <input
-            type="text"
-            placeholder="Search..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full p-2 border-b border-gray-200 outline-none text-sm bg-white"
-          />
-          <div className="max-h-36 overflow-y-auto scroll-container">
-            {filteredOptions.length > 0 ? (
-              filteredOptions.map((option) => (
-                <div
-                  key={option.value}
-                  className="py-2 px-4 flex justify-between items-center text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg"
-                  onClick={() => toggleOption(option.value)}
-                >
-                  <span>{option.label}</span>
-                  {selected.includes(option.value) && (
-                    <FaCheck size={14} className="text-green-600" />
-                  )}
-                </div>
-              ))
-            ) : (
-              <p className="text-sm text-gray-500 px-4 py-2">
-                No results found
-              </p>
-            )}
-          </div>
+
+      {/* Dropdown Menu */}
+      <div
+        className={`absolute z-10 left-0 mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-lg transform transition-all duration-200 ease-in-out ${
+          isOpen
+            ? "opacity-100 scale-100"
+            : "opacity-0 scale-95 pointer-events-none"
+        }`}
+      >
+        {/* Search Box */}
+        <input
+          type="text"
+          placeholder="Search..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full p-2 border-b border-gray-200 outline-none text-sm bg-white"
+        />
+
+        {/* Options List */}
+        <div className="max-h-48 overflow-y-auto scroll-container">
+          {filteredOptions.length > 0 ? (
+            filteredOptions.map((option) => (
+              <div
+                key={option.value}
+                className="py-2 px-4 flex justify-between items-center text-sm text-gray-800 cursor-pointer hover:bg-gray-100"
+                onClick={() => toggleOption(option.value)}
+              >
+                <span>{option.label}</span>
+                {selected.includes(option.value) && (
+                  <FaCheck size={14} className="text-green-600" />
+                )}
+              </div>
+            ))
+          ) : (
+            <p className="text-sm text-gray-500 px-4 py-2">No results found</p>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
