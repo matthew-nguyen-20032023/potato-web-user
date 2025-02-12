@@ -8,7 +8,7 @@ export default function LoginOrRegister() {
         id="dropdownHoverButton"
         data-dropdown-toggle="dropdownHover"
         data-dropdown-trigger="hover"
-        className="bg-secondary-color text-sm px-5 py-2.5 text-center inline-flex items-center"
+        className="bg-secondary-color text-sm px-5 py-2.5 text-center inline-flex items-center hover:scale-110"
         type="button"
       >
         <FaUser size={25} />{" "}

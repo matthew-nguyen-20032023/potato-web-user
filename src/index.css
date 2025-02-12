@@ -60,10 +60,6 @@ button {
   cursor: pointer;
 }
 
-button:hover {
-  transform: scale(1.1);
-}
-
 .bg-main-color {
   background-color: #656E37
 }
@@ -111,5 +107,30 @@ input[type=number] {
   }
   button {
     background-color: #f9f9f9;
+  }
+}
+
+
+/* Scrollbar width */
+.scroll-container::-webkit-scrollbar {
+  width: 8px;
+}
+/* Scrollbar track */
+.scroll-container::-webkit-scrollbar-track {
+  background-color: #f3f4f6; /* gray-100 */
+}
+/* Scrollbar thumb */
+.scroll-container::-webkit-scrollbar-thumb {
+  background-color: #d1d5db; /* gray-300 */
+  border-radius: 4px;
+}
+/* Dark mode styles */
+@media (prefers-color-scheme: dark) {
+  .scroll-container::-webkit-scrollbar-track {
+    background-color: #F3F4F6; /* neutral-700 */
+  }
+
+  .scroll-container::-webkit-scrollbar-thumb {
+    background-color: #D1D5DB; /* neutral-500 */
   }
 }

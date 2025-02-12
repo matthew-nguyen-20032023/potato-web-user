@@ -45,3 +45,13 @@ export interface IProductDetail {
   updated_at: string;
   width: number;
 }
+
+export interface ICategory {
+  id: number;
+  name: string;
+}
+
+export interface IColor {
+  id: number;
+  name: string;
+}

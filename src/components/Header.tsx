@@ -30,7 +30,7 @@ export default function Header() {
       }`}
     >
       <div className="flex justify-center items-center">
-        <button className="bg-secondary-color" type="button">
+        <button className="bg-secondary-color hover:scale-110" type="button">
           <IoSearchOutline size={35} />
         </button>
         <h1 className="flex justify-center">
