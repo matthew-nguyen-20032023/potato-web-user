@@ -58,7 +58,7 @@ const MultiSelect = ({
           placeholder="Search..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full p-2 border-b border-gray-200 outline-none text-sm bg-white"
+          className="rounded-t-lg w-full p-2 border-b border-gray-200 outline-none text-sm bg-white"
         />
 
         {/* Options List */}

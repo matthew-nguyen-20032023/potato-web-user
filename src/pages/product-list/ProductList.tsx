@@ -64,6 +64,12 @@ export function ProductList() {
       <div className="bg-list-product-color flex justify-center p-4 items-center">
         <MultiSelect title="Select Category..." options={categories} />
         <MultiSelect title="Select Color..." options={colors} />
+        <button
+          type="button"
+          className="m-1 p-2.5 bg-main-color text-white font-medium rounded-lg text-sm text-center hover:scale-110"
+        >
+          Search
+        </button>
       </div>
       <div className="w-full flex justify-center bg-list-product-color">
         <br />
