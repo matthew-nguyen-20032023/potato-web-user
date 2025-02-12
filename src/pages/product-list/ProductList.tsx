@@ -6,15 +6,23 @@ import { useNavigate } from "react-router-dom";
 import MultiSelect from "../../components/MultipleSelect.tsx";
 import { getCategories } from "../../api/category.ts";
 import { getColors } from "../../api/color.ts";
+import ReactPaginate from "react-paginate";
+import { LiaSadCry } from "react-icons/lia";
 
 export function ProductList() {
   const [products, setProducts] = useState<IProduct[]>([]);
+  const [searchName, setSearchName] = useState("");
+  const [searchCategory, setSearchCategory] = useState<string>("");
+  const [searchColor, setSearchColor] = useState<string>("");
   const [page, setPage] = useState(1);
-  const perPage = 12;
+  const [totalProduct, setTotalProduct] = useState(0);
+  const perPage = 3;
   const [categories, setCategories] = useState<
-    { value: string; label: string }[]
+    { value: string; label: string; id: number }[]
   >([]);
-  const [colors, setColors] = useState<{ value: string; label: string }[]>([]);
+  const [colors, setColors] = useState<
+    { value: string; label: string; id: number }[]
+  >([]);
   const cacheCategory = "categories";
   const cacheColor = "colors";
 
@@ -25,7 +33,11 @@ export function ProductList() {
     } else {
       getCategories().then((data: { data: ICategory[] }) => {
         const categoriesOption = data.data.map((category) => {
-          return { value: category.name, label: category.name };
+          return {
+            value: category.name,
+            label: category.name,
+            id: category.id,
+          };
         });
         sessionStorage.setItem(cacheCategory, JSON.stringify(categoriesOption));
         setCategories(categoriesOption);
@@ -39,8 +51,8 @@ export function ProductList() {
       setColors(JSON.parse(colorsCache));
     } else {
       getColors().then((data: { data: IColor[] }) => {
-        const colorsOption = data.data.map((category) => {
-          return { value: category.name, label: category.name };
+        const colorsOption = data.data.map((color) => {
+          return { value: color.name, label: color.name, id: color.id };
         });
         sessionStorage.setItem(cacheColor, JSON.stringify(colorsOption));
         setColors(colorsOption);
@@ -53,44 +65,99 @@ export function ProductList() {
     navigate(`/product-detail/${productId}`);
   };
 
+  const handlePageClick = (event: { selected: number }) => {
+    setPage(event.selected + 1);
+  };
+
+  const listProductHandler = () => {
+    listProducts(page, perPage, searchName, searchCategory, searchColor).then(
+      (data) => {
+        setProducts(data.data);
+        setTotalProduct(data.metadata.total);
+      }
+    );
+  };
+
   useEffect(() => {
-    listProducts(page, perPage).then((data) => {
-      setProducts(data.data);
-    });
-  }, []);
+    listProductHandler();
+  }, [page]);
 
   return (
     <div>
-      <div className="bg-list-product-color flex justify-center p-4 items-center">
-        <MultiSelect title="Select Category..." options={categories} />
-        <MultiSelect title="Select Color..." options={colors} />
-        <button
-          type="button"
-          className="m-1 p-2.5 bg-main-color text-white font-medium rounded-lg text-sm text-center hover:scale-110"
-        >
-          Search
-        </button>
+      <div className="bg-list-product-color flex justify-center pt-4 items-center">
+        <div className="bg-list-product-color flex justify-center items-center w-3/6 p-3">
+          <input
+            type="text"
+            id="searchName"
+            onChange={(e) => setSearchName(e.target.value)}
+            placeholder="Search..."
+            className="bg-white m-1 border border-gray-300 text-md rounded-lg block py-3 ps-4 pe-9 w-full secondary-color"
+          />
+          <MultiSelect
+            title="Select Category..."
+            options={categories}
+            onChange={(values) => {
+              setSearchCategory(values);
+            }}
+          />
+          <MultiSelect
+            title="Select Color..."
+            options={colors}
+            onChange={(values) => {
+              setSearchColor(values);
+            }}
+          />
+          <button
+            type="button"
+            className="m-1 p-2.5 bg-main-color text-white font-medium rounded-lg text-md text-center hover:scale-110"
+            onClick={listProductHandler}
+          >
+            Search
+          </button>
+        </div>
       </div>
       <div className="w-full flex justify-center bg-list-product-color">
         <br />
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 p-4 bg-list-product-color w-3/6">
-          {products.map((product) => {
-            return (
-              <div
-                key={product.id}
-                className="relative overflow-hidden shadow-lg rounded-xl group max-h-96 border"
-              >
-                <img
-                  onClick={handleClick.bind(null, product.id)}
-                  className="h-auto max-w-full rounded-lg object-cover hover:cursor-pointer"
-                  src={product.img_urls}
-                  alt=""
-                />
-                <Info productInfo={product} />
-              </div>
-            );
-          })}
-        </div>
+        {products.length === 0 && (
+          <div className="w-full flex justify-center">
+            <h2 className="flex items-center gap-2 secondary-color">
+              So sorry, we can not found product for you <LiaSadCry />
+            </h2>
+          </div>
+        )}
+        {products.length > 0 && (
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 p-4 bg-list-product-color w-3/6">
+            {products.map((product) => {
+              return (
+                <div
+                  key={product.id}
+                  className="relative overflow-hidden shadow-lg rounded-xl group max-h-96 border"
+                >
+                  <img
+                    onClick={handleClick.bind(null, product.id)}
+                    className="h-auto max-w-full rounded-lg object-cover hover:cursor-pointer"
+                    src={product.img_urls}
+                    alt=""
+                  />
+                  <Info productInfo={product} />
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+      <div className="w-full flex justify-center bg-list-product-color pb-5">
+        <ReactPaginate
+          className="inline-flex -space-x-px text-xl p-2 pagination"
+          breakLabel="..."
+          nextLabel="Next >"
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={4}
+          pageCount={totalProduct}
+          previousLabel="< Previous"
+          renderOnZeroPageCount={null}
+          activeClassName="active"
+        />
       </div>
     </div>
   );

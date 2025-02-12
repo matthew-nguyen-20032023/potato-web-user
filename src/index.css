@@ -60,6 +60,21 @@ button {
   cursor: pointer;
 }
 
+.pagination li a {
+  padding: 5px 10px;
+}
+.pagination li:hover {
+  transform: scale(1.1);
+}
+
+.pagination li.active {
+  border-bottom: 1px solid green;
+  font-size: 1.5em;
+}
+.pagination li.active a {
+  color: green;
+}
+
 .bg-main-color {
   background-color: #656E37
 }

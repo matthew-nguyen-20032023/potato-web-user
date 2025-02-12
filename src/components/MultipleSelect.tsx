@@ -4,9 +4,11 @@ import { FaAngleUp, FaAngleDown, FaCheck } from "react-icons/fa";
 const MultiSelect = ({
   title,
   options,
+  onChange,
 }: {
   title: string;
-  options: { value: string; label: string }[];
+  options: { value: string; label: string; id: number }[];
+  onChange: (selectedValues: string) => void;
 }) => {
   const [selected, setSelected] = useState<string[]>([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -15,10 +17,17 @@ const MultiSelect = ({
   const toggleDropdown = () => setIsOpen((prev) => !prev);
 
   const toggleOption = (value: string) => {
-    setSelected((prev) =>
-      prev.includes(value)
-        ? prev.filter((item) => item !== value)
-        : [...prev, value]
+    const updateSelected = selected.includes(value)
+      ? selected.filter((item) => item !== value)
+      : [...selected, value];
+    setSelected(updateSelected);
+    onChange(
+      updateSelected
+        .map((e) => {
+          const option = options.find((o) => o.value === e);
+          return option ? option.id.toString() : "";
+        })
+        .join(",")
     );
   };
 
@@ -31,7 +40,7 @@ const MultiSelect = ({
       {/* Button */}
       <button
         type="button"
-        className="relative py-3 ps-4 pe-9 flex gap-x-2 w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm"
+        className="relative py-3 ps-4 pe-9 flex gap-x-2 w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-md"
         onClick={toggleDropdown}
       >
         <span>{selected.length > 0 ? selected.join(", ") : title}</span>
@@ -58,7 +67,7 @@ const MultiSelect = ({
           placeholder="Search..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="rounded-t-lg w-full p-2 border-b border-gray-200 outline-none text-sm bg-white"
+          className="rounded-t-lg w-full p-2 border-b border-gray-200 outline-none text-md bg-white"
         />
 
         {/* Options List */}
@@ -67,7 +76,7 @@ const MultiSelect = ({
             filteredOptions.map((option) => (
               <div
                 key={option.value}
-                className="py-2 px-4 flex justify-between items-center text-sm text-gray-800 cursor-pointer hover:bg-gray-100"
+                className="py-2 px-4 flex justify-between items-center text-md secondary-color cursor-pointer hover:bg-gray-100"
                 onClick={() => toggleOption(option.value)}
               >
                 <span>{option.label}</span>
