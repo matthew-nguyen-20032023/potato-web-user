@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getProductDetailById } from "../api/product.ts";
 import { IProduct, IProductDetail } from "../types.ts";
+import { Cart } from "../pages/cart/Cart.tsx";
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -15,6 +16,16 @@ export default function ProductDetail() {
   const [totalPrice, setTotalPrice] = useState(
     productDetail?.price ? productDetail?.price : 0
   );
+  const cacheCart = "cart";
+  const [cacheProducts, setCacheProducts] = useState<
+    {
+      id: number;
+      name: string;
+      quantity: number;
+      price: number;
+      img: string;
+    }[]
+  >([]);
 
   useEffect(() => {
     const imageURL = imgs[imgIndex];
@@ -42,6 +53,10 @@ export default function ProductDetail() {
       response.data.details.forEach((detail: IProductDetail) => {
         setImgs((imgs) => [...imgs, ...detail.img_urls.split(",")]);
       });
+      const cachedProducts = JSON.parse(
+        localStorage.getItem(cacheCart) || "[]"
+      );
+      setCacheProducts(cachedProducts);
     });
   }, [id]);
 
@@ -61,8 +76,37 @@ export default function ProductDetail() {
       });
   }, []);
 
+  const removeProduct = (id: number) => {
+    const updatedProducts = cacheProducts.filter((p) => p.id !== id);
+    localStorage.setItem(cacheCart, JSON.stringify(updatedProducts));
+    setCacheProducts(updatedProducts);
+  };
+
+  function addToCart() {
+    if (productDetail && product) {
+      const updatedProducts = [...cacheProducts];
+      const existingProduct = updatedProducts.find(
+        (e: { id: number }) => e.id === productDetail.id
+      );
+      if (existingProduct) {
+        existingProduct.quantity += quantity;
+      } else {
+        updatedProducts.push({
+          id: productDetail.id,
+          name: product.name,
+          quantity,
+          price: productDetail.price,
+          img: imgs[imgIndex],
+        });
+      }
+      localStorage.setItem(cacheCart, JSON.stringify(updatedProducts));
+      setCacheProducts(updatedProducts);
+    }
+  }
+
   return (
     <div className="bg-list-product-color">
+      <Cart products={cacheProducts} removeProduct={removeProduct} />
       <div className="w-full flex justify-center">
         <div className="flex justify-center bg-list-product-color w-2/3">
           <div className="p-6">
@@ -154,6 +198,7 @@ export default function ProductDetail() {
             <button
               type="button"
               className="text-white bg-main-color w-full rounded-xl shadow-lg shadow-lime-800/50 size-12 mb-5"
+              onClick={addToCart}
             >
               Add to cart
             </button>
