@@ -7,7 +7,7 @@ export function Cart() {
       id="top-left-modal"
       data-modal-placement="top-left"
       tabIndex={-1}
-      className="fixed top-0 justify-end z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
+      className="fixed top-0 justify-end z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full scroll-container"
     >
       <div className="relative w-full max-w-md max-h-full">
         <div className="relative bg-white rounded-lg shadow bg-list-product-color">

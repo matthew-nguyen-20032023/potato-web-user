@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 import { Bounce, toast } from "react-toastify";
 
 type Product = {
@@ -27,16 +33,34 @@ export const useCart = () => {
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [products, setProducts] = useState<Product[]>([]);
+  const cacheKey = "cart";
+
+  useEffect(() => {
+    const productsCache = localStorage.getItem(cacheKey);
+    if (productsCache) {
+      setProducts(JSON.parse(productsCache));
+    }
+  }, []);
+
   const addProduct = (newProduct: Product) => {
     setProducts((prev) => {
       const existing = prev.find((p) => p.id === newProduct.id);
       if (existing) {
-        return prev.map((p) =>
+        const updatedList = prev.map((p) =>
           p.id === newProduct.id
             ? { ...p, quantity: p.quantity + newProduct.quantity }
             : p
         );
+        localStorage.setItem(cacheKey, JSON.stringify(updatedList));
+        return updatedList;
       }
+      localStorage.setItem(
+        cacheKey,
+        JSON.stringify([
+          ...prev,
+          { ...newProduct, quantity: newProduct.quantity },
+        ])
+      );
       return [...prev, { ...newProduct, quantity: newProduct.quantity }];
     });
     toast("(˶˃ ᵕ ˂˶)ა🍓 Product added! 😻", {
