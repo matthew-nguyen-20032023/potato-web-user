@@ -1,7 +1,19 @@
 import Star from "./Star.tsx";
 import { IProduct } from "../types.ts";
+import { useCart } from "../contexts/CartContext.tsx";
 
 export default function Info({ productInfo }: { productInfo: IProduct }) {
+  const { addProduct } = useCart();
+  const addToCart = () => {
+    addProduct({
+      id: productInfo.id,
+      name: productInfo.name,
+      quantity: 1,
+      price: productInfo.price,
+      img: productInfo.img_urls.split(",")[0],
+    });
+  };
+
   return (
     <div className="absolute w-full bottom-0 left-0 bg-secondary-color secondary-color px-3 py-1 rounded-lg text-sm font-medium opacity-0 group-hover:opacity-80 transition-opacity duration-300">
       <a href="#">
@@ -25,6 +37,7 @@ export default function Info({ productInfo }: { productInfo: IProduct }) {
         <span className="text-3xl font-bold">${productInfo.price}</span>
         <button
           type="button"
+          onClick={addToCart}
           className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
         >
           Add to cart

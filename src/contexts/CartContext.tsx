@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, ReactNode } from "react";
+import { Bounce, toast } from "react-toastify";
 
 type Product = {
   id: number;
@@ -37,6 +38,17 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         );
       }
       return [...prev, { ...newProduct, quantity: newProduct.quantity }];
+    });
+    toast("(˶˃ ᵕ ˂˶)ა🍓 Product added! 😻", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
     });
   };
 
