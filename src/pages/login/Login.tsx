@@ -42,7 +42,7 @@ export function Login() {
   };
 
   return (
-    <div>
+    <div className="mb-8">
       <h1 className="m-4 secondary-color">Login</h1>
       <form
         onSubmit={handleLogin}

@@ -12,7 +12,7 @@ export function Main() {
   const showProductList = showProductListRoutes.includes(location.pathname);
 
   return (
-    <div className="max-h-screen overflow-y-auto scroll-container">
+    <div className="max-h-screen overflow-y-auto scroll-container bg-list-product-color">
       <Welcome />
       <Header />
       <Intro />
