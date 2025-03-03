@@ -5,24 +5,20 @@ import { useState } from "react";
 
 export default function Info({ productInfo }: { productInfo: IProduct }) {
   const { addProduct } = useCart();
-  const addToCart = () => {
-    handleSpinner();
-    addProduct({
-      id: productInfo.id,
-      name: productInfo.name,
-      quantity: 1,
-      price: productInfo.price,
-      img: productInfo.img_urls.split(",")[0],
-    });
-  };
-
   const [isSpinner, setIsSpinner] = useState(false);
 
-  const handleSpinner = () => {
+  const addToCart = () => {
     setIsSpinner(true);
     setTimeout(() => {
+      addProduct({
+        id: productInfo.id,
+        name: productInfo.name,
+        quantity: 1,
+        price: productInfo.price,
+        img: productInfo.img_urls.split(",")[0],
+      });
       setIsSpinner(false);
-    }, 1000);
+    }, 500);
   };
 
   return (
