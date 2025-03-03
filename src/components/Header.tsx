@@ -44,7 +44,7 @@ export default function Header() {
         <button
           data-modal-target="top-left-modal"
           data-modal-toggle="top-left-modal"
-          className="block py-2 px-3 mr-2 hover:scale-110"
+          className="block py-2 px-3 mr-2 hover:scale-110 cursor-pointer"
         >
           <RiShoppingBag3Line size={30} />
         </button>
