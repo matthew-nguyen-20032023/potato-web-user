@@ -1,16 +1,7 @@
-export function Cart({
-  products,
-  removeProduct,
-}: {
-  products: {
-    id: number;
-    name: string;
-    quantity: number;
-    price: number;
-    img: string;
-  }[];
-  removeProduct: (id: number) => void;
-}) {
+import { useCart } from "../../contexts/CartContext.tsx";
+
+export function Cart() {
+  const { products, removeProduct } = useCart();
   return (
     <div
       id="top-left-modal"
