@@ -12,6 +12,7 @@ import { Cart } from "./pages/cart/Cart.tsx";
 import { AboutUs } from "./pages/about-us/AboutUs.tsx";
 import { FAQ } from "./pages/faq/FAQ.tsx";
 import { Contact } from "./pages/contact/Contact.tsx";
+import { VerifyEmail } from "./pages/verify-email/VerifyEmail.tsx";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/" element={<Main />}>
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
+            <Route path="verify-email" element={<VerifyEmail />} />
             <Route path="products" element={<ProductList />} />
             <Route path="about-us" element={<AboutUs />} />
             <Route path="FAQ" element={<FAQ />} />

@@ -1,6 +1,13 @@
 import { Bounce, toast } from "react-toastify";
 
-export const showMessageError = (message: string) => {
+export const showMessageError = (
+  // @ts-ignore
+  error
+) => {
+  const message =
+    typeof error === "string"
+      ? error
+      : error?.response?.data?.message || "An unknown error occurred.";
   toast(`₍^. .^₎⟆ ${message} (•˕ •マ.ᐟ`, {
     position: "top-right",
     autoClose: 5000,

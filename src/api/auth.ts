@@ -24,3 +24,11 @@ export const registerAPI = async (
   });
   return response.data;
 };
+
+export const verifyEmailAPI = async (email: string, confirmCode: string) => {
+  const response = await backendService.post("/api/v1/auth/verify-email", {
+    email,
+    confirm_code: confirmCode,
+  });
+  return response.data;
+};

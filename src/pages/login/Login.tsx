@@ -7,6 +7,7 @@ import {
   setAccessToken,
   setRefreshToken,
 } from "../../utils/storage.ts";
+import { showMessageError } from "../../alerts/alert.ts";
 
 export function Login() {
   const [email, setEmail] = useState("");
@@ -35,9 +36,7 @@ export function Login() {
       setRefreshToken(response.data.refresh_token);
       window.location.href = "/";
     } catch (err) {
-      toast.warning(
-        err?.response?.data?.message || "An unknown error occurred."
-      );
+      showMessageError(err);
     }
   };
 
@@ -46,7 +45,7 @@ export function Login() {
       <h1 className="m-4 secondary-color">Login</h1>
       <form
         onSubmit={handleLogin}
-        className="max-w-md mx-auto border rounded-xl p-6"
+        className="max-w-md mx-auto border border-black rounded-xl p-6"
       >
         <div className="relative z-0 w-full mb-5 group">
           <input

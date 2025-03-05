@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { showMessageError, showMessageSuccess } from "../../alerts/alert.ts";
 import { registerAPI } from "../../api/auth.ts";
@@ -10,6 +10,7 @@ export function Register() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [referralCode, setReferralCode] = useState("");
+  const navigate = useNavigate();
 
   const handleRegister = async () => {
     if (!email || !password || !confirmPassword || !name || !phone) {
@@ -29,13 +30,10 @@ export function Register() {
         phone,
         referralCode
       );
-      if (response.data) {
-        showMessageSuccess(response.message);
-      }
+      showMessageSuccess(response.message);
+      navigate(`/verify-email?email=${email}`);
     } catch (err) {
-      showMessageError(
-        err?.response?.data?.message || "An unknown error occurred."
-      );
+      showMessageError(err);
     }
   };
 
@@ -50,7 +48,6 @@ export function Register() {
             id="floating_email"
             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-b-lime-900 focus:outline-none focus:ring-0  peer"
             placeholder=" "
-            required
             onChange={(e) => setEmail(e.target.value)}
           />
           <label
@@ -67,7 +64,6 @@ export function Register() {
             id="floating_password"
             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-b-lime-900 focus:outline-none focus:ring-0  peer"
             placeholder=" "
-            required
             onChange={(e) => setPassword(e.target.value)}
           />
           <label
@@ -84,7 +80,6 @@ export function Register() {
             id="floating_confirm_password"
             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-b-lime-900 focus:outline-none focus:ring-0  peer"
             placeholder=" "
-            required
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
           <label
@@ -103,7 +98,6 @@ export function Register() {
               id="name"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-b-lime-900 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
-              required
               onChange={(e) => setName(e.target.value)}
             />
             <label
@@ -120,7 +114,6 @@ export function Register() {
               id="phone"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-b-lime-900 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
-              required
               onChange={(e) => setPhone(e.target.value)}
             />
             <label
@@ -142,7 +135,7 @@ export function Register() {
               onChange={(e) => setReferralCode(e.target.value)}
             />
             <label
-              htmlFor="phone"
+              htmlFor="referral_code"
               className="peer-focus:font-medium absolute text-sm text-black-500 dark:text-black-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 start-0 peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-lime-900 peer-focus:dark:text-lime-900 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Referral code (<span>optional</span>)
