@@ -5,7 +5,7 @@ import {
   ReactNode,
   useEffect,
 } from "react";
-import { Bounce, toast } from "react-toastify";
+import { showMessageSuccess } from "../alerts/alert.ts";
 
 type Product = {
   id: number;
@@ -63,17 +63,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       );
       return [...prev, { ...newProduct, quantity: newProduct.quantity }];
     });
-    toast("(˶˃ ᵕ ˂˶)ა🍓 Product added! 😻", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-    });
+    showMessageSuccess("Product added!");
   };
 
   const removeProduct = (id: number) => {

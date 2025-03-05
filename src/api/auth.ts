@@ -7,3 +7,20 @@ export const loginAPI = async (email: string, password: string) => {
   });
   return response.data;
 };
+
+export const registerAPI = async (
+  email: string,
+  password: string,
+  name: string,
+  phone: string,
+  referralCode: string
+) => {
+  const response = await backendService.post("/api/v1/auth/register", {
+    email,
+    password,
+    name,
+    phone,
+    referral_code: referralCode,
+  });
+  return response.data;
+};
