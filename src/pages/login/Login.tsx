@@ -21,12 +21,9 @@ export function Login() {
     }
   }, [navigate]);
 
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
+  const handleLogin = async () => {
     if (!email || !password) {
-      toast.warning("Please input email and password.");
-      return;
+      return showMessageError("Please input email and password.");
     }
 
     try {
@@ -43,10 +40,7 @@ export function Login() {
   return (
     <div className="mb-8">
       <h1 className="m-4 secondary-color">Login</h1>
-      <form
-        onSubmit={handleLogin}
-        className="max-w-md mx-auto border border-black rounded-xl p-6"
-      >
+      <div className="max-w-md mx-auto border border-black rounded-xl p-6">
         <div className="relative z-0 w-full mb-5 group">
           <input
             type="email"
@@ -56,13 +50,12 @@ export function Login() {
             placeholder=" "
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
           />
           <label
             htmlFor="floating_email"
             className="peer-focus:font-medium absolute text-sm dark:text-black-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 start-0 peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-lime-900 peer-focus:dark:text-lime-900 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
           >
-            Email address
+            Email address (<span className="text-red-800">*</span>)
           </label>
         </div>
         <div className="relative z-0 w-full mb-5 group">
@@ -74,13 +67,12 @@ export function Login() {
             placeholder=" "
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
           />
           <label
             htmlFor="floating_password"
             className="peer-focus:font-medium absolute text-sm text-black-500 dark:text-black-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 start-0 peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-lime-900 peer-focus:dark:text-lime-900 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
           >
-            Password
+            Password (<span className="text-red-800">*</span>)
           </label>
         </div>
         <div className="flex items-center mb-5">
@@ -93,8 +85,8 @@ export function Login() {
           <span className="ml-1">Remember me?</span>
         </div>
         <button
-          type="submit"
           className="bg-main-color text-white w-full rounded-xl mb-5"
+          onClick={handleLogin}
         >
           Submit
         </button>
@@ -111,7 +103,7 @@ export function Login() {
             </Link>
           </div>
         </div>
-      </form>
+      </div>
     </div>
   );
 }
