@@ -1,4 +1,5 @@
 import { FaInstagram } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
@@ -22,16 +23,27 @@ export default function Footer() {
                 </h2>
                 <ul className="secondary-color font-medium">
                   <li className="mb-4 hover:scale-110">
-                    <a href="#">About us</a>
+                    <Link className="block hover:scale-110" to="/about-us">
+                      About us
+                    </Link>
                   </li>
                   <li className="mb-4 hover:scale-110">
-                    <a href="#">Shipping & returns</a>
+                    <Link
+                      className="block hover:scale-110"
+                      to="/shipping-return"
+                    >
+                      Shipping & returns
+                    </Link>
                   </li>
                   <li className="mb-4 hover:scale-110">
-                    <a href="#">Faq</a>
+                    <Link className="block hover:scale-110" to="/FAQ">
+                      Faq
+                    </Link>
                   </li>
                   <li className="mb-4 hover:scale-110">
-                    <a href="#">Contact us</a>
+                    <Link className="block hover:scale-110" to="/contact">
+                      Contact us
+                    </Link>
                   </li>
                 </ul>
               </div>
@@ -59,10 +71,20 @@ export default function Footer() {
                 </h2>
                 <ul className="secondary-color font-medium">
                   <li className="mb-4 hover:scale-110">
-                    <a href="#">Privacy Policy</a>
+                    <Link
+                      className="block hover:scale-110"
+                      to="/privacy-policy"
+                    >
+                      Privacy Policy
+                    </Link>
                   </li>
                   <li className="hover:scale-110">
-                    <a href="#">Terms &amp; Conditions</a>
+                    <Link
+                      className="block hover:scale-110"
+                      to="/terms-conditions"
+                    >
+                      Terms &amp; Conditions
+                    </Link>
                   </li>
                 </ul>
               </div>

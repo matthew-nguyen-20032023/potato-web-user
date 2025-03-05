@@ -13,6 +13,9 @@ import { AboutUs } from "./pages/about-us/AboutUs.tsx";
 import { FAQ } from "./pages/faq/FAQ.tsx";
 import { Contact } from "./pages/contact/Contact.tsx";
 import { VerifyEmail } from "./pages/verify-email/VerifyEmail.tsx";
+import { PrivacyPolicy } from "./pages/privacy-policy/PrivacyPolicy.tsx";
+import { TermCondition } from "./pages/terms-condition/TermCondition.tsx";
+import { ShippingReturn } from "./pages/shiping-return/ShippingReturn.tsx";
 
 function App() {
   return (
@@ -26,6 +29,9 @@ function App() {
             <Route path="verify-email" element={<VerifyEmail />} />
             <Route path="products" element={<ProductList />} />
             <Route path="about-us" element={<AboutUs />} />
+            <Route path="privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="terms-conditions" element={<TermCondition />} />
+            <Route path="shipping-return" element={<ShippingReturn />} />
             <Route path="FAQ" element={<FAQ />} />
             <Route path="contact" element={<Contact />} />
             <Route path="product-detail/:id" element={<ProductDetail />} />
