@@ -39,7 +39,7 @@ export function Register() {
 
   return (
     <div>
-      <h1 className="secondary-color">Register</h1>
+      <h1 className="secondary-color mb-3">Register</h1>
       <div className="max-w-md mx-auto border border-black rounded-xl p-6 mb-4">
         <div className="relative z-0 w-full mb-5 group">
           <input
