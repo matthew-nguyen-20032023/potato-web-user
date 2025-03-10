@@ -16,6 +16,7 @@ import { VerifyEmail } from "./pages/verify-email/VerifyEmail.tsx";
 import { PrivacyPolicy } from "./pages/privacy-policy/PrivacyPolicy.tsx";
 import { TermCondition } from "./pages/terms-condition/TermCondition.tsx";
 import { ShippingReturn } from "./pages/shiping-return/ShippingReturn.tsx";
+import { Order } from "./pages/order/Order.tsx";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
             <Route path="FAQ" element={<FAQ />} />
             <Route path="contact" element={<Contact />} />
             <Route path="product-detail/:id" element={<ProductDetail />} />
+            <Route path="order" element={<Order />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

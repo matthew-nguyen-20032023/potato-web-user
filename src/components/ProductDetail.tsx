@@ -1,10 +1,12 @@
-import { loadScript } from "@paypal/paypal-js";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getProductDetailById } from "../api/product.ts";
 import { IProduct, IProductDetail } from "../types.ts";
 import { Cart } from "../pages/cart/Cart.tsx";
 import { useCart } from "../contexts/CartContext.tsx";
+import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { paypalConfig } from "../const.ts";
+import { CreateOrderActions, CreateOrderData } from "@paypal/paypal-js";
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -48,22 +50,6 @@ export default function ProductDetail() {
     });
   }, [id]);
 
-  useEffect(() => {
-    loadScript({
-      clientId: "test",
-    })
-      .then((paypal) => {
-        if (paypal) {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          paypal.Buttons().render("#paypal-button-container");
-        }
-      })
-      .catch((error) => {
-        console.error("failed to load the PayPal JS SDK script", error);
-      });
-  }, []);
-
   const addToCart = () => {
     if (product && productDetail) {
       addProduct({
@@ -74,6 +60,25 @@ export default function ProductDetail() {
         img: imgs[imgIndex],
       });
     }
+  };
+
+  const handleCreateOrder = async (
+    _data: CreateOrderData,
+    actions: CreateOrderActions
+  ) => {
+    const orderID = await actions.order.create({
+      intent: "CAPTURE",
+      purchase_units: [
+        {
+          amount: {
+            currency_code: "USD",
+            value: `${totalPrice}`,
+          },
+        },
+      ],
+    });
+    console.log(orderID);
+    return orderID;
   };
 
   return (
@@ -174,7 +179,9 @@ export default function ProductDetail() {
             >
               Add to cart
             </button>
-            <div id="paypal-button-container"></div>
+            <PayPalScriptProvider options={paypalConfig}>
+              <PayPalButtons createOrder={handleCreateOrder} />
+            </PayPalScriptProvider>
             <p id="result-message"></p>
 
             <div className="mt-5">
