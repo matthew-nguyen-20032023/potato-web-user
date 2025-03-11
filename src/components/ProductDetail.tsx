@@ -7,6 +7,13 @@ import { useCart } from "../contexts/CartContext.tsx";
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { paypalConfig } from "../const.ts";
 import { CreateOrderActions, CreateOrderData } from "@paypal/paypal-js";
+import {
+  OnApproveActions,
+  OnApproveData,
+} from "@paypal/paypal-js/types/components/buttons";
+import { showMessageError, showMessageSuccess } from "../alerts/alert.ts";
+import { anonymousOrderProduct } from "../api/product-order.ts";
+import { sleep } from "../utils/helper.ts";
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -79,6 +86,31 @@ export default function ProductDetail() {
     });
     console.log(orderID);
     return orderID;
+  };
+
+  const handleApproveOrder = async (
+    _data: OnApproveData,
+    actions: OnApproveActions
+  ) => {
+    if (!actions.order) {
+      return showMessageError("Order not success, please try again.");
+    }
+    const paypalOrder = await actions.order.capture();
+
+    if (productDetail && paypalOrder.id) {
+      try {
+        const serverOrder = await anonymousOrderProduct({
+          paypal_order_id: paypalOrder.id,
+          products: [{ product_detail_id: productDetail.id, quantity }],
+        });
+        showMessageSuccess(serverOrder.message);
+      } catch (error) {
+        showMessageError(error);
+      }
+    } else {
+      await sleep(1000);
+      await handleApproveOrder(_data, actions);
+    }
   };
 
   return (
@@ -180,7 +212,10 @@ export default function ProductDetail() {
               Add to cart
             </button>
             <PayPalScriptProvider options={paypalConfig}>
-              <PayPalButtons createOrder={handleCreateOrder} />
+              <PayPalButtons
+                createOrder={handleCreateOrder}
+                onApprove={handleApproveOrder}
+              />
             </PayPalScriptProvider>
             <p id="result-message"></p>
 
