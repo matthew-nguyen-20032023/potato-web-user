@@ -46,7 +46,13 @@ export const authorizedOrderProduct = async (
   return response.data;
 };
 
-export const preOrderProduct = async (data: { paypal_order_id: string }) => {
+export const preOrderProduct = async (data: {
+  paypal_order_id: string;
+  products: {
+    product_detail_id: number;
+    quantity: number;
+  }[];
+}) => {
   const response = await backendService.post(
     "/api/v1/product-order/pre-order",
     data

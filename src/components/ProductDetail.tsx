@@ -85,13 +85,18 @@ export default function ProductDetail() {
       ],
     });
 
+    if (!productDetail) return "";
+
     try {
-      const preOrder = await preOrderProduct({ paypal_order_id: orderId });
+      const preOrder = await preOrderProduct({
+        paypal_order_id: orderId,
+        products: [{ product_detail_id: productDetail.id, quantity }],
+      });
       showMessageSuccess(preOrder.message);
       return orderId;
     } catch (err) {
       showMessageError(err);
-      throw err;
+      return "";
     }
   };
 

@@ -36,7 +36,12 @@ export function Order() {
     });
 
     try {
-      const preOrder = await preOrderProduct({ paypal_order_id: orderId });
+      const preOrder = await preOrderProduct({
+        paypal_order_id: orderId,
+        products: products.map((e) => {
+          return { product_detail_id: e.id, quantity: e.quantity };
+        }),
+      });
       showMessageSuccess(preOrder.message);
       return orderId;
     } catch (err) {
