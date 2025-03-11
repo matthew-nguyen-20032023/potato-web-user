@@ -12,10 +12,7 @@ import {
   OnApproveData,
 } from "@paypal/paypal-js/types/components/buttons";
 import { showMessageError, showMessageSuccess } from "../alerts/alert.ts";
-import {
-  anonymousOrderProduct,
-  preOrderProduct,
-} from "../api/product-order.ts";
+import { orderProduct, preOrderProduct } from "../api/product-order.ts";
 import { sleep } from "../utils/helper.ts";
 
 export default function ProductDetail() {
@@ -109,7 +106,7 @@ export default function ProductDetail() {
 
     if (productDetail && paypalOrder.id) {
       try {
-        const serverOrder = await anonymousOrderProduct({
+        const serverOrder = await orderProduct({
           paypal_order_id: paypalOrder.id,
           products: [{ product_detail_id: productDetail.id, quantity }],
         });

@@ -7,10 +7,7 @@ import {
   OnApproveData,
 } from "@paypal/paypal-js/types/components/buttons";
 import { showMessageError, showMessageSuccess } from "../../alerts/alert.ts";
-import {
-  anonymousOrderProduct,
-  preOrderProduct,
-} from "../../api/product-order.ts";
+import { orderProduct, preOrderProduct } from "../../api/product-order.ts";
 import { sleep } from "../../utils/helper.ts";
 import { CiShoppingCart } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
@@ -59,7 +56,7 @@ export function Order() {
 
     if (paypalOrder.id) {
       try {
-        const serverOrder = await anonymousOrderProduct({
+        const serverOrder = await orderProduct({
           paypal_order_id: paypalOrder.id,
           products: products.map((e) => {
             return { product_detail_id: e.id, quantity: e.quantity };
