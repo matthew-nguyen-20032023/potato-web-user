@@ -7,7 +7,10 @@ import {
   OnApproveData,
 } from "@paypal/paypal-js/types/components/buttons";
 import { showMessageError, showMessageSuccess } from "../../alerts/alert.ts";
-import { anonymousOrderProduct } from "../../api/product-order.ts";
+import {
+  anonymousOrderProduct,
+  preOrderProduct,
+} from "../../api/product-order.ts";
 import { sleep } from "../../utils/helper.ts";
 import { CiShoppingCart } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
@@ -23,7 +26,7 @@ export function Order() {
       (acc, product) => acc + product.price * product.quantity,
       0
     );
-    return await actions.order.create({
+    const orderId = await actions.order.create({
       intent: "CAPTURE",
       purchase_units: [
         {
@@ -34,6 +37,15 @@ export function Order() {
         },
       ],
     });
+
+    try {
+      const preOrder = await preOrderProduct({ paypal_order_id: orderId });
+      showMessageSuccess(preOrder.message);
+      return orderId;
+    } catch (err) {
+      showMessageError(err);
+      throw err;
+    }
   };
 
   const handleApproveOrder = async (
