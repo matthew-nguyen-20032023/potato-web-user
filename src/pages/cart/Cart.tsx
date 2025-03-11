@@ -2,6 +2,11 @@ import { useCart } from "../../contexts/CartContext.tsx";
 
 export function Cart() {
   const { products, removeProduct } = useCart();
+
+  const handleCheckout = async () => {
+    window.location.href = "/order";
+  };
+
   return (
     <div
       id="top-left-modal"
@@ -71,6 +76,7 @@ export function Cart() {
               <button
                 type="button"
                 className="text-white bg-main-color w-full rounded-xl p-3 m-5"
+                onClick={handleCheckout}
               >
                 Checkout
               </button>

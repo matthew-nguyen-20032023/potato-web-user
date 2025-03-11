@@ -73,7 +73,7 @@ export default function ProductDetail() {
     _data: CreateOrderData,
     actions: CreateOrderActions
   ) => {
-    const orderID = await actions.order.create({
+    return await actions.order.create({
       intent: "CAPTURE",
       purchase_units: [
         {
@@ -84,8 +84,6 @@ export default function ProductDetail() {
         },
       ],
     });
-    console.log(orderID);
-    return orderID;
   };
 
   const handleApproveOrder = async (
