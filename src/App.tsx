@@ -17,6 +17,7 @@ import { PrivacyPolicy } from "./pages/privacy-policy/PrivacyPolicy.tsx";
 import { TermCondition } from "./pages/terms-condition/TermCondition.tsx";
 import { ShippingReturn } from "./pages/shiping-return/ShippingReturn.tsx";
 import { Order } from "./pages/order/Order.tsx";
+import { ForgotPassword } from "./pages/forgot-password/ForgotPassword.tsx";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/" element={<Main />}>
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
+            <Route path="forgot" element={<ForgotPassword />} />
             <Route path="verify-email" element={<VerifyEmail />} />
             <Route path="products" element={<ProductList />} />
             <Route path="about-us" element={<AboutUs />} />
