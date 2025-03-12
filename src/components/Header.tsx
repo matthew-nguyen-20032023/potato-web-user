@@ -51,7 +51,7 @@ export default function Header() {
           <RiShoppingBag3Line size={30} />
           {products.length > 0 && (
             <span className="absolute top-1 right-2 transform translate-x-1/4 -translate-y-1/4 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-red-100 bg-main-color rounded-full">
-              {products.length}
+              {products.reduce((acc, product) => acc + product.quantity, 0)}
             </span>
           )}
         </button>
