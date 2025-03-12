@@ -8,10 +8,12 @@ import {
   setRefreshToken,
 } from "../../utils/storage.ts";
 import { showMessageError } from "../../alerts/alert.ts";
+import { Spinning } from "../../components/Spinning.tsx";
 
 export function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isSpinner, setIsSpinner] = useState(false);
 
   // if user already login, redirect to home page
   const navigate = useNavigate();
@@ -22,7 +24,9 @@ export function Login() {
   }, [navigate]);
 
   const handleLogin = async () => {
+    setIsSpinner(true);
     if (!email || !password) {
+      setIsSpinner(false);
       return showMessageError("Please input email and password.");
     }
 
@@ -34,6 +38,8 @@ export function Login() {
       window.location.href = "/";
     } catch (err) {
       showMessageError(err);
+    } finally {
+      setIsSpinner(false);
     }
   };
 
@@ -88,7 +94,9 @@ export function Login() {
           className="bg-main-color text-white w-full rounded-xl mb-5"
           onClick={handleLogin}
         >
-          Submit
+          {isSpinner && <Spinning />}
+
+          {!isSpinner && "Submit"}
         </button>
         <div>
           <div className="flex">

@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { showMessageError, showMessageSuccess } from "../../alerts/alert.ts";
 import { registerAPI } from "../../api/auth.ts";
+import { Spinning } from "../../components/Spinning.tsx";
 
 export function Register() {
   const [email, setEmail] = useState("");
@@ -11,12 +12,16 @@ export function Register() {
   const [phone, setPhone] = useState("");
   const [referralCode, setReferralCode] = useState("");
   const navigate = useNavigate();
+  const [isSpinner, setIsSpinner] = useState(false);
 
   const handleRegister = async () => {
+    setIsSpinner(true);
     if (!email || !password || !confirmPassword || !name || !phone) {
+      setIsSpinner(false);
       return showMessageError("Please fill all required!");
     }
     if (password !== confirmPassword) {
+      setIsSpinner(false);
       return showMessageError(
         "Password and confirm password must be the same!"
       );
@@ -34,6 +39,8 @@ export function Register() {
       navigate(`/verify-email?email=${email}`);
     } catch (err) {
       showMessageError(err);
+    } finally {
+      setIsSpinner(false);
     }
   };
 
@@ -154,7 +161,9 @@ export function Register() {
           className="bg-main-color text-white w-full rounded-xl"
           onClick={handleRegister}
         >
-          Submit
+          {isSpinner && <Spinning />}
+
+          {!isSpinner && "Submit"}
         </button>
       </div>
     </div>

@@ -18,7 +18,7 @@ export default function Info({ productInfo }: { productInfo: IProduct }) {
         img: productInfo.img_urls.split(",")[0],
       });
       setIsSpinner(false);
-    }, 500);
+    }, 300);
   };
 
   return (
