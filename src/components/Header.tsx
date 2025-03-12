@@ -6,9 +6,11 @@ import { Link } from "react-router-dom";
 import UserMenu from "./UserMenu.tsx";
 import { TbEyeSpark } from "react-icons/tb";
 import { useEffect, useState } from "react";
+import { useCart } from "../contexts/CartContext.tsx";
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const { products } = useCart();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,9 +46,14 @@ export default function Header() {
         <button
           data-modal-target="top-left-modal"
           data-modal-toggle="top-left-modal"
-          className="block py-2 px-3 mr-2 hover:scale-110 cursor-pointer"
+          className="relative flex items-center justify-center py-2 px-3 mr-2 hover:scale-110 cursor-pointer"
         >
           <RiShoppingBag3Line size={30} />
+          {products.length > 0 && (
+            <span className="absolute top-1 right-2 transform translate-x-1/4 -translate-y-1/4 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-red-100 bg-main-color rounded-full">
+              {products.length}
+            </span>
+          )}
         </button>
         {!getAccessToken() && <LoginOrRegister />}
         {getAccessToken() && <UserMenu />}
