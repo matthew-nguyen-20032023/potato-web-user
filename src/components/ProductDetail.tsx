@@ -14,6 +14,7 @@ import {
 import { showMessageError, showMessageSuccess } from "../alerts/alert.ts";
 import { orderProduct, preOrderProduct } from "../api/product-order.ts";
 import { sleep } from "../utils/helper.ts";
+import { Spinning } from "./Spinning.tsx";
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -27,6 +28,7 @@ export default function ProductDetail() {
     productDetail?.price ? productDetail?.price : 0
   );
   const { addProduct } = useCart();
+  const [isSpinner, setIsSpinner] = useState(false);
 
   useEffect(() => {
     const imageURL = imgs[imgIndex];
@@ -58,15 +60,19 @@ export default function ProductDetail() {
   }, [id]);
 
   const addToCart = () => {
-    if (product && productDetail) {
-      addProduct({
-        id: productDetail.id,
-        name: product.name,
-        quantity,
-        price: productDetail.price,
-        img: imgs[imgIndex],
-      });
-    }
+    setIsSpinner(true);
+    setTimeout(() => {
+      if (product && productDetail) {
+        addProduct({
+          id: productDetail.id,
+          name: product.name,
+          quantity,
+          price: productDetail.price,
+          img: imgs[imgIndex],
+        });
+      }
+      setIsSpinner(false);
+    }, 300);
   };
 
   const handleCreateOrder = async (
@@ -221,7 +227,8 @@ export default function ProductDetail() {
               className="text-white bg-main-color w-full rounded-xl shadow-lg shadow-lime-800/50 size-12 mb-5"
               onClick={addToCart}
             >
-              Add to cart
+              {isSpinner && <Spinning />}
+              {!isSpinner && "Add to cart"}
             </button>
             <PayPalScriptProvider options={paypalConfig}>
               <PayPalButtons
