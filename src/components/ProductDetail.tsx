@@ -1,20 +1,20 @@
-import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getProductDetailById } from "../api/product.ts";
-import { IProduct, IProductDetail } from "../types.ts";
-import { Cart } from "../pages/cart/Cart.tsx";
-import { useCart } from "../contexts/CartContext.tsx";
-import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
-import { paypalConfig } from "../const.ts";
-import { CreateOrderActions, CreateOrderData } from "@paypal/paypal-js";
+import { paypalConfig } from "@/const.ts";
+import { sleep } from "@/utils/helper.ts";
+import { useParams } from "react-router-dom";
+import { Cart } from "@/pages/cart/Cart.tsx";
 import {
   OnApproveActions,
   OnApproveData,
 } from "@paypal/paypal-js/types/components/buttons";
-import { showMessageError, showMessageSuccess } from "../alerts/alert.ts";
-import { orderProduct, preOrderProduct } from "../api/product-order.ts";
-import { sleep } from "../utils/helper.ts";
-import { Spinning } from "./Spinning.tsx";
+import { Spinning } from "@/components/Spinning.tsx";
+import { useCart } from "@/contexts/CartContext.tsx";
+import { IProduct, IProductDetail } from "@/types.ts";
+import { getProductDetailById } from "@/api/product.ts";
+import { orderProduct, preOrderProduct } from "@/api/product-order.ts";
+import { CreateOrderActions, CreateOrderData } from "@paypal/paypal-js";
+import { showMessageError, showMessageSuccess } from "@/alerts/alert.ts";
+import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 
 export default function ProductDetail() {
   const { id } = useParams();

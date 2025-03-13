@@ -1,8 +1,8 @@
-import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { showMessageError, showMessageSuccess } from "../../alerts/alert.ts";
-import { registerAPI } from "../../api/auth.ts";
-import { Spinning } from "../../components/Spinning.tsx";
+import { registerAPI } from "@/api/auth.ts";
+import { Link, useNavigate } from "react-router-dom";
+import { Spinning } from "@/components/Spinning.tsx";
+import { showMessageError, showMessageSuccess } from "@/alerts/alert.ts";
 
 export function Register() {
   const [email, setEmail] = useState("");

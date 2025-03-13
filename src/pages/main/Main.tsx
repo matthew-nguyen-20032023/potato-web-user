@@ -1,10 +1,10 @@
-import { Outlet, useLocation } from "react-router-dom";
+import Intro from "@/components/Intro.tsx";
+import Event from "@/components/Event.tsx";
+import Header from "@/components/Header.tsx";
+import Footer from "@/components/Footer.tsx";
+import Welcome from "@/components/Welcome.tsx";
 import { ToastContainer } from "react-toastify";
-import Welcome from "../../components/Welcome.tsx";
-import Header from "../../components/Header.tsx";
-import Intro from "../../components/Intro.tsx";
-import Event from "../../components/Event.tsx";
-import Footer from "../../components/Footer.tsx";
+import { Outlet, useLocation } from "react-router-dom";
 
 export function Main() {
   const location = useLocation();

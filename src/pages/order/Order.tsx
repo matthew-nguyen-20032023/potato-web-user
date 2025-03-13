@@ -1,16 +1,16 @@
-import { useCart } from "../../contexts/CartContext.tsx";
-import { paypalConfig } from "../../const.ts";
-import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { sleep } from "@/utils/helper.ts";
+import { paypalConfig } from "@/const.ts";
+import { CiShoppingCart } from "react-icons/ci";
+import { useNavigate } from "react-router-dom";
+import { useCart } from "@/contexts/CartContext.tsx";
 import { CreateOrderActions, CreateOrderData } from "@paypal/paypal-js";
+import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import {
   OnApproveActions,
   OnApproveData,
 } from "@paypal/paypal-js/types/components/buttons";
-import { showMessageError, showMessageSuccess } from "../../alerts/alert.ts";
-import { orderProduct, preOrderProduct } from "../../api/product-order.ts";
-import { sleep } from "../../utils/helper.ts";
-import { CiShoppingCart } from "react-icons/ci";
-import { useNavigate } from "react-router-dom";
+import { orderProduct, preOrderProduct } from "@/api/product-order.ts";
+import { showMessageError, showMessageSuccess } from "@/alerts/alert.ts";
 
 export function Order() {
   const { products, removeProduct, clearAll } = useCart();

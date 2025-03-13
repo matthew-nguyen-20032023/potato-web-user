@@ -1,12 +1,12 @@
-import { getAccessToken } from "../utils/storage.ts";
-import LoginOrRegister from "./LoginOrRegister.tsx";
+import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { TbEyeSpark } from "react-icons/tb";
+import UserMenu from "@/components/UserMenu.tsx";
 import { IoSearchOutline } from "react-icons/io5";
 import { RiShoppingBag3Line } from "react-icons/ri";
-import { Link } from "react-router-dom";
-import UserMenu from "./UserMenu.tsx";
-import { TbEyeSpark } from "react-icons/tb";
-import { useEffect, useState } from "react";
-import { useCart } from "../contexts/CartContext.tsx";
+import { useCart } from "@/contexts/CartContext.tsx";
+import { getAccessToken } from "@/utils/storage.ts";
+import LoginOrRegister from "@/components/LoginOrRegister.tsx";
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -108,9 +108,9 @@ export default function Header() {
               <li>
                 <Link
                   className="hover:scale-110 block py-2 px-3"
-                  to="/about-us"
+                  to="/my-order"
                 >
-                  About Us
+                  My Order
                 </Link>
               </li>
               <li>

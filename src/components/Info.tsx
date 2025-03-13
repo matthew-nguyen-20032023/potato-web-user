@@ -1,7 +1,7 @@
-import Star from "./Star.tsx";
-import { IProduct } from "../types.ts";
-import { useCart } from "../contexts/CartContext.tsx";
 import { useState } from "react";
+import { IProduct } from "@/types.ts";
+import Star from "@/components/Star.tsx";
+import { useCart } from "@/contexts/CartContext.tsx";
 
 export default function Info({ productInfo }: { productInfo: IProduct }) {
   const { addProduct } = useCart();

@@ -1,8 +1,8 @@
-import Info from "./Info.tsx";
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getEvents } from "../api/event.ts";
-import { IEvent, IProduct } from "../types.ts";
+import { useNavigate } from "react-router-dom";
+import Info from "@/components/Info.tsx";
+import { getEvents } from "@/api/event.ts";
+import { IEvent, IProduct } from "@/types.ts";
 
 export default function Event() {
   const [events, setEvents] = useState<{ event: IEvent; data: IProduct[][] }[]>(

@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
-import { listProducts } from "../../api/product.ts";
-import Info from "../../components/Info.tsx";
-import { ICategory, IColor, IProduct } from "../../types.ts";
-import { useNavigate } from "react-router-dom";
-import MultiSelect from "../../components/MultipleSelect.tsx";
-import { getCategories } from "../../api/category.ts";
-import { getColors } from "../../api/color.ts";
+import Info from "@/components/Info.tsx";
+import { getColors } from "@/api/color.ts";
 import ReactPaginate from "react-paginate";
 import { LiaSadCry } from "react-icons/lia";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { listProducts } from "@/api/product.ts";
+import { getCategories } from "@/api/category.ts";
+import { ICategory, IColor, IProduct } from "@/types.ts";
+import MultiSelect from "@/components/MultipleSelect.tsx";
 
 export function ProductList() {
   const [products, setProducts] = useState<IProduct[]>([]);

@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { showMessageError, showMessageSuccess } from "../../alerts/alert.ts";
-import { verifyEmailAPI } from "../../api/auth.ts";
+import { verifyEmailAPI } from "@/api/auth.ts";
 import { useNavigate } from "react-router-dom";
+import { showMessageError, showMessageSuccess } from "@/alerts/alert.ts";
 
 export function VerifyEmail() {
   const search = window.location.search;

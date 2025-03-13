@@ -5,7 +5,7 @@ import {
   ReactNode,
   useEffect,
 } from "react";
-import { showMessageSuccess } from "../alerts/alert.ts";
+import { showMessageSuccess } from "@/alerts/alert.ts";
 
 type Product = {
   id: number;

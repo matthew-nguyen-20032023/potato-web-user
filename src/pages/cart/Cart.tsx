@@ -1,4 +1,4 @@
-import { useCart } from "../../contexts/CartContext.tsx";
+import { useCart } from "@/contexts/CartContext.tsx";
 
 export function Cart() {
   const { products, removeProduct } = useCart();

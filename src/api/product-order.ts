@@ -1,5 +1,5 @@
-import backendService from "./backend-service.ts";
-import { getAccessToken } from "../utils/storage.ts";
+import backendService from "@/api/backend-service.ts";
+import { getAccessToken } from "@/utils/storage.ts";
 
 export const orderProduct = async (data: {
   paypal_order_id: string;

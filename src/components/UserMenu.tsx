@@ -1,7 +1,7 @@
-import { removeAccessToken, removeRefreshToken } from "../utils/storage.ts";
+import { UserProfile } from "@/types.ts";
 import { useEffect, useState } from "react";
-import { getProfileAPI } from "../api/user.ts";
-import { UserProfile } from "../types.ts";
+import { getProfileAPI } from "@/api/user.ts";
+import { removeAccessToken, removeRefreshToken } from "@/utils/storage.ts";
 
 export default function UserMenu() {
   const logout = () => {

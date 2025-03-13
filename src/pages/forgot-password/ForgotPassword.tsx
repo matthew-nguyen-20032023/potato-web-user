@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { forgotPasswordAPI, resetPasswordAPI } from "../../api/auth.ts";
-import { getAccessToken } from "../../utils/storage.ts";
-import { showMessageError, showMessageSuccess } from "../../alerts/alert.ts";
-import { Spinning } from "../../components/Spinning.tsx";
+import { getAccessToken } from "@/utils/storage.ts";
+import { Spinning } from "@/components/Spinning.tsx";
+import { forgotPasswordAPI, resetPasswordAPI } from "@/api/auth.ts";
+import { showMessageError, showMessageSuccess } from "@/alerts/alert.ts";
 
 export function ForgotPassword() {
   const [email, setEmail] = useState("");

@@ -1,4 +1,4 @@
-import backendService from "./backend-service.ts";
+import backendService from "@/api/backend-service.ts";
 
 export const getProductDetailById = async (productId?: string) => {
   const response = await backendService.get(

@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { loginAPI } from "@/api/auth.ts";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { loginAPI } from "../../api/auth.ts";
 import {
   getAccessToken,
   setAccessToken,
   setRefreshToken,
-} from "../../utils/storage.ts";
-import { showMessageError } from "../../alerts/alert.ts";
-import { Spinning } from "../../components/Spinning.tsx";
+} from "@/utils/storage.ts";
+import { showMessageError } from "@/alerts/alert.ts";
+import { Spinning } from "@/components/Spinning.tsx";
 
 export function Login() {
   const [email, setEmail] = useState("");
