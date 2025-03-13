@@ -1,6 +1,7 @@
 import { UserProfile } from "@/types.ts";
 import { useEffect, useState } from "react";
 import { getProfileAPI } from "@/api/user.ts";
+import { FaRegCircleUser } from "react-icons/fa6";
 import { removeAccessToken, removeRefreshToken } from "@/utils/storage.ts";
 
 export default function UserMenu() {
@@ -27,11 +28,15 @@ export default function UserMenu() {
         type="button"
       >
         <span className="sr-only">Open user menu</span>
-        <img
-          className="w-11 h-11 rounded-full"
-          src={profile?.profile_img_url}
-          alt="user photo"
-        />
+
+        {profile?.profile_img_url && (
+          <img
+            className="w-11 h-11 rounded-full"
+            src={profile?.profile_img_url}
+            alt="user photo"
+          />
+        )}
+        {!profile?.profile_img_url && <FaRegCircleUser size={28} />}
       </button>
       <div
         id="dropdownAvatar"
@@ -45,11 +50,6 @@ export default function UserMenu() {
           className="py-2 text-sm text-white-700 dark:text-white-200"
           aria-labelledby="dropdownUserAvatarButton"
         >
-          <li>
-            <a href="#" className="block px-4 py-2">
-              History
-            </a>
-          </li>
           <li>
             <a href="#" className="block px-4 py-2">
               Edit Profile

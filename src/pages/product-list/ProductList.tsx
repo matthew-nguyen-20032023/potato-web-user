@@ -6,25 +6,28 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { listProducts } from "@/api/product.ts";
 import { getCategories } from "@/api/category.ts";
+import { Spinning } from "@/components/Spinning.tsx";
+import { cacheCategory, cacheColor } from "@/const.ts";
 import { ICategory, IColor, IProduct } from "@/types.ts";
 import MultiSelect from "@/components/MultipleSelect.tsx";
+import { showMessageError, showMessageSuccess } from "@/alerts/alert.ts";
 
 export function ProductList() {
-  const [products, setProducts] = useState<IProduct[]>([]);
-  const [searchName, setSearchName] = useState("");
-  const [searchCategory, setSearchCategory] = useState<string>("");
-  const [searchColor, setSearchColor] = useState<string>("");
-  const [page, setPage] = useState(1);
-  const [totalProduct, setTotalProduct] = useState(0);
-  const perPage = 3;
   const [categories, setCategories] = useState<
     { value: string; label: string; id: number }[]
   >([]);
   const [colors, setColors] = useState<
     { value: string; label: string; id: number }[]
   >([]);
-  const cacheCategory = "categories";
-  const cacheColor = "colors";
+
+  const perPage = 3;
+  const [page, setPage] = useState(1);
+  const [searchName, setSearchName] = useState("");
+  const [isSpinner, setIsSpinner] = useState(false);
+  const [totalProduct, setTotalProduct] = useState(0);
+  const [products, setProducts] = useState<IProduct[]>([]);
+  const [searchCategory, setSearchCategory] = useState<string>("");
+  const [searchColor, setSearchColor] = useState<string>("");
 
   useEffect(() => {
     const categoriesCache = sessionStorage.getItem(cacheCategory);
@@ -69,13 +72,24 @@ export function ProductList() {
     setPage(event.selected + 1);
   };
 
-  const listProductHandler = () => {
-    listProducts(page, perPage, searchName, searchCategory, searchColor).then(
-      (data) => {
-        setProducts(data.data);
-        setTotalProduct(data.metadata.total);
-      }
-    );
+  const listProductHandler = async () => {
+    setIsSpinner(true);
+    try {
+      const data = await listProducts(
+        page,
+        perPage,
+        searchName,
+        searchCategory,
+        searchColor
+      );
+      setProducts(data.data);
+      setTotalProduct(data.metadata.total);
+      showMessageSuccess(data.message);
+    } catch (err) {
+      showMessageError(err);
+    } finally {
+      setIsSpinner(false);
+    }
   };
 
   useEffect(() => {
@@ -109,10 +123,11 @@ export function ProductList() {
           />
           <button
             type="button"
-            className="m-1 p-2.5 bg-main-color text-white font-medium rounded-lg text-md text-center hover:scale-110"
+            className="m-1 p-2.5 bg-main-color text-white font-medium rounded-lg text-md text-center hover:scale-110 w-1/6"
             onClick={listProductHandler}
           >
-            Search
+            {isSpinner && <Spinning />}
+            {!isSpinner && "Search"}
           </button>
         </div>
       </div>

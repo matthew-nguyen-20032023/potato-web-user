@@ -3,3 +3,5 @@ export const paypalConfig = {
   currency: "USD",
   intent: "capture",
 };
+export const cacheColor = "colors";
+export const cacheCategory = "categories";
