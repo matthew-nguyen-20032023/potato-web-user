@@ -1,3 +1,4 @@
+import React from "react";
 import ReactPaginate from "react-paginate";
 import { useEffect, useState } from "react";
 import { IGetOrderDetail } from "@/types.ts";
@@ -104,11 +105,8 @@ export function MyOrder() {
           <tbody>
             {orders.map((order) => {
               return (
-                <>
-                  <tr
-                    className="border border-black text-center"
-                    key={order.id}
-                  >
+                <React.Fragment key={order.id}>
+                  <tr className="border border-black text-center">
                     <td className="border border-black">{order.id}</td>
                     <td className="border border-black">
                       {order.paypal_order_id}
@@ -231,7 +229,7 @@ export function MyOrder() {
                       </td>
                     </tr>
                   )}
-                </>
+                </React.Fragment>
               );
             })}
           </tbody>

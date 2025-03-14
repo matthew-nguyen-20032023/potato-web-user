@@ -2,7 +2,14 @@ import { UserProfile } from "@/types.ts";
 import { useEffect, useState } from "react";
 import { getProfileAPI } from "@/api/user.ts";
 import { FaRegCircleUser } from "react-icons/fa6";
-import { removeAccessToken, removeRefreshToken } from "@/utils/storage.ts";
+import {
+  getRefreshToken,
+  removeAccessToken,
+  removeRefreshToken,
+  setAccessToken,
+} from "@/utils/storage.ts";
+import { showMessageError } from "@/alerts/alert.ts";
+import { refreshTokenAPI } from "@/api/auth.ts";
 
 export default function UserMenu() {
   const logout = () => {
@@ -12,10 +19,33 @@ export default function UserMenu() {
   };
   const [profile, setProfile] = useState<UserProfile | null>(null);
 
+  const handleGetUserProfile = async (isNewToken = false) => {
+    try {
+      const data = await getProfileAPI();
+      setProfile(data.data);
+    } catch (error) {
+      if (isNewToken) {
+        showMessageError(error);
+        removeAccessToken();
+      } else {
+        const refreshToken = getRefreshToken();
+        if (refreshToken) {
+          try {
+            const data = await refreshTokenAPI(refreshToken);
+            setAccessToken(data.data.access_token);
+            await handleGetUserProfile(true);
+          } catch (error) {
+            showMessageError(error);
+            removeAccessToken();
+            removeRefreshToken();
+          }
+        }
+      }
+    }
+  };
+
   useEffect(() => {
-    getProfileAPI().then((response) => {
-      setProfile(response.data);
-    });
+    handleGetUserProfile();
   }, []);
 
   return (

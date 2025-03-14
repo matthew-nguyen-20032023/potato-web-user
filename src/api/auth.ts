@@ -8,6 +8,13 @@ export const loginAPI = async (email: string, password: string) => {
   return response.data;
 };
 
+export const refreshTokenAPI = async (refresh_token: string) => {
+  const response = await backendService.post("/api/v1/auth/refresh-token", {
+    refresh_token,
+  });
+  return response.data;
+};
+
 export const forgotPasswordAPI = async (email: string) => {
   const response = await backendService.patch("/api/v1/auth/forgot-password", {
     email,
