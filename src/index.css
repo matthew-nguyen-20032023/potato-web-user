@@ -108,6 +108,15 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
+/*Custom zoom feature*/
+.custom-zoom [data-rmiz-modal-overlay="visible"] {
+  background-color: #F3E1BE;
+}
+.custom-zoom [data-rmiz-modal-img] {
+  transition-duration: 0.5s;
+  transition-timing-function: linear;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

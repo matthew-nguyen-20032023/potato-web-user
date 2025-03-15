@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { paypalConfig } from "@/const.ts";
 import { sleep } from "@/utils/helper.ts";
+import Zoom from "react-medium-image-zoom";
 import { useParams } from "react-router-dom";
 import { Cart } from "@/pages/cart/Cart.tsx";
 import {
@@ -131,17 +132,23 @@ export default function ProductDetail() {
     }
   };
 
+  const CustomZoomContent = ({ img }: { img: ReactNode }) => {
+    return <>{img}</>;
+  };
+
   return (
     <div className="bg-list-product-color">
       <Cart />
       <div className="w-full flex justify-center">
         <div className="flex justify-center bg-list-product-color w-2/3">
           <div className="p-6">
-            <img
-              src={imgs[imgIndex]}
-              alt=""
-              className="rounded-xl h-96 w-96 object-cover"
-            />
+            <Zoom classDialog={"custom-zoom"} ZoomContent={CustomZoomContent}>
+              <img
+                src={imgs[imgIndex]}
+                alt=""
+                className="rounded-xl h-96 w-96 object-cover"
+              />
+            </Zoom>
             <div className="mt-5 flex items-center justify-start">
               {imgs.map((img, index) => {
                 return (
