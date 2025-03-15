@@ -93,7 +93,7 @@ export function ProductList() {
   };
 
   useEffect(() => {
-    listProductHandler();
+    listProductHandler().then();
   }, [page]);
 
   return (
@@ -131,16 +131,15 @@ export function ProductList() {
           </button>
         </div>
       </div>
-      <div className="w-full flex justify-center bg-list-product-color">
-        <br />
-        {products.length === 0 && (
-          <div className="w-full flex justify-center">
-            <h2 className="flex items-center gap-2 secondary-color">
-              So sorry, we can not found product for you <LiaSadCry />
-            </h2>
-          </div>
-        )}
-        {products.length > 0 && (
+      {products.length === 0 && (
+        <div className="w-full flex justify-center">
+          <h2 className="flex items-center gap-2 secondary-color">
+            So sorry, we can not found product for you <LiaSadCry />
+          </h2>
+        </div>
+      )}
+      {products.length > 0 && (
+        <div className="w-full flex justify-center bg-list-product-color">
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 p-4 bg-list-product-color w-3/6">
             {products.map((product) => {
               return (
@@ -159,8 +158,8 @@ export function ProductList() {
               );
             })}
           </div>
-        )}
-      </div>
+        </div>
+      )}
       <div className="w-full flex justify-center bg-list-product-color pb-5">
         <ReactPaginate
           className="inline-flex -space-x-px text-xl p-2 pagination"
