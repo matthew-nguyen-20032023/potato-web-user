@@ -137,7 +137,11 @@ export default function ProductDetail() {
       <div className="w-full flex justify-center">
         <div className="flex justify-center bg-list-product-color w-2/3">
           <div className="p-6">
-            <img src={imgs[imgIndex]} alt="" className="rounded-xl" />
+            <img
+              src={imgs[imgIndex]}
+              alt=""
+              className="rounded-xl h-96 w-96 object-cover"
+            />
             <div className="mt-5 flex items-center justify-start">
               {imgs.map((img, index) => {
                 return (
@@ -145,7 +149,7 @@ export default function ProductDetail() {
                     key={index}
                     src={img}
                     alt=""
-                    className="rounded-xl w-1/6 max-h-28 mr-3 hover:cursor-pointer"
+                    className="rounded-xl h-28 w-28 object-cover mr-3 hover:cursor-pointer"
                     onClick={() => setImgIndex(index)}
                   />
                 );

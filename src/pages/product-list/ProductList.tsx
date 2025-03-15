@@ -145,11 +145,11 @@ export function ProductList() {
               return (
                 <div
                   key={product.id}
-                  className="relative overflow-hidden shadow-lg rounded-xl group max-h-56 border"
+                  className="relative overflow-hidden shadow-lg rounded-xl group max-h-56 border hover:cursor-pointer"
+                  onClick={handleClick.bind(null, product.id)}
                 >
                   <img
-                    onClick={handleClick.bind(null, product.id)}
-                    className="w-full h-full rounded-lg object-cover hover:cursor-pointer"
+                    className="w-full h-full rounded-lg object-cover"
                     src={product.img_urls}
                     alt=""
                   />
