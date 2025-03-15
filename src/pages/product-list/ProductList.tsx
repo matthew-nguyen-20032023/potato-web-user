@@ -20,7 +20,7 @@ export function ProductList() {
     { value: string; label: string; id: number }[]
   >([]);
 
-  const perPage = 3;
+  const perPage = 8;
   const [page, setPage] = useState(1);
   const [searchName, setSearchName] = useState("");
   const [isSpinner, setIsSpinner] = useState(false);
@@ -140,16 +140,16 @@ export function ProductList() {
       )}
       {products.length > 0 && (
         <div className="w-full flex justify-center bg-list-product-color">
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 p-4 bg-list-product-color w-3/6">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 bg-list-product-color w-3/6">
             {products.map((product) => {
               return (
                 <div
                   key={product.id}
-                  className="relative overflow-hidden shadow-lg rounded-xl group max-h-96 border"
+                  className="relative overflow-hidden shadow-lg rounded-xl group max-h-56 border"
                 >
                   <img
                     onClick={handleClick.bind(null, product.id)}
-                    className="h-auto max-w-full rounded-lg object-cover hover:cursor-pointer"
+                    className="w-full h-full rounded-lg object-cover hover:cursor-pointer"
                     src={product.img_urls}
                     alt=""
                   />
