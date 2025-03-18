@@ -37,6 +37,7 @@ export interface IProductDetail {
   id: number;
   img_urls: string;
   length: number;
+  size_name: string;
   price: number;
   product_id: number;
   quantity: number;

@@ -19,8 +19,7 @@ import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 
 export default function ProductDetail() {
   const { id } = useParams();
-  const [imgs, setImgs] = useState<string[]>([]);
-  const [imgIndex, setImgIndex] = useState<number>(0);
+  const [imageDisplay, setImageDisplay] = useState("");
   const [productDetails, setProductDetails] = useState<IProductDetail[]>();
   const [productDetail, setProductDetail] = useState<IProductDetail>();
   const [product, setProduct] = useState<IProduct>();
@@ -30,16 +29,6 @@ export default function ProductDetail() {
   );
   const { addProduct } = useCart();
   const [isSpinner, setIsSpinner] = useState(false);
-
-  useEffect(() => {
-    const imageURL = imgs[imgIndex];
-    const productDetailFound = productDetails?.find((detail) =>
-      detail.img_urls.includes(imageURL)
-    );
-    if (productDetailFound !== productDetail) {
-      setProductDetail(productDetailFound);
-    }
-  }, [imgIndex, imgs, productDetail, productDetails]);
 
   useEffect(() => {
     setTotalPrice(
@@ -54,9 +43,6 @@ export default function ProductDetail() {
       setProduct(product);
       setProductDetail(response.data.details[0]);
       setProductDetails(response.data.details);
-      response.data.details.forEach((detail: IProductDetail) => {
-        setImgs((imgs) => [...imgs, ...detail.img_urls.split(",")]);
-      });
     });
   }, [id]);
 
@@ -69,7 +55,7 @@ export default function ProductDetail() {
           name: product.name,
           quantity,
           price: productDetail.price,
-          img: imgs[imgIndex],
+          img: imageDisplay,
         });
       }
       setIsSpinner(false);
@@ -144,22 +130,31 @@ export default function ProductDetail() {
           <div className="p-6">
             <Zoom classDialog={"custom-zoom"} ZoomContent={CustomZoomContent}>
               <img
-                src={imgs[imgIndex]}
+                src={
+                  imageDisplay
+                    ? imageDisplay
+                    : productDetail?.img_urls.split(",")[0]
+                }
                 alt=""
                 className="rounded-xl h-96 w-96 object-cover"
               />
             </Zoom>
             <div className="mt-3 flex items-center justify-start max-w-96 overflow-y-auto scroll-container pb-3">
-              {imgs.map((img, index) => {
-                return (
-                  <img
-                    key={index}
-                    src={img}
-                    alt=""
-                    className="rounded-xl h-28 w-28 object-cover mr-3 hover:cursor-pointer flex-shrink-0"
-                    onClick={() => setImgIndex(index)}
-                  />
-                );
+              {productDetails?.map((pDetail) => {
+                return pDetail.img_urls.split(",").map((img, index) => {
+                  return (
+                    <img
+                      key={`${pDetail.id}-${index}`}
+                      src={img}
+                      alt=""
+                      className="rounded-xl h-28 w-28 object-cover mr-3 hover:cursor-pointer flex-shrink-0"
+                      onClick={() => {
+                        setImageDisplay(img);
+                        setProductDetail(pDetail);
+                      }}
+                    />
+                  );
+                });
               })}
             </div>
           </div>
@@ -252,6 +247,42 @@ export default function ProductDetail() {
             <div className="mt-5">
               <div className="flex mb-5">
                 <h3 style={{ fontSize: 25 }}>Custome by Potato! ʕ •ɷ•ʔฅ</h3>
+              </div>
+              <div className="mb-5">
+                <table className="w-full text-left rtl:text-right secondary-color border border-black">
+                  <thead className="text-xs uppercase text-black">
+                    <tr className="border border-black text-center">
+                      <th className="border border-black" scope="col">
+                        Size
+                      </th>
+                      <th className="border border-black" scope="col">
+                        Length
+                      </th>
+                      <th className="border border-black" scope="col">
+                        Width
+                      </th>
+                      <th className="border border-black" scope="col">
+                        Depth
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border border-black text-center text-black">
+                      <td className="border border-black">
+                        {productDetail?.size_name}
+                      </td>
+                      <td className="border border-black">
+                        {productDetail?.length}
+                      </td>
+                      <td className="border border-black">
+                        {productDetail?.width}
+                      </td>
+                      <td className="border border-black">
+                        {productDetail?.depth}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
               <div className="flex whitespace-pre-wrap text-left">
                 {product?.story}
