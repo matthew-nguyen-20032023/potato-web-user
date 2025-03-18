@@ -149,14 +149,14 @@ export default function ProductDetail() {
                 className="rounded-xl h-96 w-96 object-cover"
               />
             </Zoom>
-            <div className="mt-5 flex items-center justify-start">
+            <div className="mt-3 flex items-center justify-start max-w-96 overflow-y-auto scroll-container pb-3">
               {imgs.map((img, index) => {
                 return (
                   <img
                     key={index}
                     src={img}
                     alt=""
-                    className="rounded-xl h-28 w-28 object-cover mr-3 hover:cursor-pointer"
+                    className="rounded-xl h-28 w-28 object-cover mr-3 hover:cursor-pointer flex-shrink-0"
                     onClick={() => setImgIndex(index)}
                   />
                 );
