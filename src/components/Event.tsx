@@ -45,7 +45,7 @@ export default function Event() {
       <div key={index} className="bg-list-product-color">
         <h2 className="pt-4 secondary-color">{event.event.name}</h2>
         <div className="w-full flex justify-center">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 bg-list-product-color w-3/6">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 p-4 bg-list-product-color w-3/6">
             {event.data.map((products) => {
               return products.map((product) => {
                 return (

@@ -140,7 +140,7 @@ export function ProductList() {
       )}
       {products.length > 0 && (
         <div className="w-full flex justify-center bg-list-product-color">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 bg-list-product-color w-3/6">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 p-4 bg-list-product-color w-3/6">
             {products.map((product) => {
               return (
                 <div
