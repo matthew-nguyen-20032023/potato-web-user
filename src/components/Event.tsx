@@ -54,9 +54,9 @@ export default function Event() {
                       <div
                         key={product.id}
                         className="relative overflow-hidden shadow-lg group"
+                        onClick={handleClick.bind(null, product.id)}
                       >
                         <img
-                          onClick={handleClick.bind(null, product.id)}
                           className="h-auto max-w-full rounded-lg object-cover hover:cursor-pointer"
                           src={product.img_urls}
                           alt=""

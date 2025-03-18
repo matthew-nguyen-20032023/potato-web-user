@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { IProduct } from "@/types.ts";
 import Star from "@/components/Star.tsx";
 import { useCart } from "@/contexts/CartContext.tsx";
@@ -7,7 +7,8 @@ export default function Info({ productInfo }: { productInfo: IProduct }) {
   const { addProduct } = useCart();
   const [isSpinner, setIsSpinner] = useState(false);
 
-  const addToCart = () => {
+  const addToCart = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     setIsSpinner(true);
     setTimeout(() => {
       addProduct({
@@ -45,7 +46,7 @@ export default function Info({ productInfo }: { productInfo: IProduct }) {
         <button
           type="button"
           onClick={addToCart}
-          className="text-white bg-gradient-to-r bg-lime-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 min-w-28"
+          className="text-white bg-gradient-to-r bg-lime-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 min-w-28 z-20"
         >
           {isSpinner && (
             <svg
