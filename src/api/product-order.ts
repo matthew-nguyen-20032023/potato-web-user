@@ -2,6 +2,8 @@ import backendService from "@/api/backend-service.ts";
 import { getAccessToken } from "@/utils/storage.ts";
 import { IGetOrderDetail } from "@/types.ts";
 
+export const baseProductOrderURL = "/api/v1/product-order";
+
 export const orderProduct = async (data: {
   paypal_order_id: string;
   products: {
@@ -11,7 +13,7 @@ export const orderProduct = async (data: {
 }) => {
   const accessToken = getAccessToken();
   if (accessToken) {
-    return await authorizedOrderProduct(data, accessToken);
+    return await authorizedOrderProduct(data);
   } else {
     return await anonymousOrderProduct(data);
   }
@@ -25,7 +27,7 @@ export const anonymousOrderProduct = async (data: {
   }[];
 }) => {
   const response = await backendService.post(
-    "/api/v1/product-order/anonymous",
+    `${baseProductOrderURL}/anonymous`,
     data
   );
   return response.data;
@@ -40,7 +42,7 @@ export const getAnonymousOrderProduct = async (
   metadata: { total: number };
 }> => {
   const response = await backendService.get(
-    `/api/v1/product-order/${paypal_order_id}`
+    `${baseProductOrderURL}/${paypal_order_id}`
   );
   return response.data;
 };
@@ -79,7 +81,7 @@ export const getUserOrderProduct = async (
   statusCode: number;
   metadata: { total: number };
 }> => {
-  let url = `/api/v1/product-order?page=${page}&per_page=${per_page}`;
+  let url = `${baseProductOrderURL}?page=${page}&per_page=${per_page}`;
   if (paypal_order_id) url += `&paypal_order_id=${paypal_order_id}`;
   const response = await backendService.get(url, {
     headers: { Authorization: `Bearer ${accessToken}` },
@@ -87,19 +89,14 @@ export const getUserOrderProduct = async (
   return response.data;
 };
 
-export const authorizedOrderProduct = async (
-  data: {
-    paypal_order_id: string;
-    products: {
-      product_detail_id: number;
-      quantity: number;
-    }[];
-  },
-  accessToken: string
-) => {
-  const response = await backendService.post("/api/v1/product-order", data, {
-    headers: { Authorization: `Bearer ${accessToken}` },
-  });
+export const authorizedOrderProduct = async (data: {
+  paypal_order_id: string;
+  products: {
+    product_detail_id: number;
+    quantity: number;
+  }[];
+}) => {
+  const response = await backendService.post(baseProductOrderURL, data);
   return response.data;
 };
 
@@ -111,7 +108,7 @@ export const preOrderProduct = async (data: {
   }[];
 }) => {
   const response = await backendService.post(
-    "/api/v1/product-order/pre-order",
+    `${baseProductOrderURL}/pre-order`,
     data
   );
   return response.data;

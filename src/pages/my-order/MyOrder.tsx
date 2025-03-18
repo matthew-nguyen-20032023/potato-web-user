@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { IGetOrderDetail } from "@/types.ts";
 import { Spinning } from "@/components/Spinning.tsx";
 import { getOrderHistory } from "@/api/product-order.ts";
-import { showMessageError, showMessageSuccess } from "@/alerts/alert.ts";
+import { showMessageSuccess } from "@/alerts/alert.ts";
 
 export function MyOrder() {
   const [perPage] = useState(5);
@@ -23,7 +23,9 @@ export function MyOrder() {
       setTotalOrder(data.metadata.total);
       showMessageSuccess(data.message);
     } catch (err) {
-      showMessageError(err);
+      if (err) {
+        setIsSpinner(false);
+      }
     } finally {
       setIsSpinner(false);
     }
