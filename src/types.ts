@@ -32,7 +32,7 @@ export interface IProduct {
 export interface IProductDetail {
   color_id: number;
   created_at: string;
-  depth: number;
+  height: number;
   discount: number;
   id: number;
   img_urls: string;
@@ -45,6 +45,7 @@ export interface IProductDetail {
   size_id: number;
   updated_at: string;
   width: number;
+  weight: number;
 }
 
 export interface ICategory {

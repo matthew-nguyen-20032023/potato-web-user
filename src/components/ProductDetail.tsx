@@ -273,7 +273,10 @@ export default function ProductDetail() {
                         Width
                       </th>
                       <th className="border border-black" scope="col">
-                        Depth
+                        Height
+                      </th>
+                      <th className="border border-black" scope="col">
+                        Weight
                       </th>
                     </tr>
                   </thead>
@@ -289,7 +292,10 @@ export default function ProductDetail() {
                         {productDetail?.width} cm
                       </td>
                       <td className="border border-black">
-                        {productDetail?.depth} cm
+                        {productDetail?.height} cm
+                      </td>
+                      <td className="border border-black">
+                        {productDetail?.weight} gram
                       </td>
                     </tr>
                   </tbody>
