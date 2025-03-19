@@ -4,7 +4,11 @@ import { CiShoppingCart } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext.tsx";
 import { CreateOrderActions, CreateOrderData } from "@paypal/paypal-js";
-import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
+import {
+  PayPalButtons,
+  PayPalButtonsComponentProps,
+  PayPalScriptProvider,
+} from "@paypal/react-paypal-js";
 import {
   OnApproveActions,
   OnApproveData,
@@ -14,6 +18,12 @@ import { showMessageError, showMessageSuccess } from "@/alerts/alert.ts";
 
 export function Order() {
   const { products, removeProduct, clearAll } = useCart();
+  const styles: PayPalButtonsComponentProps["style"] = {
+    shape: "rect",
+    layout: "horizontal",
+    label: "checkout",
+    tagline: false,
+  };
 
   const handleCreateOrder = async (
     _data: CreateOrderData,
@@ -134,6 +144,7 @@ export function Order() {
           <div className="w-1/6 rounded-xl">
             <PayPalScriptProvider options={paypalConfig}>
               <PayPalButtons
+                style={styles}
                 createOrder={handleCreateOrder}
                 onApprove={handleApproveOrder}
               />

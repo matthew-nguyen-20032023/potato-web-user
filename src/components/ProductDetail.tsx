@@ -15,7 +15,11 @@ import { getProductDetailById } from "@/api/product.ts";
 import { orderProduct, preOrderProduct } from "@/api/product-order.ts";
 import { CreateOrderActions, CreateOrderData } from "@paypal/paypal-js";
 import { showMessageError, showMessageSuccess } from "@/alerts/alert.ts";
-import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
+import {
+  PayPalButtons,
+  PayPalButtonsComponentProps,
+  PayPalScriptProvider,
+} from "@paypal/react-paypal-js";
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -29,6 +33,12 @@ export default function ProductDetail() {
   );
   const { addProduct } = useCart();
   const [isSpinner, setIsSpinner] = useState(false);
+  const styles: PayPalButtonsComponentProps["style"] = {
+    shape: "rect",
+    layout: "horizontal",
+    label: "buynow",
+    tagline: false,
+  };
 
   useEffect(() => {
     setTotalPrice(
@@ -238,13 +248,14 @@ export default function ProductDetail() {
             </button>
             <PayPalScriptProvider options={paypalConfig}>
               <PayPalButtons
+                style={styles}
                 createOrder={handleCreateOrder}
                 onApprove={handleApproveOrder}
               />
             </PayPalScriptProvider>
             <p id="result-message"></p>
 
-            <div className="mt-5">
+            <div className="mt-2">
               <div className="flex mb-5">
                 <h3 style={{ fontSize: 25 }}>Custome by Potato! ʕ •ɷ•ʔฅ</h3>
               </div>
@@ -272,13 +283,13 @@ export default function ProductDetail() {
                         {productDetail?.size_name}
                       </td>
                       <td className="border border-black">
-                        {productDetail?.length}
+                        {productDetail?.length} cm
                       </td>
                       <td className="border border-black">
-                        {productDetail?.width}
+                        {productDetail?.width} cm
                       </td>
                       <td className="border border-black">
-                        {productDetail?.depth}
+                        {productDetail?.depth} cm
                       </td>
                     </tr>
                   </tbody>
