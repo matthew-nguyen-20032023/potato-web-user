@@ -2,6 +2,8 @@ import "flowbite";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import store from "@/app/store.ts";
+import { Provider } from "react-redux";
 import { FAQ } from "@/pages/faq/FAQ.tsx";
 import { Main } from "@/pages/main/Main.tsx";
 import { Cart } from "@/pages/cart/Cart.tsx";
@@ -23,30 +25,32 @@ import { ForgotPassword } from "@/pages/forgot-password/ForgotPassword.tsx";
 
 function App() {
   return (
-    <CartProvider>
-      <Cart />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Main />}>
-            <Route path="FAQ" element={<FAQ />} />
-            <Route path="order" element={<Order />} />
-            <Route path="login" element={<Login />} />
-            <Route path="contact" element={<Contact />} />
-            <Route path="about-us" element={<AboutUs />} />
-            <Route path="my-order" element={<MyOrder />} />
-            <Route path="register" element={<Register />} />
-            <Route path="products" element={<ProductList />} />
-            <Route path="forgot" element={<ForgotPassword />} />
-            <Route path="verify-email" element={<VerifyEmail />} />
-            <Route path="privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="terms-conditions" element={<TermCondition />} />
-            <Route path="shipping-return" element={<ShippingReturn />} />
-            <Route path="product-detail/:id" element={<ProductDetail />} />
-            <Route path="*" element={<NotFound />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </CartProvider>
+    <Provider store={store}>
+      <CartProvider>
+        <Cart />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Main />}>
+              <Route path="FAQ" element={<FAQ />} />
+              <Route path="order" element={<Order />} />
+              <Route path="login" element={<Login />} />
+              <Route path="contact" element={<Contact />} />
+              <Route path="about-us" element={<AboutUs />} />
+              <Route path="my-order" element={<MyOrder />} />
+              <Route path="register" element={<Register />} />
+              <Route path="products" element={<ProductList />} />
+              <Route path="forgot" element={<ForgotPassword />} />
+              <Route path="verify-email" element={<VerifyEmail />} />
+              <Route path="privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="terms-conditions" element={<TermCondition />} />
+              <Route path="shipping-return" element={<ShippingReturn />} />
+              <Route path="product-detail/:id" element={<ProductDetail />} />
+              <Route path="*" element={<NotFound />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </CartProvider>
+    </Provider>
   );
 }
 

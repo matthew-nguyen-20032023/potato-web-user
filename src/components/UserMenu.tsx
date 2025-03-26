@@ -1,22 +1,26 @@
-import { UserProfile } from "@/types.ts";
-import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
 import { getProfileAPI } from "@/api/user.ts";
 import { FaRegCircleUser } from "react-icons/fa6";
-import { removeAccessToken, removeRefreshToken } from "@/utils/storage.ts";
 import { showMessageError } from "@/alerts/alert.ts";
+import { loginSuccess } from "@/features/auth/authSlice.ts";
+import { selectCurrentUser } from "@/features/auth/authSelector.ts";
+import { removeAccessToken, removeRefreshToken } from "@/utils/storage.ts";
 
 export default function UserMenu() {
+  const dispatch = useDispatch();
+  const profile = useSelector(selectCurrentUser);
+
   const logout = () => {
     removeAccessToken();
     removeRefreshToken();
     window.location.reload();
   };
-  const [profile, setProfile] = useState<UserProfile | null>(null);
 
   const handleGetUserProfile = async () => {
     try {
       const data = await getProfileAPI();
-      setProfile(data.data);
+      dispatch(loginSuccess({ user: data.data }));
     } catch (error) {
       showMessageError(error);
     }
