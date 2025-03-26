@@ -1,16 +1,17 @@
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { TbEyeSpark } from "react-icons/tb";
 import UserMenu from "@/components/UserMenu.tsx";
 import { IoSearchOutline } from "react-icons/io5";
 import { RiShoppingBag3Line } from "react-icons/ri";
-import { useCart } from "@/contexts/CartContext.tsx";
 import { getAccessToken } from "@/utils/storage.ts";
 import LoginOrRegister from "@/components/LoginOrRegister.tsx";
+import { selectProductsAddedToCart } from "@/features/cart/cartSelector.ts";
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const { products } = useCart();
+  const products = useSelector(selectProductsAddedToCart);
 
   useEffect(() => {
     const handleScroll = () => {

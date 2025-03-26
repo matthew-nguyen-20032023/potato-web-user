@@ -5,3 +5,4 @@ export const paypalConfig = {
 };
 export const cacheColor = "colors";
 export const cacheCategory = "categories";
+export const cacheCart = "cart";

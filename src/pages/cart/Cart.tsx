@@ -1,7 +1,20 @@
-import { useCart } from "@/contexts/CartContext.tsx";
+import { useEffect } from "react";
+import { cacheCart } from "@/const.ts";
+import { useDispatch, useSelector } from "react-redux";
+import { removeFromCart } from "@/features/cart/cartSlice.ts";
+import { selectProductsAddedToCart } from "@/features/cart/cartSelector.ts";
 
 export function Cart() {
-  const { products, removeProduct } = useCart();
+  const dispatch = useDispatch();
+  const products = useSelector(selectProductsAddedToCart);
+
+  const handleRemoveProduct = (id: number) => {
+    dispatch(removeFromCart(id));
+  };
+
+  useEffect(() => {
+    localStorage.setItem(cacheCart, JSON.stringify(products));
+  }, [products]);
 
   const handleCheckout = async () => {
     window.location.href = "/order";
@@ -49,7 +62,7 @@ export function Cart() {
                     <button
                       type="button"
                       className="text-white bg-main-color rounded-xl p-2"
-                      onClick={() => removeProduct(product.id)}
+                      onClick={() => handleRemoveProduct(product.id)}
                     >
                       Remove
                     </button>

@@ -9,7 +9,6 @@ import {
   OnApproveData,
 } from "@paypal/paypal-js/types/components/buttons";
 import { Spinning } from "@/components/Spinning.tsx";
-import { useCart } from "@/contexts/CartContext.tsx";
 import { IProduct, IProductDetail } from "@/types.ts";
 import { getProductDetailById } from "@/api/product.ts";
 import { orderProduct, preOrderProduct } from "@/api/product-order.ts";
@@ -20,6 +19,8 @@ import {
   PayPalButtonsComponentProps,
   PayPalScriptProvider,
 } from "@paypal/react-paypal-js";
+import { useDispatch } from "react-redux";
+import { addProductToCart } from "@/features/cart/cartSlice.ts";
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -31,7 +32,7 @@ export default function ProductDetail() {
   const [totalPrice, setTotalPrice] = useState(
     productDetail?.price ? productDetail?.price : 0
   );
-  const { addProduct } = useCart();
+  const dispatch = useDispatch();
   const [isSpinner, setIsSpinner] = useState(false);
   const styles: PayPalButtonsComponentProps["style"] = {
     shape: "rect",
@@ -60,15 +61,18 @@ export default function ProductDetail() {
     setIsSpinner(true);
     setTimeout(() => {
       if (product && productDetail) {
-        addProduct({
-          id: productDetail.id,
-          name: product.name,
-          quantity,
-          price: productDetail.price,
-          img: imageDisplay,
-        });
+        dispatch(
+          addProductToCart({
+            id: productDetail.id,
+            name: product.name,
+            quantity,
+            price: productDetail.price,
+            img: imageDisplay,
+          })
+        );
       }
       setIsSpinner(false);
+      showMessageSuccess("Product added to cart");
     }, 300);
   };
 

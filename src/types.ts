@@ -16,6 +16,14 @@ export interface IEvent {
   description: string;
 }
 
+export interface IProductAddedToCart {
+  id: number;
+  name: string;
+  quantity: number;
+  price: number;
+  img: string;
+}
+
 export interface IProduct {
   average_star: number;
   category_id: number;

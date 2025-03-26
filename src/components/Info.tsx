@@ -1,24 +1,29 @@
 import React, { useState } from "react";
 import { IProduct } from "@/types.ts";
 import Star from "@/components/Star.tsx";
-import { useCart } from "@/contexts/CartContext.tsx";
+import { useDispatch } from "react-redux";
+import { addProductToCart } from "@/features/cart/cartSlice.ts";
+import { showMessageSuccess } from "@/alerts/alert.ts";
 
 export default function Info({ productInfo }: { productInfo: IProduct }) {
-  const { addProduct } = useCart();
+  const dispatch = useDispatch();
   const [isSpinner, setIsSpinner] = useState(false);
 
   const addToCart = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     setIsSpinner(true);
     setTimeout(() => {
-      addProduct({
-        id: productInfo.id,
-        name: productInfo.name,
-        quantity: 1,
-        price: productInfo.price,
-        img: productInfo.img_urls.split(",")[0],
-      });
+      dispatch(
+        addProductToCart({
+          id: productInfo.id,
+          name: productInfo.name,
+          quantity: 1,
+          price: productInfo.price,
+          img: productInfo.img_urls.split(",")[0],
+        })
+      );
       setIsSpinner(false);
+      showMessageSuccess("Product added to cart");
     }, 300);
   };
 

@@ -1,3 +1,4 @@
+import { useDispatch } from "react-redux";
 import Intro from "@/components/Intro.tsx";
 import Event from "@/components/Event.tsx";
 import Header from "@/components/Header.tsx";
@@ -5,11 +6,16 @@ import Footer from "@/components/Footer.tsx";
 import Welcome from "@/components/Welcome.tsx";
 import { ToastContainer } from "react-toastify";
 import { Outlet, useLocation } from "react-router-dom";
+import { syncCartFromCache } from "@/features/cart/cartSlice.ts";
 
 export function Main() {
   const location = useLocation();
   const showProductListRoutes = ["/"];
   const showProductList = showProductListRoutes.includes(location.pathname);
+
+  const dispatch = useDispatch();
+
+  dispatch(syncCartFromCache());
 
   return (
     <div className="max-h-screen overflow-y-auto scroll-container bg-list-product-color">

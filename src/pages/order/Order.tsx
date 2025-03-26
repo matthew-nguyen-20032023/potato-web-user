@@ -1,8 +1,7 @@
 import { sleep } from "@/utils/helper.ts";
-import { paypalConfig } from "@/const.ts";
+import { cacheCart, paypalConfig } from "@/const.ts";
 import { CiShoppingCart } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
-import { useCart } from "@/contexts/CartContext.tsx";
 import { CreateOrderActions, CreateOrderData } from "@paypal/paypal-js";
 import {
   PayPalButtons,
@@ -15,9 +14,23 @@ import {
 } from "@paypal/paypal-js/types/components/buttons";
 import { orderProduct, preOrderProduct } from "@/api/product-order.ts";
 import { showMessageError, showMessageSuccess } from "@/alerts/alert.ts";
+import { useDispatch, useSelector } from "react-redux";
+import { selectProductsAddedToCart } from "@/features/cart/cartSelector.ts";
+import { clearCart, removeFromCart } from "@/features/cart/cartSlice.ts";
+import { useEffect } from "react";
 
 export function Order() {
-  const { products, removeProduct, clearAll } = useCart();
+  const dispatch = useDispatch();
+  const products = useSelector(selectProductsAddedToCart);
+
+  const handleRemoveProduct = (id: number) => {
+    dispatch(removeFromCart(id));
+  };
+
+  useEffect(() => {
+    localStorage.setItem(cacheCart, JSON.stringify(products));
+  }, [products]);
+
   const styles: PayPalButtonsComponentProps["style"] = {
     shape: "rect",
     layout: "horizontal",
@@ -78,7 +91,7 @@ export function Order() {
           }),
         });
         showMessageSuccess(serverOrder.message);
-        clearAll();
+        dispatch(clearCart());
       } catch (error) {
         showMessageError(error);
       }
@@ -129,7 +142,7 @@ export function Order() {
                   <button
                     type="button"
                     className="text-white bg-main-color rounded-xl p-2"
-                    onClick={() => removeProduct(product.id)}
+                    onClick={() => handleRemoveProduct(product.id)}
                   >
                     Remove
                   </button>
