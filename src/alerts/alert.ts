@@ -1,8 +1,7 @@
 import { Bounce, toast } from "react-toastify";
 
 export const showMessageError = (
-  // @ts-ignore
-  error
+  error: string | { response: { data: { message: string } } } | unknown
 ) => {
   const message =
     typeof error === "string"
