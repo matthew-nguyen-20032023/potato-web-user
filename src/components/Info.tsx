@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { IProduct } from "@/types.ts";
-import Star from "@/components/Star.tsx";
 import { useDispatch } from "react-redux";
-import { addProductToCart } from "@/features/cart/cartSlice.ts";
 import { showMessageSuccess } from "@/alerts/alert.ts";
+import StarContainer from "@/components/StarContainer.tsx";
+import { addProductToCart } from "@/features/cart/cartSlice.ts";
 
 export default function Info({ productInfo }: { productInfo: IProduct }) {
   const dispatch = useDispatch();
@@ -35,16 +35,7 @@ export default function Info({ productInfo }: { productInfo: IProduct }) {
         </h5>
       </a>
       <div className="flex items-center mt-2.5 mb-5">
-        <div className="flex items-center space-x-1 rtl:space-x-reverse">
-          {productInfo.average_star > 0 && <Star />}
-          {productInfo.average_star > 1 && <Star />}
-          {productInfo.average_star > 2 && <Star />}
-          {productInfo.average_star > 3 && <Star />}
-          {productInfo.average_star > 4 && <Star />}
-        </div>
-        <span className="bg-white secondary-color font-semibold px-2.5 py-0.5 rounded dark:bg-white ms-3">
-          {productInfo.average_star}
-        </span>
+        <StarContainer average_star={productInfo.average_star} />
       </div>
       <div className="flex items-center justify-between">
         <span className="text-3xl font-bold">${productInfo.price}</span>
