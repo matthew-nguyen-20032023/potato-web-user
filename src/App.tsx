@@ -1,6 +1,5 @@
 import "flowbite";
-import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import "@/App.css";
 
 import store from "@/app/store.ts";
 import { Provider } from "react-redux";
@@ -17,36 +16,41 @@ import { NotFound } from "@/pages/not-found/NotFound.tsx";
 import ProductDetail from "@/components/ProductDetail.tsx";
 import { ProductList } from "@/pages/product-list/ProductList.tsx";
 import { VerifyEmail } from "@/pages/verify-email/VerifyEmail.tsx";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { PrivacyPolicy } from "@/pages/privacy-policy/PrivacyPolicy.tsx";
 import { TermCondition } from "@/pages/terms-condition/TermCondition.tsx";
 import { ShippingReturn } from "@/pages/shiping-return/ShippingReturn.tsx";
 import { ForgotPassword } from "@/pages/forgot-password/ForgotPassword.tsx";
 
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Main />,
+    children: [
+      { path: "FAQ", element: <FAQ /> },
+      { path: "order", element: <Order /> },
+      { path: "login", element: <Login /> },
+      { path: "contact", element: <Contact /> },
+      { path: "about-us", element: <AboutUs /> },
+      { path: "my-order", element: <MyOrder /> },
+      { path: "register", element: <Register /> },
+      { path: "products", element: <ProductList /> },
+      { path: "forgot", element: <ForgotPassword /> },
+      { path: "verify-email", element: <VerifyEmail /> },
+      { path: "privacy-policy", element: <PrivacyPolicy /> },
+      { path: "terms-conditions", element: <TermCondition /> },
+      { path: "shipping-return", element: <ShippingReturn /> },
+      { path: "product-detail/:id", element: <ProductDetail /> },
+      { path: "*", element: <NotFound /> },
+    ],
+  },
+]);
+
 function App() {
   return (
     <Provider store={store}>
       <Cart />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Main />}>
-            <Route path="FAQ" element={<FAQ />} />
-            <Route path="order" element={<Order />} />
-            <Route path="login" element={<Login />} />
-            <Route path="contact" element={<Contact />} />
-            <Route path="about-us" element={<AboutUs />} />
-            <Route path="my-order" element={<MyOrder />} />
-            <Route path="register" element={<Register />} />
-            <Route path="products" element={<ProductList />} />
-            <Route path="forgot" element={<ForgotPassword />} />
-            <Route path="verify-email" element={<VerifyEmail />} />
-            <Route path="privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="terms-conditions" element={<TermCondition />} />
-            <Route path="shipping-return" element={<ShippingReturn />} />
-            <Route path="product-detail/:id" element={<ProductDetail />} />
-            <Route path="*" element={<NotFound />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <RouterProvider router={router} />
     </Provider>
   );
 }
