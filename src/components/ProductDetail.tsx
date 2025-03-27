@@ -1,26 +1,27 @@
-import { ReactNode, useEffect, useState } from "react";
-import { paypalConfig } from "@/const.ts";
-import { sleep } from "@/utils/helper.ts";
-import Zoom from "react-medium-image-zoom";
-import { useParams } from "react-router-dom";
-import { Cart } from "@/pages/cart/Cart.tsx";
 import {
   OnApproveActions,
   OnApproveData,
 } from "@paypal/paypal-js/types/components/buttons";
-import { Spinning } from "@/components/Spinning.tsx";
-import { IProduct, IProductDetail } from "@/types.ts";
-import { getProductDetailById } from "@/api/product.ts";
-import { orderProduct, preOrderProduct } from "@/api/product-order.ts";
-import { CreateOrderActions, CreateOrderData } from "@paypal/paypal-js";
-import { showMessageError, showMessageSuccess } from "@/alerts/alert.ts";
 import {
   PayPalButtons,
   PayPalButtonsComponentProps,
   PayPalScriptProvider,
 } from "@paypal/react-paypal-js";
+import { paypalConfig } from "@/const.ts";
 import { useDispatch } from "react-redux";
+import Zoom from "react-medium-image-zoom";
+import { Cart } from "@/pages/cart/Cart.tsx";
+import { useParams } from "react-router-dom";
+import { Spinning } from "@/components/Spinning.tsx";
+import { IProduct, IProductDetail } from "@/types.ts";
+import { ReactNode, useEffect, useState } from "react";
+import { getProductDetailById } from "@/api/product.ts";
+import StarContainer from "@/components/StarContainer.tsx";
+import { calculateDiscount, sleep } from "@/utils/helper.ts";
 import { addProductToCart } from "@/features/cart/cartSlice.ts";
+import { orderProduct, preOrderProduct } from "@/api/product-order.ts";
+import { CreateOrderActions, CreateOrderData } from "@paypal/paypal-js";
+import { showMessageError, showMessageSuccess } from "@/alerts/alert.ts";
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -173,15 +174,44 @@ export default function ProductDetail() {
             </div>
           </div>
           <div className="p-6 max-w-xl">
-            <h1 className="mb-5 flex">{product?.name}</h1>
-            <h3 className="secondary-color size-4 w-full flex mb-5">
-              ${totalPrice} USD
-            </h3>
-            <h3 className="secondary-color size-4 w-full flex mb-3">
-              Quantity
-            </h3>
+            <h1 className="flex secondary-color">{product?.name}</h1>
+            <div className="relative mb-10">
+              <StarContainer
+                average_star={product?.average_star}
+                review_count={product?.review_count}
+              />
+            </div>
+            <hr className="mb-5 border-black border-dashed" />
+
+            <div className="secondary-color text-3xl w-full flex">
+              <span className="text-red-800 mr-4">
+                -{productDetail?.discount}%
+              </span>
+              <span className="relative w-4/12">
+                <span className="absolute text-sm left-1">$</span>
+                <span className="absolute left-3">
+                  {calculateDiscount(
+                    productDetail?.price,
+                    productDetail?.discount
+                  )}
+                </span>
+              </span>
+            </div>
+            <div className="secondary-color text-sm w-full flex mb-5">
+              <span>
+                Original price:{" "}
+                <span className="line-through">${productDetail?.price}</span>
+              </span>
+            </div>
+            <hr className="mb-5 border-black border-dashed" />
+            <div className="secondary-color text-sm w-full flex mb-5">
+              <span>
+                Size:{" "}
+                <span className="text-black">{productDetail?.size_name}</span>
+              </span>
+            </div>
             <form className="mb-5">
-              <div className="flex max-w-[8rem] shadow-lg shadow-lime-800/50 rounded-xl">
+              <div className="flex max-w-[8rem] shadow-lg shadow-lime-800/50 rounded-b">
                 <button
                   type="button"
                   id="decrement-button"
@@ -244,7 +274,7 @@ export default function ProductDetail() {
             </form>
             <button
               type="button"
-              className="text-white bg-main-color w-full rounded-xl shadow-lg shadow-lime-800/50 size-12 mb-5"
+              className="text-white bg-main-color w-full rounded-lg shadow-lg shadow-lime-800/50 size-12 mb-5"
               onClick={addToCart}
             >
               {isSpinner && <Spinning />}
@@ -261,15 +291,12 @@ export default function ProductDetail() {
 
             <div className="mt-2">
               <div className="flex mb-5">
-                <h3 style={{ fontSize: 25 }}>Custome by Potato! ʕ •ɷ•ʔฅ</h3>
+                <h3 style={{ fontSize: 25 }}>Custom by MewMew! ʕ •ɷ•ʔฅ</h3>
               </div>
               <div className="mb-5">
                 <table className="w-full text-left rtl:text-right secondary-color border border-black">
                   <thead className="text-xs uppercase text-black">
                     <tr className="border border-black text-center">
-                      <th className="border border-black" scope="col">
-                        Size
-                      </th>
                       <th className="border border-black" scope="col">
                         Length
                       </th>
@@ -286,9 +313,6 @@ export default function ProductDetail() {
                   </thead>
                   <tbody>
                     <tr className="border border-black text-center text-black">
-                      <td className="border border-black">
-                        {productDetail?.size_name}
-                      </td>
                       <td className="border border-black">
                         {productDetail?.length} cm
                       </td>
