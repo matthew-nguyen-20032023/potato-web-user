@@ -175,7 +175,9 @@ export default function ProductDetail() {
             </div>
           </div>
           <div className="p-6 max-w-xl">
-            <h1 className="flex secondary-color">{product?.name}</h1>
+            <h1 className="flex secondary-color text-left max-w-80">
+              {product?.name}
+            </h1>
             <div className="relative mb-10">
               <StarContainer
                 average_star={product?.average_star}
