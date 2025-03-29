@@ -138,10 +138,10 @@ export default function ProductDetail() {
   };
 
   return (
-    <div className="bg-list-product-color">
+    <div className="bg-white">
       <Cart />
       <div className="w-full flex justify-center">
-        <div className="flex justify-center bg-list-product-color w-2/3">
+        <div className="flex justify-center w-2/3">
           <div className="p-6">
             <Zoom classDialog={"custom-zoom"} ZoomContent={CustomZoomContent}>
               <img
@@ -151,7 +151,8 @@ export default function ProductDetail() {
                     : productDetail?.img_urls.split(",")[0]
                 }
                 alt=""
-                className="rounded-xl h-96 w-96 object-cover"
+                className="rounded-xl object-cover"
+                style={{ height: "30rem", width: "30rem" }}
               />
             </Zoom>
             <div className="mt-3 flex items-center justify-start max-w-96 overflow-y-auto scroll-container pb-3">
@@ -174,14 +175,16 @@ export default function ProductDetail() {
             </div>
           </div>
           <div className="p-6 max-w-xl">
-            <h1 className="flex secondary-color">{product?.name}</h1>
+            <h1 className="flex secondary-color text-left max-w-80">
+              {product?.name}
+            </h1>
             <div className="relative mb-10">
               <StarContainer
                 average_star={product?.average_star}
                 review_count={product?.review_count}
               />
             </div>
-            <hr className="mb-5 border-black border-dashed" />
+            <hr className="mb-5 border-black" />
 
             <div className="secondary-color text-3xl w-full flex">
               <span className="text-red-800 mr-4">
@@ -203,12 +206,37 @@ export default function ProductDetail() {
                 <span className="line-through">${productDetail?.price}</span>
               </span>
             </div>
-            <hr className="mb-5 border-black border-dashed" />
-            <div className="secondary-color text-sm w-full flex mb-5">
+            <hr className="mb-5 border-black" />
+            <div className="secondary-color text-sm w-full flex mb-3">
               <span>
                 Size:{" "}
                 <span className="text-black">{productDetail?.size_name}</span>
               </span>
+            </div>
+            <div className="secondary-color text-sm w-full flex mb-3">
+              <span>
+                Color:{" "}
+                <span className="text-black">{productDetail?.color_name}</span>
+              </span>
+            </div>
+            <div className="secondary-color text-sm max-w-80 flex mb-4 flex-wrap">
+              {[1, 2, 3, 4, 5, 6, 7].map((e) => {
+                return (
+                  <div className="border border-black p-3 mr-1 mb-1" key={e}>
+                    <div>{productDetail?.size_name}</div>
+                    <div>
+                      $
+                      {calculateDiscount(
+                        productDetail?.price,
+                        productDetail?.discount
+                      )}
+                    </div>
+                    <span className="line-through">
+                      ${productDetail?.price}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
             <form className="mb-5">
               <div className="flex max-w-[8rem] shadow-lg shadow-lime-800/50 rounded-b">

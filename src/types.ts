@@ -46,6 +46,7 @@ export interface IProductDetail {
   img_urls: string;
   length: number;
   size_name: string;
+  color_name: string;
   price: number;
   product_id: number;
   quantity: number;
