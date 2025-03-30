@@ -14,6 +14,7 @@ export function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSpinner, setIsSpinner] = useState(false);
+  const [image, setImage] = useState("/src/assets/password-1.png");
 
   // if user already login, redirect to home page
   const navigate = useNavigate();
@@ -43,9 +44,57 @@ export function Login() {
     }
   };
 
+  const handleInputPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.value === "") {
+      const images = [
+        "/src/assets/password-4.png",
+        "/src/assets/password-3.png",
+        "/src/assets/password-2.png",
+      ];
+      renderMewAction(images);
+    } else if (image === "/src/assets/password-2.png") {
+      handleMewCloseEye();
+      renderMewAction([
+        "/src/assets/password-3.png",
+        "/src/assets/password-4.png",
+        "/src/assets/password-5.png",
+      ]);
+    }
+    setPassword(event.target.value);
+  };
+
+  const renderMewAction = (images: string[]) => {
+    images.forEach((img, index) => {
+      setTimeout(() => {
+        setImage(img);
+      }, index * 100);
+    });
+  };
+
+  const handleMewCloseEye = () => {
+    const images = ["/src/assets/password-2.png"];
+    renderMewAction(images);
+  };
+
+  const handleMewOpenEye = () => {
+    if (password === "") {
+      setImage("/src/assets/password-1.png");
+      return;
+    }
+    const images = [
+      "/src/assets/password-4.png",
+      "/src/assets/password-3.png",
+      "/src/assets/password-2.png",
+      "/src/assets/password-1.png",
+    ];
+    renderMewAction(images);
+  };
+
   return (
     <div className="mb-8">
-      <h1 className="m-4 secondary-color">Login</h1>
+      <div className="w-full flex justify-center">
+        <img className="w-32 rounded-full object-cover" src={image} alt="" />
+      </div>
       <div className="max-w-md mx-auto border border-black rounded-xl p-6">
         <div className="relative z-0 w-full mb-5 group">
           <input
@@ -72,7 +121,9 @@ export function Login() {
             className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-b-lime-900 focus:outline-none focus:ring-0 peer"
             placeholder=" "
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onFocus={handleMewCloseEye}
+            onBlur={handleMewOpenEye}
+            onChange={handleInputPassword}
           />
           <label
             htmlFor="floating_password"
