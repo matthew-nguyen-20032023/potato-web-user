@@ -39,8 +39,8 @@ export default function Header() {
         <h1 className="flex justify-center">
           <img
             onClick={() => (window.location.href = "/")}
-            className="w-1/4 hover:cursor-pointer hover:scale-110"
-            src="/src/assets/Logo_v2-01.webp"
+            className="w-2/5 hover:cursor-pointer hover:scale-110"
+            src="/src/assets/logo.png"
             alt=""
           />
         </h1>
@@ -61,7 +61,7 @@ export default function Header() {
       </div>
 
       <nav className="flex justify-center">
-        <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto">
           <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
             <button
               data-collapse-toggle="navbar-sticky"
