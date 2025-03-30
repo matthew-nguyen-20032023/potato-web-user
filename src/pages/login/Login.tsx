@@ -92,8 +92,13 @@ export function Login() {
 
   return (
     <div className="mb-8">
-      <div className="w-full flex justify-center">
+      <div className="w-full flex justify-center pt-3">
         <img className="w-32 rounded-full object-cover" src={image} alt="" />
+      </div>
+      <div className="w-full flex justify-center pb-2">
+        <p className="text-xl font-bold secondary-color">
+          Login into my heart (˶˃ ᵕ ˂˶)
+        </p>
       </div>
       <div className="max-w-md mx-auto border border-black rounded-xl p-6">
         <div className="relative z-0 w-full mb-5 group">
