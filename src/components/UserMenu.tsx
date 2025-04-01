@@ -1,9 +1,9 @@
-import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { AppError } from "@/types.ts";
 import { getProfileAPI } from "@/api/user.ts";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { showMessageError } from "@/alerts/alert.ts";
+import { useSelector, useDispatch } from "react-redux";
 import { loginSuccess } from "@/features/auth/authSlice.ts";
 import { selectCurrentUser } from "@/features/auth/authSelector.ts";
 import { removeAccessToken, removeRefreshToken } from "@/utils/storage.ts";

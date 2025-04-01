@@ -5,3 +5,9 @@ export const selectProductsAddedToCart = (state: {
     products: IProductAddedToCart[];
   };
 }) => state.cart.products;
+
+export const selectLoadCart = (state: {
+  cart: {
+    loadCart: boolean;
+  };
+}) => state.cart.loadCart;

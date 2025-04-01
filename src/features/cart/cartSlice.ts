@@ -1,16 +1,16 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IProductAddedToCart } from "@/types.ts";
-import { cacheCart } from "@/const.ts";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const cartSlice = createSlice({
   name: "cart",
-  initialState: { products: [] as IProductAddedToCart[] },
+  initialState: { products: [] as IProductAddedToCart[], loadCart: false },
   reducers: {
-    syncCartFromCache: (state) => {
-      const cache = localStorage.getItem(cacheCart);
-      if (cache) {
-        state.products = JSON.parse(cache);
-      }
+    syncCartFromCache: (
+      state,
+      action: PayloadAction<IProductAddedToCart[]>
+    ) => {
+      state.products = action.payload;
+      state.loadCart = true;
     },
     addProductToCart: (state, action: PayloadAction<IProductAddedToCart>) => {
       const existing = state.products.find((p) => p.id === action.payload.id);
