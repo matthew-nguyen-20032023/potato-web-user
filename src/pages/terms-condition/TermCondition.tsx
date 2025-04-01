@@ -1,4 +1,4 @@
-export function TermCondition() {
+export default function TermCondition() {
   return (
     <div className="bg-list-product-color secondary-color p-16 flex justify-center items-center w-full">
       <div className="w-1/2">

@@ -20,7 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectProductsAddedToCart } from "@/features/cart/cartSelector.ts";
 import { clearCart, removeFromCart } from "@/features/cart/cartSlice.ts";
 
-export function Order() {
+export default function Order() {
   const dispatch = useDispatch();
   const products = useSelector(selectProductsAddedToCart);
 

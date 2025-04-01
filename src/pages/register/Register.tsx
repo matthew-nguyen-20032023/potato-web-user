@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Spinning } from "@/components/Spinning.tsx";
 import { showMessageError, showMessageSuccess } from "@/alerts/alert.ts";
 
-export function Register() {
+export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");

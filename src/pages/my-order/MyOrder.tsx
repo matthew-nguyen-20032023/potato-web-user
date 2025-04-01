@@ -6,7 +6,7 @@ import { OrderHistoryListed } from "mewmew-api-type";
 import { showMessageSuccess } from "@/alerts/alert.ts";
 import { getOrderHistory } from "@/api/product-order.ts";
 
-export function MyOrder() {
+export default function MyOrder() {
   const [perPage] = useState(5);
   const [page, setPage] = useState(1);
   const [totalOrder, setTotalOrder] = useState(0);

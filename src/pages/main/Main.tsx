@@ -8,7 +8,7 @@ import { ToastContainer } from "react-toastify";
 import { Outlet, useLocation } from "react-router-dom";
 import { syncCartFromCache } from "@/features/cart/cartSlice.ts";
 
-export function Main() {
+export default function Main() {
   const location = useLocation();
   const showProductListRoutes = ["/"];
   const showProductList = showProductListRoutes.includes(location.pathname);

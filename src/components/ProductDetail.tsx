@@ -12,7 +12,7 @@ import { AppError } from "@/types.ts";
 import { paypalConfig } from "@/const.ts";
 import { useDispatch } from "react-redux";
 import Zoom from "react-medium-image-zoom";
-import { Cart } from "@/pages/cart/Cart.tsx";
+import Cart from "@/pages/cart/Cart.tsx";
 import { useParams } from "react-router-dom";
 import { Spinning } from "@/components/Spinning.tsx";
 import { ReactNode, useEffect, useState } from "react";

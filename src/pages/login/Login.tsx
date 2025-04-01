@@ -11,7 +11,7 @@ import { AppError } from "@/types.ts";
 import { showMessageError } from "@/alerts/alert.ts";
 import { Spinning } from "@/components/Spinning.tsx";
 
-export function Login() {
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSpinner, setIsSpinner] = useState(false);

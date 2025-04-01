@@ -1,4 +1,4 @@
-export function FAQ() {
+export default function FAQ() {
   return (
     <div className="bg-list-product-color secondary-color p-12">
       <h1 className="text-3xl font-semibold  mb-4">FAQ</h1>

@@ -6,7 +6,7 @@ import { Spinning } from "@/components/Spinning.tsx";
 import { forgotPasswordAPI, resetPasswordAPI } from "@/api/auth.ts";
 import { showMessageError, showMessageSuccess } from "@/alerts/alert.ts";
 
-export function ForgotPassword() {
+export default function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [confirmCode, setConfirmCode] = useState("");
   const [newPassword, setNewPassword] = useState("");

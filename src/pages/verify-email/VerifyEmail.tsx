@@ -4,7 +4,7 @@ import { verifyEmailAPI } from "@/api/auth.ts";
 import { useNavigate } from "react-router-dom";
 import { showMessageError, showMessageSuccess } from "@/alerts/alert.ts";
 
-export function VerifyEmail() {
+export default function VerifyEmail() {
   const search = window.location.search;
   const params = new URLSearchParams(search);
   const email = params.get("email");

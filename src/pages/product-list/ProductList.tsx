@@ -13,7 +13,7 @@ import { cacheCategory, cacheColor } from "@/const.ts";
 import MultiSelect from "@/components/MultipleSelect.tsx";
 import { showMessageError, showMessageSuccess } from "@/alerts/alert.ts";
 
-export function ProductList() {
+export default function ProductList() {
   const [categories, setCategories] = useState<
     { value: string; label: string; id: number }[]
   >([]);

@@ -1,4 +1,4 @@
-export function Contact() {
+export default function Contact() {
   return (
     <div className="bg-list-product-color secondary-color p-12">
       <h1 className="text-3xl font-semibold text-center">Contact</h1>
