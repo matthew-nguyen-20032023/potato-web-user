@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import { cacheCart } from "@/const.ts";
-import { useDispatch, useSelector } from "react-redux";
-import { removeFromCart } from "@/features/cart/cartSlice.ts";
+import { Link } from "react-router-dom";
 import {
   selectLoadCart,
   selectProductsAddedToCart,
 } from "@/features/cart/cartSelector.ts";
+import { useDispatch, useSelector } from "react-redux";
+import { removeFromCart } from "@/features/cart/cartSlice.ts";
 
 export default function Cart() {
   const dispatch = useDispatch();
@@ -19,10 +20,6 @@ export default function Cart() {
   useEffect(() => {
     if (isCartLoad) localStorage.setItem(cacheCart, JSON.stringify(products));
   }, [products, isCartLoad]);
-
-  const handleCheckout = async () => {
-    window.location.href = "/order";
-  };
 
   return (
     <div
@@ -90,13 +87,12 @@ export default function Cart() {
               Taxes, discounts and shipping calculated at checkout.
             </div>
             <div className="flex items-center justify-center">
-              <button
-                type="button"
-                className="text-white bg-main-color w-full rounded-xl p-3 m-5"
-                onClick={handleCheckout}
+              <Link
+                to="/order"
+                className="w-full rounded-xl p-3 m-5 text-white bg-main-color"
               >
                 Checkout
-              </button>
+              </Link>
             </div>
           </div>
         </div>
