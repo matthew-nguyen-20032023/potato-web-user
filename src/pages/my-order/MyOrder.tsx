@@ -1,10 +1,10 @@
 import React from "react";
 import ReactPaginate from "react-paginate";
 import { useEffect, useState } from "react";
-import { IGetOrderDetail } from "@/types.ts";
 import { Spinning } from "@/components/Spinning.tsx";
-import { getOrderHistory } from "@/api/product-order.ts";
+import { OrderHistoryListed } from "mewmew-api-type";
 import { showMessageSuccess } from "@/alerts/alert.ts";
+import { getOrderHistory } from "@/api/product-order.ts";
 
 export function MyOrder() {
   const [perPage] = useState(5);
@@ -12,8 +12,8 @@ export function MyOrder() {
   const [totalOrder, setTotalOrder] = useState(0);
   const [isSpinner, setIsSpinner] = useState(false);
   const [paypalOrderId, setPaypalOrderId] = useState("");
-  const [orders, setOrders] = useState<IGetOrderDetail[]>([]);
-  const [orderDetail, setOrderDetail] = useState<IGetOrderDetail>();
+  const [orders, setOrders] = useState<OrderHistoryListed>([]);
+  const [orderDetail, setOrderDetail] = useState<OrderHistoryListed[number]>();
 
   const handleSearch = async () => {
     setIsSpinner(true);

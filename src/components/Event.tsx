@@ -1,21 +1,26 @@
-import { IEvent } from "@/types.ts";
 import Info from "@/components/Info.tsx";
 import { getEvents } from "@/api/event.ts";
 import { useEffect, useState } from "react";
+import { EventListed } from "mewmew-api-type";
 import { useNavigate } from "react-router-dom";
-import { ProductListed } from "mewmew-api-type";
 
 export default function Event() {
   const [events, setEvents] = useState<
-    { event: IEvent; data: ProductListed[] }[]
-  >([{ event: {} as IEvent, data: [[]] }]);
+    {
+      event: EventListed[number]["event"];
+      data: EventListed[number]["data"][];
+    }[]
+  >([{ event: {} as EventListed[number]["event"], data: [[]] }]);
 
   useEffect(() => {
     getEvents().then((response) => {
-      const data: { event: IEvent; data: ProductListed[] }[] = [];
+      const data: {
+        event: EventListed[number]["event"];
+        data: EventListed[number]["data"][];
+      }[] = [];
       response.data.forEach((event) => {
         let index = 0;
-        const products: ProductListed[] = [];
+        const products: EventListed[number]["data"][] = [];
         event.data.forEach((product) => {
           if (products[index] === undefined) {
             products[index] = [];
