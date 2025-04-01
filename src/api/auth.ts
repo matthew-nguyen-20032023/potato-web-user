@@ -1,6 +1,16 @@
 import backendService from "@/api/backend-service.ts";
+import {
+  ApiResponse,
+  UserLogged,
+  UserResetPasswordSuccess,
+  UserForgotPasswordSuccess,
+} from "mewmew-api-type";
+import { UserCreated, UserVerified } from "mewmew-api-type/dist/auth";
 
-export const loginAPI = async (email: string, password: string) => {
+export const loginAPI = async (
+  email: string,
+  password: string
+): Promise<ApiResponse<UserLogged>> => {
   const response = await backendService.post("/api/v1/auth/login", {
     email,
     password,
@@ -8,7 +18,9 @@ export const loginAPI = async (email: string, password: string) => {
   return response.data;
 };
 
-export const forgotPasswordAPI = async (email: string) => {
+export const forgotPasswordAPI = async (
+  email: string
+): Promise<ApiResponse<UserForgotPasswordSuccess>> => {
   const response = await backendService.patch("/api/v1/auth/forgot-password", {
     email,
   });
@@ -19,7 +31,7 @@ export const resetPasswordAPI = async (
   email: string,
   confirm_code: string,
   new_password: string
-) => {
+): Promise<ApiResponse<UserResetPasswordSuccess>> => {
   const response = await backendService.patch("/api/v1/auth/reset-password", {
     email,
     confirm_code,
@@ -34,7 +46,7 @@ export const registerAPI = async (
   name: string,
   phone: string,
   referralCode: string
-) => {
+): Promise<ApiResponse<UserCreated>> => {
   const response = await backendService.post("/api/v1/auth/register", {
     email,
     password,
@@ -45,7 +57,10 @@ export const registerAPI = async (
   return response.data;
 };
 
-export const verifyEmailAPI = async (email: string, confirmCode: string) => {
+export const verifyEmailAPI = async (
+  email: string,
+  confirmCode: string
+): Promise<ApiResponse<UserVerified>> => {
   const response = await backendService.post("/api/v1/auth/verify-email", {
     email,
     confirm_code: confirmCode,

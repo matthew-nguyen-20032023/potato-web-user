@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { IProduct } from "@/types.ts";
+import { Product } from "mewmew-api-type";
 import { useDispatch } from "react-redux";
 import { showMessageSuccess } from "@/alerts/alert.ts";
 import StarContainer from "@/components/StarContainer.tsx";
 import { addProductToCart } from "@/features/cart/cartSlice.ts";
 
-export default function Info({ productInfo }: { productInfo: IProduct }) {
+export default function Info({ productInfo }: { productInfo: Product }) {
   const dispatch = useDispatch();
   const [isSpinner, setIsSpinner] = useState(false);
 
@@ -35,7 +35,7 @@ export default function Info({ productInfo }: { productInfo: IProduct }) {
         </h5>
       </a>
       <div className="flex items-center mt-2.5 mb-5">
-        <StarContainer average_star={productInfo.average_star} />
+        <StarContainer average_star={+productInfo.average_star} />
       </div>
       <div className="flex items-center justify-between">
         <span className="text-3xl font-bold">${productInfo.price}</span>

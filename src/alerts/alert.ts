@@ -1,8 +1,7 @@
+import { AppError } from "@/types.ts";
 import { Bounce, toast } from "react-toastify";
 
-export const showMessageError = (
-  error: string | { response: { data: { message: string } } } | unknown
-) => {
+export const showMessageError = (error: AppError) => {
   const message =
     typeof error === "string"
       ? error

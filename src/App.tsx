@@ -1,26 +1,36 @@
 import "flowbite";
 import "@/App.css";
 
+import { lazy } from "react";
 import store from "@/app/store.ts";
 import { Provider } from "react-redux";
-import { FAQ } from "@/pages/faq/FAQ.tsx";
-import { Main } from "@/pages/main/Main.tsx";
-import { Cart } from "@/pages/cart/Cart.tsx";
-import { Login } from "@/pages/login/Login.tsx";
-import { Order } from "@/pages/order/Order.tsx";
-import { Contact } from "@/pages/contact/Contact.tsx";
-import { AboutUs } from "@/pages/about-us/AboutUs.tsx";
-import { MyOrder } from "@/pages/my-order/MyOrder.tsx";
-import { Register } from "@/pages/register/Register.tsx";
-import { NotFound } from "@/pages/not-found/NotFound.tsx";
-import ProductDetail from "@/components/ProductDetail.tsx";
-import { ProductList } from "@/pages/product-list/ProductList.tsx";
-import { VerifyEmail } from "@/pages/verify-email/VerifyEmail.tsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { PrivacyPolicy } from "@/pages/privacy-policy/PrivacyPolicy.tsx";
-import { TermCondition } from "@/pages/terms-condition/TermCondition.tsx";
-import { ShippingReturn } from "@/pages/shiping-return/ShippingReturn.tsx";
-import { ForgotPassword } from "@/pages/forgot-password/ForgotPassword.tsx";
+
+const FAQ = lazy(() => import("@/pages/faq/FAQ.tsx"));
+const Main = lazy(() => import("@/pages/main/Main.tsx"));
+const Cart = lazy(() => import("@/pages/cart/Cart.tsx"));
+const Login = lazy(() => import("@/pages/login/Login.tsx"));
+const Order = lazy(() => import("@/pages/order/Order.tsx"));
+const Contact = lazy(() => import("@/pages/contact/Contact.tsx"));
+const AboutUs = lazy(() => import("@/pages/about-us/AboutUs.tsx"));
+const MyOrder = lazy(() => import("@/pages/my-order/MyOrder.tsx"));
+const Register = lazy(() => import("@/pages/register/Register.tsx"));
+const NotFound = lazy(() => import("@/pages/not-found/NotFound.tsx"));
+const ProductDetail = lazy(() => import("@/components/ProductDetail.tsx"));
+const ProductList = lazy(() => import("@/pages/product-list/ProductList.tsx"));
+const VerifyEmail = lazy(() => import("@/pages/verify-email/VerifyEmail.tsx"));
+const PrivacyPolicy = lazy(
+  () => import("@/pages/privacy-policy/PrivacyPolicy.tsx")
+);
+const TermCondition = lazy(
+  () => import("@/pages/terms-condition/TermCondition.tsx")
+);
+const ShippingReturn = lazy(
+  () => import("@/pages/shiping-return/ShippingReturn.tsx")
+);
+const ForgotPassword = lazy(
+  () => import("@/pages/forgot-password/ForgotPassword.tsx")
+);
 
 const router = createBrowserRouter([
   {

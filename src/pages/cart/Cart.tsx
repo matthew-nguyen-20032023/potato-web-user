@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { removeFromCart } from "@/features/cart/cartSlice.ts";
 import { selectProductsAddedToCart } from "@/features/cart/cartSelector.ts";
 
-export function Cart() {
+export default function Cart() {
   const dispatch = useDispatch();
   const products = useSelector(selectProductsAddedToCart);
 

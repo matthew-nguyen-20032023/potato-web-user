@@ -7,10 +7,11 @@ import {
   setAccessToken,
   setRefreshToken,
 } from "@/utils/storage.ts";
+import { AppError } from "@/types.ts";
 import { showMessageError } from "@/alerts/alert.ts";
 import { Spinning } from "@/components/Spinning.tsx";
 
-export function Login() {
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSpinner, setIsSpinner] = useState(false);
@@ -38,7 +39,7 @@ export function Login() {
       setRefreshToken(response.data.refresh_token);
       window.location.href = "/";
     } catch (err) {
-      showMessageError(err);
+      showMessageError(err as AppError);
     } finally {
       setIsSpinner(false);
     }
@@ -92,8 +93,13 @@ export function Login() {
 
   return (
     <div className="mb-8">
-      <div className="w-full flex justify-center">
+      <div className="w-full flex justify-center pt-3">
         <img className="w-32 rounded-full object-cover" src={image} alt="" />
+      </div>
+      <div className="w-full flex justify-center pb-2">
+        <p className="text-xl font-bold secondary-color">
+          Login into my heart (˶˃ ᵕ ˂˶)
+        </p>
       </div>
       <div className="max-w-md mx-auto border border-black rounded-xl p-6">
         <div className="relative z-0 w-full mb-5 group">

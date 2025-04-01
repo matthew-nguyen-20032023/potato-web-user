@@ -1,3 +1,4 @@
+import { AppError } from "@/types.ts";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAccessToken } from "@/utils/storage.ts";
@@ -5,7 +6,7 @@ import { Spinning } from "@/components/Spinning.tsx";
 import { forgotPasswordAPI, resetPasswordAPI } from "@/api/auth.ts";
 import { showMessageError, showMessageSuccess } from "@/alerts/alert.ts";
 
-export function ForgotPassword() {
+export default function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [confirmCode, setConfirmCode] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -32,7 +33,7 @@ export function ForgotPassword() {
       showMessageSuccess(response.message);
       setIsCodeSent(true);
     } catch (err) {
-      showMessageError(err);
+      showMessageError(err as AppError);
     } finally {
       setIsSpinner(false);
     }
@@ -57,7 +58,7 @@ export function ForgotPassword() {
       setIsCodeSent(true);
       navigate("/login");
     } catch (err) {
-      showMessageError(err);
+      showMessageError(err as AppError);
     } finally {
       setIsSpinner(false);
     }
