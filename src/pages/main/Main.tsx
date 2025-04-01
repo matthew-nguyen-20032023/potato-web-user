@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import Cart from "@/pages/cart/Cart.tsx";
 import { useDispatch } from "react-redux";
 import Intro from "@/components/Intro.tsx";
 import Event from "@/components/Event.tsx";
@@ -7,6 +9,7 @@ import Welcome from "@/components/Welcome.tsx";
 import { ToastContainer } from "react-toastify";
 import { Outlet, useLocation } from "react-router-dom";
 import { syncCartFromCache } from "@/features/cart/cartSlice.ts";
+import { cacheCart } from "@/const.ts";
 
 export default function Main() {
   const location = useLocation();
@@ -15,7 +18,12 @@ export default function Main() {
 
   const dispatch = useDispatch();
 
-  dispatch(syncCartFromCache());
+  useEffect(() => {
+    const cache = localStorage.getItem(cacheCart);
+    if (cache) {
+      dispatch(syncCartFromCache(JSON.parse(cache)));
+    }
+  }, [dispatch]);
 
   return (
     <div className="max-h-screen overflow-y-auto scroll-container bg-list-product-color">
@@ -26,6 +34,7 @@ export default function Main() {
       <ToastContainer />
       <Outlet />
       <Footer />
+      <Cart />
     </div>
   );
 }

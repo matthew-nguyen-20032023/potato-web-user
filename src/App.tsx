@@ -1,14 +1,13 @@
 import "flowbite";
 import "@/App.css";
 
-import { lazy } from "react";
 import store from "@/app/store.ts";
+import { lazy, Suspense } from "react";
 import { Provider } from "react-redux";
+import Main from "@/pages/main/Main.tsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 const FAQ = lazy(() => import("@/pages/faq/FAQ.tsx"));
-const Main = lazy(() => import("@/pages/main/Main.tsx"));
-const Cart = lazy(() => import("@/pages/cart/Cart.tsx"));
 const Login = lazy(() => import("@/pages/login/Login.tsx"));
 const Order = lazy(() => import("@/pages/order/Order.tsx"));
 const Contact = lazy(() => import("@/pages/contact/Contact.tsx"));
@@ -59,8 +58,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <Provider store={store}>
-      <Cart />
-      <RouterProvider router={router} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <RouterProvider router={router} />
+      </Suspense>
     </Provider>
   );
 }

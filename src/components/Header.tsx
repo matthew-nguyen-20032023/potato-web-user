@@ -8,8 +8,13 @@ import { RiShoppingBag3Line } from "react-icons/ri";
 import { getAccessToken } from "@/utils/storage.ts";
 import LoginOrRegister from "@/components/LoginOrRegister.tsx";
 import { selectProductsAddedToCart } from "@/features/cart/cartSelector.ts";
+import { initDropdowns } from "flowbite";
 
 export default function Header() {
+  useEffect(() => {
+    initDropdowns(); // ✅ Reinitialize dropdowns when Header mounts
+  }, []);
+
   const [isScrolled, setIsScrolled] = useState(false);
   const products = useSelector(selectProductsAddedToCart);
 
