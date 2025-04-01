@@ -10,7 +10,7 @@ on:
       - prod
 
 jobs:
-  lint:
+  lint-and-build:
     runs-on: ubuntu-latest
 
     steps:
