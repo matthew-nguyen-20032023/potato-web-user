@@ -20,7 +20,7 @@ export function MyOrder() {
     try {
       const data = await getOrderHistory(paypalOrderId, page, perPage);
       setOrders(data.data);
-      setTotalOrder(data.metadata.total);
+      setTotalOrder(data?.metadata?.total ?? 0);
       showMessageSuccess(data.message);
     } catch (err) {
       if (err) {

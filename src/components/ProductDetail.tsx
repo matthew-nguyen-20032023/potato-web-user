@@ -7,13 +7,13 @@ import {
   PayPalButtonsComponentProps,
   PayPalScriptProvider,
 } from "@paypal/react-paypal-js";
+import { Product, ProductDetail as PDetail } from "mewmew-api-type";
 import { paypalConfig } from "@/const.ts";
 import { useDispatch } from "react-redux";
 import Zoom from "react-medium-image-zoom";
 import { Cart } from "@/pages/cart/Cart.tsx";
 import { useParams } from "react-router-dom";
 import { Spinning } from "@/components/Spinning.tsx";
-import { IProduct, IProductDetail } from "@/types.ts";
 import { ReactNode, useEffect, useState } from "react";
 import { getProductDetailById } from "@/api/product.ts";
 import StarContainer from "@/components/StarContainer.tsx";
@@ -26,9 +26,10 @@ import { showMessageError, showMessageSuccess } from "@/alerts/alert.ts";
 export default function ProductDetail() {
   const { id } = useParams();
   const [imageDisplay, setImageDisplay] = useState("");
-  const [productDetails, setProductDetails] = useState<IProductDetail[]>();
-  const [productDetail, setProductDetail] = useState<IProductDetail>();
-  const [product, setProduct] = useState<IProduct>();
+  const [productDetails, setProductDetails] = useState<PDetail["details"]>();
+  const [productDetail, setProductDetail] =
+    useState<PDetail["details"][number]>();
+  const [product, setProduct] = useState<Product>();
   const [quantity, setQuantity] = useState<number>(1);
   const [totalPrice, setTotalPrice] = useState(
     productDetail?.price ? productDetail?.price : 0
@@ -51,8 +52,7 @@ export default function ProductDetail() {
 
   useEffect(() => {
     getProductDetailById(id).then((response) => {
-      const { product } = response.data;
-      setProduct(product);
+      setProduct(response.data.product);
       setProductDetail(response.data.details[0]);
       setProductDetails(response.data.details);
     });
@@ -180,7 +180,7 @@ export default function ProductDetail() {
             </h1>
             <div className="relative mb-10">
               <StarContainer
-                average_star={product?.average_star}
+                average_star={+(product?.average_star ?? 0)}
                 review_count={product?.review_count}
               />
             </div>

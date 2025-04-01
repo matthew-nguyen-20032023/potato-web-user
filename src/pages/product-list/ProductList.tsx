@@ -5,10 +5,10 @@ import { LiaSadCry } from "react-icons/lia";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { listProducts } from "@/api/product.ts";
+import { ProductListed } from "mewmew-api-type";
 import { getCategories } from "@/api/category.ts";
 import { Spinning } from "@/components/Spinning.tsx";
 import { cacheCategory, cacheColor } from "@/const.ts";
-import { ICategory, IColor, IProduct } from "@/types.ts";
 import MultiSelect from "@/components/MultipleSelect.tsx";
 import { showMessageError, showMessageSuccess } from "@/alerts/alert.ts";
 
@@ -25,7 +25,7 @@ export function ProductList() {
   const [searchName, setSearchName] = useState("");
   const [isSpinner, setIsSpinner] = useState(false);
   const [totalProduct, setTotalProduct] = useState(0);
-  const [products, setProducts] = useState<IProduct[]>([]);
+  const [products, setProducts] = useState<ProductListed>([]);
   const [searchCategory, setSearchCategory] = useState<string>("");
   const [searchColor, setSearchColor] = useState<string>("");
 
@@ -34,7 +34,7 @@ export function ProductList() {
     if (categoriesCache) {
       setCategories(JSON.parse(categoriesCache));
     } else {
-      getCategories().then((data: { data: ICategory[] }) => {
+      getCategories().then((data) => {
         const categoriesOption = data.data.map((category) => {
           return {
             value: category.name,
@@ -53,7 +53,7 @@ export function ProductList() {
     if (colorsCache) {
       setColors(JSON.parse(colorsCache));
     } else {
-      getColors().then((data: { data: IColor[] }) => {
+      getColors().then((data) => {
         const colorsOption = data.data.map((color) => {
           return { value: color.name, label: color.name, id: color.id };
         });
@@ -83,7 +83,7 @@ export function ProductList() {
         searchColor
       );
       setProducts(data.data);
-      setTotalProduct(data.metadata.total);
+      setTotalProduct(data?.metadata?.total ?? 0);
       showMessageSuccess(data.message);
     } catch (err) {
       showMessageError(err);

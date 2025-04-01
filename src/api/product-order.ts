@@ -1,6 +1,14 @@
-import backendService from "@/api/backend-service.ts";
+import {
+  ApiResponse,
+  OrderHistoryListed,
+  OrderProductCreated,
+} from "mewmew-api-type";
 import { getAccessToken } from "@/utils/storage.ts";
-import { IGetOrderDetail } from "@/types.ts";
+import backendService from "@/api/backend-service.ts";
+import {
+  AnonymousOrderCreated,
+  PreOrderCreated,
+} from "mewmew-api-type/dist/product-order";
 
 export const baseProductOrderURL = "/api/v1/product-order";
 
@@ -10,7 +18,7 @@ export const orderProduct = async (data: {
     product_detail_id: number;
     quantity: number;
   }[];
-}) => {
+}): Promise<ApiResponse<OrderProductCreated>> => {
   const accessToken = getAccessToken();
   if (accessToken) {
     return await authorizedOrderProduct(data);
@@ -25,7 +33,7 @@ export const anonymousOrderProduct = async (data: {
     product_detail_id: number;
     quantity: number;
   }[];
-}) => {
+}): Promise<ApiResponse<AnonymousOrderCreated>> => {
   const response = await backendService.post(
     `${baseProductOrderURL}/anonymous`,
     data
@@ -35,12 +43,7 @@ export const anonymousOrderProduct = async (data: {
 
 export const getAnonymousOrderProduct = async (
   paypal_order_id: string
-): Promise<{
-  message: string;
-  data: IGetOrderDetail[];
-  statusCode: number;
-  metadata: { total: number };
-}> => {
+): Promise<ApiResponse<OrderHistoryListed>> => {
   const response = await backendService.get(
     `${baseProductOrderURL}/${paypal_order_id}`
   );
@@ -51,12 +54,7 @@ export const getOrderHistory = async (
   paypal_order_id: string,
   page = 1,
   per_page = 10
-): Promise<{
-  message: string;
-  data: IGetOrderDetail[];
-  statusCode: number;
-  metadata: { total: number };
-}> => {
+): Promise<ApiResponse<OrderHistoryListed>> => {
   const accessToken = getAccessToken();
   if (!accessToken) {
     return await getAnonymousOrderProduct(paypal_order_id);
@@ -75,12 +73,7 @@ export const getUserOrderProduct = async (
   accessToken: string,
   page: number,
   per_page: number
-): Promise<{
-  message: string;
-  data: IGetOrderDetail[];
-  statusCode: number;
-  metadata: { total: number };
-}> => {
+): Promise<ApiResponse<OrderHistoryListed>> => {
   let url = `${baseProductOrderURL}?page=${page}&per_page=${per_page}`;
   if (paypal_order_id) url += `&paypal_order_id=${paypal_order_id}`;
   const response = await backendService.get(url, {
@@ -95,7 +88,7 @@ export const authorizedOrderProduct = async (data: {
     product_detail_id: number;
     quantity: number;
   }[];
-}) => {
+}): Promise<ApiResponse<OrderProductCreated>> => {
   const response = await backendService.post(baseProductOrderURL, data);
   return response.data;
 };
@@ -106,7 +99,7 @@ export const preOrderProduct = async (data: {
     product_detail_id: number;
     quantity: number;
   }[];
-}) => {
+}): Promise<ApiResponse<PreOrderCreated>> => {
   const response = await backendService.post(
     `${baseProductOrderURL}/pre-order`,
     data

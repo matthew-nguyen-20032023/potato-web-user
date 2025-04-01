@@ -24,49 +24,6 @@ export interface IProductAddedToCart {
   img: string;
 }
 
-export interface IProduct {
-  average_star: number;
-  category_id: number;
-  created_at: string;
-  id: number;
-  img_urls: string;
-  name: string;
-  price: number;
-  review_count: number;
-  story: string;
-  updated_at: string;
-}
-
-export interface IProductDetail {
-  color_id: number;
-  created_at: string;
-  height: number;
-  discount: number;
-  id: number;
-  img_urls: string;
-  length: number;
-  size_name: string;
-  color_name: string;
-  price: number;
-  product_id: number;
-  quantity: number;
-  remaining_quantity: number;
-  size_id: number;
-  updated_at: string;
-  width: number;
-  weight: number;
-}
-
-export interface ICategory {
-  id: number;
-  name: string;
-}
-
-export interface IColor {
-  id: number;
-  name: string;
-}
-
 export interface IOrderDetail {
   order_details_order_id: number;
   order_details_product_detail_id: number;

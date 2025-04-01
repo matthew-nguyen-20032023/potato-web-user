@@ -1604,6 +1604,11 @@ merge2@^1.3.0:
   resolved "https://registry.npmjs.org/merge2/-/merge2-1.4.1.tgz"
   integrity sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==
 
+mewmew-api-type@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/mewmew-api-type/-/mewmew-api-type-1.0.2.tgz#83f4f33a0b2dfb361c7e49196f6c928dcf9aed73"
+  integrity sha512-7WIqQEagh6Upxy6ApA0uHn6AHVF3mfL/nI5wb+rSUTom1pWxkJB6pNUs5uj4stf3gnsfBXpij2V7sbVVDAQCTg==
+
 micromatch@^4.0.8:
   version "4.0.8"
   resolved "https://registry.npmjs.org/micromatch/-/micromatch-4.0.8.tgz"
