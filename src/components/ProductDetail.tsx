@@ -8,6 +8,7 @@ import {
   PayPalScriptProvider,
 } from "@paypal/react-paypal-js";
 import { Product, ProductDetail as PDetail } from "mewmew-api-type";
+import { AppError } from "@/types.ts";
 import { paypalConfig } from "@/const.ts";
 import { useDispatch } from "react-redux";
 import Zoom from "react-medium-image-zoom";
@@ -103,7 +104,7 @@ export default function ProductDetail() {
       showMessageSuccess(preOrder.message);
       return orderId;
     } catch (err) {
-      showMessageError(err);
+      showMessageError(err as AppError);
       return "";
     }
   };
@@ -125,7 +126,7 @@ export default function ProductDetail() {
         });
         showMessageSuccess(serverOrder.message);
       } catch (error) {
-        showMessageError(error);
+        showMessageError(error as AppError);
       }
     } else {
       await sleep(1000);

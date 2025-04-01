@@ -5,3 +5,5 @@ export interface IProductAddedToCart {
   price: number;
   img: string;
 }
+
+export type AppError = string | { response: { data: { message: string } } };

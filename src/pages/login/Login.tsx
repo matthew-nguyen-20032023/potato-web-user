@@ -7,6 +7,7 @@ import {
   setAccessToken,
   setRefreshToken,
 } from "@/utils/storage.ts";
+import { AppError } from "@/types.ts";
 import { showMessageError } from "@/alerts/alert.ts";
 import { Spinning } from "@/components/Spinning.tsx";
 
@@ -38,7 +39,7 @@ export function Login() {
       setRefreshToken(response.data.refresh_token);
       window.location.href = "/";
     } catch (err) {
-      showMessageError(err);
+      showMessageError(err as AppError);
     } finally {
       setIsSpinner(false);
     }

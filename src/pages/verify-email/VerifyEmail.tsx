@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { AppError } from "@/types.ts";
 import { verifyEmailAPI } from "@/api/auth.ts";
 import { useNavigate } from "react-router-dom";
 import { showMessageError, showMessageSuccess } from "@/alerts/alert.ts";
@@ -24,7 +25,7 @@ export function VerifyEmail() {
       showMessageSuccess(response.message);
       navigate("/login");
     } catch (err) {
-      showMessageError(err);
+      showMessageError(err as AppError);
     }
   };
 

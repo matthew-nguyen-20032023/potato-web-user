@@ -1,3 +1,4 @@
+import { AppError } from "@/types.ts";
 import Info from "@/components/Info.tsx";
 import { getColors } from "@/api/color.ts";
 import ReactPaginate from "react-paginate";
@@ -86,7 +87,7 @@ export function ProductList() {
       setTotalProduct(data?.metadata?.total ?? 0);
       showMessageSuccess(data.message);
     } catch (err) {
-      showMessageError(err);
+      showMessageError(err as AppError);
     } finally {
       setIsSpinner(false);
     }

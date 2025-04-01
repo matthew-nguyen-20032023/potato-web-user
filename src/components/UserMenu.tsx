@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
+import { AppError } from "@/types.ts";
 import { getProfileAPI } from "@/api/user.ts";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { showMessageError } from "@/alerts/alert.ts";
@@ -22,7 +23,7 @@ export default function UserMenu() {
       const data = await getProfileAPI();
       dispatch(loginSuccess({ user: data.data }));
     } catch (error) {
-      showMessageError(error);
+      showMessageError(error as AppError);
     }
   };
 

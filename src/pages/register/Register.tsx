@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { AppError } from "@/types.ts";
 import { registerAPI } from "@/api/auth.ts";
 import { Link, useNavigate } from "react-router-dom";
 import { Spinning } from "@/components/Spinning.tsx";
@@ -38,7 +39,7 @@ export function Register() {
       showMessageSuccess(response.message);
       navigate(`/verify-email?email=${email}`);
     } catch (err) {
-      showMessageError(err);
+      showMessageError(err as AppError);
     } finally {
       setIsSpinner(false);
     }

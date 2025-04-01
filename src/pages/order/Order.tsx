@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { AppError } from "@/types.ts";
 import { sleep } from "@/utils/helper.ts";
 import { cacheCart, paypalConfig } from "@/const.ts";
 import { CiShoppingCart } from "react-icons/ci";
@@ -17,7 +19,6 @@ import { showMessageError, showMessageSuccess } from "@/alerts/alert.ts";
 import { useDispatch, useSelector } from "react-redux";
 import { selectProductsAddedToCart } from "@/features/cart/cartSelector.ts";
 import { clearCart, removeFromCart } from "@/features/cart/cartSlice.ts";
-import { useEffect } from "react";
 
 export function Order() {
   const dispatch = useDispatch();
@@ -68,7 +69,7 @@ export function Order() {
       showMessageSuccess(preOrder.message);
       return orderId;
     } catch (err) {
-      showMessageError(err);
+      showMessageError(err as AppError);
       throw err;
     }
   };
@@ -93,7 +94,7 @@ export function Order() {
         showMessageSuccess(serverOrder.message);
         dispatch(clearCart());
       } catch (error) {
-        showMessageError(error);
+        showMessageError(error as AppError);
       }
     } else {
       await sleep(1000);
