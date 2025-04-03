@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { cacheCart } from "@/const.ts";
+import { useEffect, useRef } from "react";
 import Cart from "@/pages/cart/Cart.tsx";
 import { useDispatch } from "react-redux";
 import Intro from "@/components/Intro.tsx";
@@ -9,12 +10,12 @@ import Welcome from "@/components/Welcome.tsx";
 import { ToastContainer } from "react-toastify";
 import { Outlet, useLocation } from "react-router-dom";
 import { syncCartFromCache } from "@/features/cart/cartSlice.ts";
-import { cacheCart } from "@/const.ts";
 
 export default function Main() {
   const location = useLocation();
   const showProductListRoutes = ["/"];
   const showProductList = showProductListRoutes.includes(location.pathname);
+  const cartButtonRef = useRef(null);
 
   const dispatch = useDispatch();
 
@@ -28,13 +29,13 @@ export default function Main() {
   return (
     <div className="max-h-screen overflow-y-auto scroll-container bg-list-product-color">
       <Welcome />
-      <Header />
+      <Header cartButtonRef={cartButtonRef} />
       <Intro />
       {showProductList && <Event />}
       <ToastContainer />
       <Outlet />
       <Footer />
-      <Cart />
+      <Cart cartButtonRef={cartButtonRef} />
     </div>
   );
 }

@@ -1,22 +1,32 @@
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import {
+  selectIsOpenCart,
+  selectProductsAddedToCart,
+} from "@/features/cart/cartSelector.ts";
+import { initDropdowns } from "flowbite";
 import { TbEyeSpark } from "react-icons/tb";
 import UserMenu from "@/components/UserMenu.tsx";
 import { IoSearchOutline } from "react-icons/io5";
 import { RiShoppingBag3Line } from "react-icons/ri";
 import { getAccessToken } from "@/utils/storage.ts";
+import { RefObject, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import LoginOrRegister from "@/components/LoginOrRegister.tsx";
-import { selectProductsAddedToCart } from "@/features/cart/cartSelector.ts";
-import { initDropdowns } from "flowbite";
+import { triggerOpenAndHideCart } from "@/features/cart/cartSlice.ts";
 
-export default function Header() {
+export default function Header({
+  cartButtonRef,
+}: {
+  cartButtonRef: RefObject<HTMLButtonElement>;
+}) {
   useEffect(() => {
     initDropdowns(); // ✅ Reinitialize dropdowns when Header mounts
   }, []);
 
+  const dispatch = useDispatch();
   const [isScrolled, setIsScrolled] = useState(false);
   const products = useSelector(selectProductsAddedToCart);
+  const isCartOpen = useSelector(selectIsOpenCart);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,6 +40,10 @@ export default function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleCartClick = () => {
+    dispatch(triggerOpenAndHideCart(!isCartOpen));
+  };
 
   return (
     <div
@@ -50,9 +64,9 @@ export default function Header() {
           />
         </h1>
         <button
-          data-modal-target="top-left-modal"
-          data-modal-toggle="top-left-modal"
           className="relative flex items-center justify-center py-2 px-3 mr-2 hover:scale-110 cursor-pointer"
+          onClick={handleCartClick}
+          ref={cartButtonRef}
         >
           <RiShoppingBag3Line size={30} />
           {products.length > 0 && (

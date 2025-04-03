@@ -11,3 +11,9 @@ export const selectLoadCart = (state: {
     loadCart: boolean;
   };
 }) => state.cart.loadCart;
+
+export const selectIsOpenCart = (state: {
+  cart: {
+    isOpenCart: boolean;
+  };
+}) => state.cart.isOpenCart;

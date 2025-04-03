@@ -17,20 +17,24 @@ import {
 import { orderProduct, preOrderProduct } from "@/api/product-order.ts";
 import { showMessageError, showMessageSuccess } from "@/alerts/alert.ts";
 import { useDispatch, useSelector } from "react-redux";
-import { selectProductsAddedToCart } from "@/features/cart/cartSelector.ts";
+import {
+  selectLoadCart,
+  selectProductsAddedToCart,
+} from "@/features/cart/cartSelector.ts";
 import { clearCart, removeFromCart } from "@/features/cart/cartSlice.ts";
 
 export default function Order() {
   const dispatch = useDispatch();
   const products = useSelector(selectProductsAddedToCart);
+  const isCartLoad = useSelector(selectLoadCart);
 
   const handleRemoveProduct = (id: number) => {
     dispatch(removeFromCart(id));
   };
 
   useEffect(() => {
-    localStorage.setItem(cacheCart, JSON.stringify(products));
-  }, [products]);
+    if (isCartLoad) localStorage.setItem(cacheCart, JSON.stringify(products));
+  }, [products, isCartLoad]);
 
   const styles: PayPalButtonsComponentProps["style"] = {
     shape: "rect",
