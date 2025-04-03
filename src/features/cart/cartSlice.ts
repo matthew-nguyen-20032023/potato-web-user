@@ -3,7 +3,11 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const cartSlice = createSlice({
   name: "cart",
-  initialState: { products: [] as IProductAddedToCart[], loadCart: false },
+  initialState: {
+    products: [] as IProductAddedToCart[],
+    loadCart: false,
+    isOpenCart: false,
+  },
   reducers: {
     syncCartFromCache: (
       state,
@@ -26,10 +30,14 @@ const cartSlice = createSlice({
     clearCart: (state) => {
       state.products = [];
     },
+    triggerOpenAndHideCart: (state, action: PayloadAction<boolean>) => {
+      state.isOpenCart = action.payload;
+    },
   },
 });
 
 export const {
+  triggerOpenAndHideCart,
   addProductToCart,
   syncCartFromCache,
   removeFromCart,

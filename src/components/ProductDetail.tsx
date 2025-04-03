@@ -7,12 +7,10 @@ import {
   PayPalButtonsComponentProps,
   PayPalScriptProvider,
 } from "@paypal/react-paypal-js";
-import { Product, ProductDetail as PDetail } from "mewmew-api-type";
 import { AppError } from "@/types.ts";
 import { paypalConfig } from "@/const.ts";
 import { useDispatch } from "react-redux";
 import Zoom from "react-medium-image-zoom";
-import Cart from "@/pages/cart/Cart.tsx";
 import { useParams } from "react-router-dom";
 import { Spinning } from "@/components/Spinning.tsx";
 import { ReactNode, useEffect, useState } from "react";
@@ -20,6 +18,7 @@ import { getProductDetailById } from "@/api/product.ts";
 import StarContainer from "@/components/StarContainer.tsx";
 import { calculateDiscount, sleep } from "@/utils/helper.ts";
 import { addProductToCart } from "@/features/cart/cartSlice.ts";
+import { Product, ProductDetail as PDetail } from "mewmew-api-type";
 import { orderProduct, preOrderProduct } from "@/api/product-order.ts";
 import { CreateOrderActions, CreateOrderData } from "@paypal/paypal-js";
 import { showMessageError, showMessageSuccess } from "@/alerts/alert.ts";
@@ -140,7 +139,6 @@ export default function ProductDetail() {
 
   return (
     <div className="bg-white">
-      <Cart />
       <div className="w-full flex justify-center">
         <div className="flex justify-center w-2/3">
           <div className="p-6">
