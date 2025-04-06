@@ -20,6 +20,7 @@ import {
   calculateDiscount,
   calculateFinalPrice,
   calculateTotalDiscount,
+  SHIPPING_FEE,
   sleep,
 } from "@/utils/helper.ts";
 import { addProductToCart } from "@/features/cart/cartSlice.ts";
@@ -46,7 +47,6 @@ export default function ProductDetail() {
     label: "buynow",
     tagline: false,
   };
-  const shippingFee = 5;
 
   useEffect(() => {
     setTotalPrice(
@@ -54,7 +54,7 @@ export default function ProductDetail() {
         productDetail?.price ?? 0,
         quantity,
         productDetail?.discount ?? 0,
-        shippingFee
+        SHIPPING_FEE
       )
     );
   }, [quantity, productDetail]);
@@ -63,6 +63,7 @@ export default function ProductDetail() {
     getProductDetailById(id).then((response) => {
       setProduct(response.data.product);
       setProductDetail(response.data.details[0]);
+      setImageDisplay(response.data.details[0].img_urls.split(",")[0]);
       setProductDetails(response.data.details);
     });
   }, [id]);
@@ -75,6 +76,14 @@ export default function ProductDetail() {
           addProductToCart({
             id: productDetail.id,
             name: product.name,
+            color_name: productDetail.color_name,
+            color_code: productDetail.color_code,
+            size_name: productDetail.size_name,
+            length: productDetail.length,
+            height: productDetail.height,
+            width: productDetail.width,
+            weight: productDetail.weight,
+            discount: productDetail.discount,
             quantity,
             price: productDetail.price,
             img: imageDisplay,
@@ -404,7 +413,7 @@ export default function ProductDetail() {
                   </tr>
                   <tr>
                     <td className="secondary-color">Shipping Fee:</td>
-                    <td className="pl-5">${shippingFee}</td>
+                    <td className="pl-5">${SHIPPING_FEE}</td>
                   </tr>
                   <tr>
                     <td className="secondary-color">Discount:</td>
