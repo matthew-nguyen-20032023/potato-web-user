@@ -151,7 +151,7 @@ export default function ProductList() {
                 >
                   <img
                     className="w-full h-full rounded-lg object-cover"
-                    src={product.img_urls}
+                    src={product.img_urls.split(",")[0]}
                     alt=""
                   />
                   <Info productInfo={product} />

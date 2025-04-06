@@ -22,6 +22,7 @@ import { Product, ProductDetail as PDetail } from "mewmew-api-type";
 import { orderProduct, preOrderProduct } from "@/api/product-order.ts";
 import { CreateOrderActions, CreateOrderData } from "@paypal/paypal-js";
 import { showMessageError, showMessageSuccess } from "@/alerts/alert.ts";
+import SingleSelect from "@/components/SingleSelect.tsx";
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -137,6 +138,11 @@ export default function ProductDetail() {
     return <>{img}</>;
   };
 
+  const chooseProductDetail = (e: PDetail["details"][number]) => {
+    setImageDisplay(e.img_urls.split(",")[0]);
+    setProductDetail(e);
+  };
+
   return (
     <div className="bg-white">
       <div className="w-full flex justify-center">
@@ -199,121 +205,65 @@ export default function ProductDetail() {
                 </span>
               </span>
             </div>
-            <div className="secondary-color text-sm w-full flex mb-5">
+            <div className="secondary-color text-sm w-full flex mb-3">
               <span>
                 Original price:{" "}
                 <span className="line-through">${productDetail?.price}</span>
               </span>
             </div>
-            <hr className="mb-5 border-black" />
-            <div className="secondary-color text-sm w-full flex mb-3">
+            <div className="secondary-color text-sm w-full flex">
               <span>
                 Size:{" "}
                 <span className="text-black">{productDetail?.size_name}</span>
               </span>
             </div>
-            <div className="secondary-color text-sm w-full flex mb-3">
+            <div className="secondary-color text-sm max-w-80 flex mb-3 flex-wrap">
+              {productDetails?.map((e) => {
+                return (
+                  <div
+                    className={
+                      "border border-black rounded-lg p-3 mr-1 mb-1 cursor-pointer" +
+                      (productDetail?.id === e.id
+                        ? " bg-main-color text-white"
+                        : "")
+                    }
+                    key={e.id}
+                    onClick={() => {
+                      chooseProductDetail(e);
+                    }}
+                  >
+                    <div>{e?.size_name}</div>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="secondary-color text-sm w-full flex items-center">
               <span>
                 Color:{" "}
                 <span className="text-black">{productDetail?.color_name}</span>
               </span>
             </div>
-            <div className="secondary-color text-sm max-w-80 flex mb-4 flex-wrap">
-              {[1, 2, 3, 4, 5, 6, 7].map((e) => {
+            <div className="secondary-color text-sm max-w-80 flex mb-3 flex-wrap">
+              {productDetails?.map((e) => {
                 return (
-                  <div className="border border-black p-3 mr-1 mb-1" key={e}>
-                    <div>{productDetail?.size_name}</div>
-                    <div>
-                      $
-                      {calculateDiscount(
-                        productDetail?.price,
-                        productDetail?.discount
-                      )}
-                    </div>
-                    <span className="line-through">
-                      ${productDetail?.price}
-                    </span>
-                  </div>
+                  <span
+                    key={e.id}
+                    onClick={() => {
+                      chooseProductDetail(e);
+                    }}
+                    className="mr-2 inline-block rounded-full cursor-pointer"
+                    style={{
+                      backgroundColor: e?.color_code ?? "#FFFFFF",
+                      lineHeight: "2rem",
+                      width: "2rem",
+                    }}
+                  >
+                    &nbsp;
+                  </span>
                 );
               })}
             </div>
-            <form className="mb-5">
-              <div className="flex max-w-[8rem] shadow-lg shadow-lime-800/50 rounded-b">
-                <button
-                  type="button"
-                  id="decrement-button"
-                  data-input-counter-decrement="quantity-input"
-                  className="bg-main-color border-x-0 border-gray-300 rounded-s-lg p-3 h-11"
-                  onClick={() =>
-                    setQuantity(quantity - 1 > 0 ? quantity - 1 : 1)
-                  }
-                >
-                  <svg
-                    className="w-3 h-3 text-white"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 18 2"
-                  >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M1 1h16"
-                    />
-                  </svg>
-                </button>
-                <input
-                  type="number"
-                  id="quantity-input"
-                  aria-describedby="helper-text-explanation"
-                  className="bg-main-color border-0 border-gray-300 h-11 text-center text-white text-sm block w-full py-2.5 dark:text-white"
-                  placeholder="0"
-                  value={quantity}
-                  onChange={(e) => setQuantity(parseInt(e.target.value))}
-                  required
-                />
-                <button
-                  type="button"
-                  id="increment-button"
-                  data-input-counter-increment="quantity-input"
-                  className="bg-main-color border-x-0 border-gray-300 rounded-e-lg p-3 h-11"
-                  onClick={() => setQuantity(quantity + 1)}
-                >
-                  <svg
-                    className="w-3 h-3 text-gray-900 dark:text-white"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 18 18"
-                  >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M9 1v16M1 9h16"
-                    />
-                  </svg>
-                </button>
-              </div>
-            </form>
-            <button
-              type="button"
-              className="text-white bg-main-color w-full rounded-lg shadow-lg shadow-lime-800/50 size-12 mb-5"
-              onClick={addToCart}
-            >
-              {isSpinner && <Spinning />}
-              {!isSpinner && "Add to cart"}
-            </button>
-            <PayPalScriptProvider options={paypalConfig}>
-              <PayPalButtons
-                style={styles}
-                createOrder={handleCreateOrder}
-                onApprove={handleApproveOrder}
-              />
-            </PayPalScriptProvider>
+
             <p id="result-message"></p>
 
             <div className="mt-2">
@@ -360,6 +310,125 @@ export default function ProductDetail() {
                 {product?.story}
               </div>
             </div>
+          </div>
+          <div className="p-3 border m-6 rounded-xl max-w-72">
+            <div className="flex w-full mb-3">
+              <h3 className="text-3xl">
+                $
+                {Number(
+                  calculateDiscount(
+                    productDetail?.price,
+                    productDetail?.discount
+                  )
+                ) *
+                  quantity +
+                  10}
+              </h3>
+            </div>
+            <div className="mb-4">
+              <p className="text-sm text-left secondary-color">
+                The total cost of your order includes the product price,
+                shipping fee, applicable VAT,... And discount already. Happy
+                shopping
+              </p>
+              <p className="text-left secondary-color">⸜(｡˃ ᵕ ˂ )⸝♡</p>
+            </div>
+            <div>
+              <p className="text-xl text-left main-color font-bold">In Stock</p>
+            </div>
+            <div className="mb-4 flex">
+              <SingleSelect
+                title={"Quantity: 1"}
+                options={[
+                  { value: "1", label: "1", id: 1 },
+                  { value: "2", label: "2", id: 2 },
+                  { value: "3", label: "3", id: 3 },
+                  { value: "4", label: "4", id: 4 },
+                  { value: "5", label: "5", id: 5 },
+                  { value: "6", label: "6", id: 6 },
+                  { value: "7", label: "7", id: 7 },
+                  { value: "8", label: "8", id: 8 },
+                  { value: "9", label: "9", id: 9 },
+                  { value: "10", label: "10", id: 10 },
+                ]}
+                onChange={(selectedValue) => {
+                  setQuantity(selectedValue);
+                }}
+              />
+            </div>
+            <button
+              type="button"
+              className="text-white bg-main-color w-full rounded-lg shadow-lg shadow-lime-800/50 size-12 mb-4"
+              onClick={addToCart}
+            >
+              {isSpinner && <Spinning />}
+              {!isSpinner && "Add to cart"}
+            </button>
+            <hr className="mb-4 border-black" />
+            <div className="mb-4">
+              <table className="text-left">
+                <tbody>
+                  <tr>
+                    <td className="secondary-color">Ships from:</td>
+                    <td className="pl-5">VietNam</td>
+                  </tr>
+                  <tr>
+                    <td className="secondary-color">Deliver to:</td>
+                    <td className="pl-5">USA</td>
+                  </tr>
+                  <tr>
+                    <td className="secondary-color">Delivery ETA:</td>
+                    <td className="pl-5">5 days</td>
+                  </tr>{" "}
+                  <tr>
+                    <td className="secondary-color">Product price:</td>
+                    <td className="pl-5">
+                      $
+                      {Number(
+                        calculateDiscount(
+                          productDetail?.price,
+                          productDetail?.discount
+                        )
+                      ) * quantity}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="secondary-color">Fee Estimate:</td>
+                    <td className="pl-5">$10</td>
+                  </tr>
+                  <tr>
+                    <td className="secondary-color">Total price:</td>
+                    <td className="pl-5">
+                      $
+                      {Number(
+                        calculateDiscount(
+                          productDetail?.price,
+                          productDetail?.discount
+                        )
+                      ) *
+                        quantity +
+                        10}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="secondary-color">Discount:</td>
+                    <td className="pl-5">$10</td>
+                  </tr>
+                  <tr>
+                    <td className="secondary-color">Final price:</td>
+                    <td className="pl-5">$10</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <PayPalScriptProvider options={paypalConfig}>
+              <PayPalButtons
+                style={styles}
+                createOrder={handleCreateOrder}
+                onApprove={handleApproveOrder}
+              />
+            </PayPalScriptProvider>
           </div>
         </div>
       </div>
