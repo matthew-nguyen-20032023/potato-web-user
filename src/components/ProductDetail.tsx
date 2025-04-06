@@ -16,7 +16,12 @@ import { Spinning } from "@/components/Spinning.tsx";
 import { ReactNode, useEffect, useState } from "react";
 import { getProductDetailById } from "@/api/product.ts";
 import StarContainer from "@/components/StarContainer.tsx";
-import { calculateDiscount, sleep } from "@/utils/helper.ts";
+import {
+  calculateDiscount,
+  calculateFinalPrice,
+  calculateTotalDiscount,
+  sleep,
+} from "@/utils/helper.ts";
 import { addProductToCart } from "@/features/cart/cartSlice.ts";
 import { Product, ProductDetail as PDetail } from "mewmew-api-type";
 import { orderProduct, preOrderProduct } from "@/api/product-order.ts";
@@ -43,6 +48,7 @@ export default function ProductDetail() {
     label: "buynow",
     tagline: false,
   };
+  const shippingFee = 5;
 
   useEffect(() => {
     setTotalPrice(
@@ -88,7 +94,12 @@ export default function ProductDetail() {
         {
           amount: {
             currency_code: "USD",
-            value: `${totalPrice}`,
+            value: calculateFinalPrice(
+              productDetail?.price ?? 0,
+              quantity,
+              productDetail?.discount ?? 0,
+              shippingFee
+            ),
           },
         },
       ],
@@ -180,9 +191,7 @@ export default function ProductDetail() {
             </div>
           </div>
           <div className="p-6 max-w-xl">
-            <h1 className="flex secondary-color text-left max-w-80">
-              {product?.name}
-            </h1>
+            <h1 className="flex text-left max-w-80">{product?.name}</h1>
             <div className="relative mb-10">
               <StarContainer
                 average_star={+(product?.average_star ?? 0)}
@@ -214,7 +223,9 @@ export default function ProductDetail() {
             <div className="secondary-color text-sm w-full flex">
               <span>
                 Size:{" "}
-                <span className="text-black">{productDetail?.size_name}</span>
+                <span className="text-black font-bold">
+                  {productDetail?.size_name}
+                </span>
               </span>
             </div>
             <div className="secondary-color text-sm max-w-80 flex mb-3 flex-wrap">
@@ -240,7 +251,9 @@ export default function ProductDetail() {
             <div className="secondary-color text-sm w-full flex items-center">
               <span>
                 Color:{" "}
-                <span className="text-black">{productDetail?.color_name}</span>
+                <span className="text-black font-bold">
+                  {productDetail?.color_name}
+                </span>
               </span>
             </div>
             <div className="secondary-color text-sm max-w-80 flex mb-3 flex-wrap">
@@ -267,11 +280,16 @@ export default function ProductDetail() {
             <p id="result-message"></p>
 
             <div className="mt-2">
-              <div className="flex mb-5">
-                <h3 style={{ fontSize: 25 }}>Custom by MewMew! ʕ •ɷ•ʔฅ</h3>
+              <div className="flex">
+                <h3
+                  style={{ fontSize: 20 }}
+                  className="secondary-color font-bold"
+                >
+                  Product detail
+                </h3>
               </div>
               <div className="mb-5">
-                <table className="w-full text-left rtl:text-right secondary-color border border-black">
+                <table className="w-full text-left rtl:text-right border border-black">
                   <thead className="text-xs uppercase text-black">
                     <tr className="border border-black text-center">
                       <th className="border border-black" scope="col">
@@ -289,7 +307,7 @@ export default function ProductDetail() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className="border border-black text-center text-black">
+                    <tr className="border border-black text-center text-xl">
                       <td className="border border-black">
                         {productDetail?.length} cm
                       </td>
@@ -306,6 +324,14 @@ export default function ProductDetail() {
                   </tbody>
                 </table>
               </div>
+              <div className="flex">
+                <h3
+                  style={{ fontSize: 20 }}
+                  className="secondary-color font-bold"
+                >
+                  About product
+                </h3>
+              </div>
               <div className="flex whitespace-pre-wrap text-left">
                 {product?.story}
               </div>
@@ -315,14 +341,12 @@ export default function ProductDetail() {
             <div className="flex w-full mb-3">
               <h3 className="text-3xl">
                 $
-                {Number(
-                  calculateDiscount(
-                    productDetail?.price,
-                    productDetail?.discount
-                  )
-                ) *
-                  quantity +
-                  10}
+                {calculateFinalPrice(
+                  productDetail?.price ?? 0,
+                  quantity,
+                  productDetail?.discount ?? 0,
+                  shippingFee
+                )}
               </h3>
             </div>
             <div className="mb-4">
@@ -364,7 +388,6 @@ export default function ProductDetail() {
               {isSpinner && <Spinning />}
               {!isSpinner && "Add to cart"}
             </button>
-            <hr className="mb-4 border-black" />
             <div className="mb-4">
               <table className="text-left">
                 <tbody>
@@ -381,42 +404,44 @@ export default function ProductDetail() {
                     <td className="pl-5">5 days</td>
                   </tr>{" "}
                   <tr>
-                    <td className="secondary-color">Product price:</td>
+                    <td className="secondary-color">Unit:</td>
+                    <td className="pl-5">{quantity}</td>
+                  </tr>
+                  <tr>
+                    <td className="secondary-color">Price/unit:</td>
+                    <td className="pl-5">${productDetail?.price ?? 0}</td>
+                  </tr>
+                  <tr>
+                    <td className="secondary-color">Shipping Fee:</td>
+                    <td className="pl-5">${shippingFee}</td>
+                  </tr>
+                  <tr>
+                    <td className="secondary-color">Discount:</td>
                     <td className="pl-5">
-                      $
-                      {Number(
-                        calculateDiscount(
-                          productDetail?.price,
-                          productDetail?.discount
-                        )
-                      ) * quantity}
+                      - $
+                      {calculateTotalDiscount(
+                        productDetail?.price ?? 0,
+                        productDetail?.discount ?? 0,
+                        quantity
+                      )}
                     </td>
                   </tr>
                   <tr>
-                    <td className="secondary-color">Fee Estimate:</td>
-                    <td className="pl-5">$10</td>
+                    <td colSpan={2}>
+                      <hr />
+                    </td>
                   </tr>
                   <tr>
                     <td className="secondary-color">Total price:</td>
                     <td className="pl-5">
                       $
-                      {Number(
-                        calculateDiscount(
-                          productDetail?.price,
-                          productDetail?.discount
-                        )
-                      ) *
-                        quantity +
-                        10}
+                      {calculateFinalPrice(
+                        productDetail?.price ?? 0,
+                        quantity,
+                        productDetail?.discount ?? 0,
+                        shippingFee
+                      )}
                     </td>
-                  </tr>
-                  <tr>
-                    <td className="secondary-color">Discount:</td>
-                    <td className="pl-5">$10</td>
-                  </tr>
-                  <tr>
-                    <td className="secondary-color">Final price:</td>
-                    <td className="pl-5">$10</td>
                   </tr>
                 </tbody>
               </table>

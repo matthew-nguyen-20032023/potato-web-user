@@ -2,6 +2,9 @@ import { IoMdStar } from "react-icons/io";
 function Star() {
   return <IoMdStar style={{ color: "#656E37" }} size={25} />;
 }
+function NoStar() {
+  return <IoMdStar style={{ color: "#d4c7c7" }} size={25} />;
+}
 
 export default function StarContainer({
   average_star = 0,
@@ -20,8 +23,9 @@ export default function StarContainer({
           {average_star > 2 && <Star />}
           {average_star > 3 && <Star />}
           {average_star > 4 && <Star />}
+          {average_star < 5 && <NoStar />}
         </div>
-        <div className="absolute right-12 secondary-color text-xl">
+        <div className="absolute right-5 secondary-color text-xl">
           {review_count} ratings
         </div>
       </div>
