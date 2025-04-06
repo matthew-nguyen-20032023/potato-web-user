@@ -37,9 +37,7 @@ export default function ProductDetail() {
     useState<PDetail["details"][number]>();
   const [product, setProduct] = useState<Product>();
   const [quantity, setQuantity] = useState<number>(1);
-  const [totalPrice, setTotalPrice] = useState(
-    productDetail?.price ? productDetail?.price : 0
-  );
+  const [totalPrice, setTotalPrice] = useState("0");
   const dispatch = useDispatch();
   const [isSpinner, setIsSpinner] = useState(false);
   const styles: PayPalButtonsComponentProps["style"] = {
@@ -52,8 +50,12 @@ export default function ProductDetail() {
 
   useEffect(() => {
     setTotalPrice(
-      (isNaN(quantity) ? 0 : quantity) *
-        (productDetail?.price ? productDetail?.price : 0)
+      calculateFinalPrice(
+        productDetail?.price ?? 0,
+        quantity,
+        productDetail?.discount ?? 0,
+        shippingFee
+      )
     );
   }, [quantity, productDetail]);
 
@@ -94,12 +96,7 @@ export default function ProductDetail() {
         {
           amount: {
             currency_code: "USD",
-            value: calculateFinalPrice(
-              productDetail?.price ?? 0,
-              quantity,
-              productDetail?.discount ?? 0,
-              shippingFee
-            ),
+            value: totalPrice,
           },
         },
       ],
@@ -339,15 +336,7 @@ export default function ProductDetail() {
           </div>
           <div className="p-3 border m-6 rounded-xl max-w-72">
             <div className="flex w-full mb-3">
-              <h3 className="text-3xl">
-                $
-                {calculateFinalPrice(
-                  productDetail?.price ?? 0,
-                  quantity,
-                  productDetail?.discount ?? 0,
-                  shippingFee
-                )}
-              </h3>
+              <h3 className="text-3xl">${totalPrice}</h3>
             </div>
             <div className="mb-4">
               <p className="text-sm text-left secondary-color">
@@ -402,7 +391,7 @@ export default function ProductDetail() {
                   <tr>
                     <td className="secondary-color">Delivery ETA:</td>
                     <td className="pl-5">5 days</td>
-                  </tr>{" "}
+                  </tr>
                   <tr>
                     <td className="secondary-color">Unit:</td>
                     <td className="pl-5">{quantity}</td>
@@ -433,15 +422,7 @@ export default function ProductDetail() {
                   </tr>
                   <tr>
                     <td className="secondary-color">Total price:</td>
-                    <td className="pl-5">
-                      $
-                      {calculateFinalPrice(
-                        productDetail?.price ?? 0,
-                        quantity,
-                        productDetail?.discount ?? 0,
-                        shippingFee
-                      )}
-                    </td>
+                    <td className="pl-5">${totalPrice}</td>
                   </tr>
                 </tbody>
               </table>
