@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { AppError } from "@/types.ts";
+import { AppError, IProductAddedToCart } from "@/types.ts";
 import {
   calculateFinalPrice,
   calculateTotalDiscount,
@@ -26,7 +26,12 @@ import {
   selectLoadCart,
   selectProductsAddedToCart,
 } from "@/features/cart/cartSelector.ts";
-import { clearCart, removeFromCart } from "@/features/cart/cartSlice.ts";
+import {
+  addProductToCart,
+  clearCart,
+  removeFromCart,
+} from "@/features/cart/cartSlice.ts";
+import { FaMinus, FaPlus, FaTrash } from "react-icons/fa6";
 
 export default function Order() {
   const dispatch = useDispatch();
@@ -35,6 +40,13 @@ export default function Order() {
 
   const handleRemoveProduct = (id: number) => {
     dispatch(removeFromCart(id));
+  };
+
+  const handleAddProductToCart = (product: IProductAddedToCart) => {
+    dispatch(addProductToCart({ ...product, quantity: 1 }));
+  };
+  const handleMinusProductFromCart = (product: IProductAddedToCart) => {
+    dispatch(addProductToCart({ ...product, quantity: -1 }));
   };
 
   useEffect(() => {
@@ -226,16 +238,46 @@ export default function Order() {
                       <table>
                         <tbody className="text-left">
                           <tr>
-                            <td>Price/unit: </td>
-                            <td className="font-bold text-black pl-2">
-                              ${product.price}
+                            <td colSpan={2}>
+                              <div className="flex gap-5 justify-center border border-green-700 rounded-xl max-w-24 font-bold text-black pl-1 pr-1">
+                                {product.quantity > 1 && (
+                                  <div
+                                    className="flex items-center"
+                                    onClick={() => {
+                                      handleMinusProductFromCart(product);
+                                    }}
+                                  >
+                                    <FaMinus />
+                                  </div>
+                                )}
+                                {product.quantity === 1 && (
+                                  <div
+                                    className="flex items-center"
+                                    onClick={() =>
+                                      handleRemoveProduct(product.id)
+                                    }
+                                  >
+                                    <FaTrash />
+                                  </div>
+                                )}
+                                <div className="flex items-center">
+                                  {product.quantity}
+                                </div>
+                                <div
+                                  className="flex items-center"
+                                  onClick={() => {
+                                    handleAddProductToCart(product);
+                                  }}
+                                >
+                                  <FaPlus />
+                                </div>
+                              </div>
                             </td>
                           </tr>
                           <tr>
-                            <td>Quantity: </td>
+                            <td>Price/unit: </td>
                             <td className="font-bold text-black pl-2">
-                              {product.quantity} item
-                              {product.quantity > 1 && "s"}
+                              ${product.price}
                             </td>
                           </tr>
                           <tr>
