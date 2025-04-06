@@ -393,8 +393,10 @@ export default function ProductDetail() {
                     <td className="pl-5">5 days</td>
                   </tr>
                   <tr>
-                    <td className="secondary-color">Unit:</td>
-                    <td className="pl-5">{quantity}</td>
+                    <td className="secondary-color">Subtotal:</td>
+                    <td className="pl-5">
+                      {quantity} item{quantity > 1 ? "s" : ""}
+                    </td>
                   </tr>
                   <tr>
                     <td className="secondary-color">Price/unit:</td>
