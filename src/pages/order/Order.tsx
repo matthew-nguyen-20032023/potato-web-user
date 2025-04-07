@@ -84,7 +84,7 @@ export default function Order() {
         {
           amount: {
             currency_code: "USD",
-            value: `${totalPrice}`,
+            value: `${totalPrice.toFixed(2)}`,
           },
         },
       ],
@@ -333,19 +333,21 @@ export default function Order() {
                     <td className="font-bold">Total Price:</td>
                     <td className="text-black font-bold text-right">
                       $
-                      {products.reduce(
-                        (acc, product) =>
-                          acc +
-                          Number(
-                            calculateFinalPrice(
-                              product?.price ?? 0,
-                              product.quantity,
-                              product?.discount ?? 0,
-                              0
-                            )
-                          ),
-                        0
-                      ) + SHIPPING_FEE}
+                      {(
+                        products.reduce(
+                          (acc, product) =>
+                            acc +
+                            Number(
+                              calculateFinalPrice(
+                                product?.price ?? 0,
+                                product.quantity,
+                                product?.discount ?? 0,
+                                0
+                              )
+                            ),
+                          0
+                        ) + SHIPPING_FEE
+                      ).toFixed(2)}
                     </td>
                   </tr>
                   <tr>
