@@ -1,6 +1,11 @@
 import { useEffect } from "react";
-import { AppError } from "@/types.ts";
-import { sleep } from "@/utils/helper.ts";
+import { AppError, IProductAddedToCart } from "@/types.ts";
+import {
+  calculateFinalPrice,
+  calculateTotalDiscount,
+  SHIPPING_FEE,
+  sleep,
+} from "@/utils/helper.ts";
 import { cacheCart, paypalConfig } from "@/const.ts";
 import { CiShoppingCart } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
@@ -21,7 +26,12 @@ import {
   selectLoadCart,
   selectProductsAddedToCart,
 } from "@/features/cart/cartSelector.ts";
-import { clearCart, removeFromCart } from "@/features/cart/cartSlice.ts";
+import {
+  addProductToCart,
+  clearCart,
+  removeFromCart,
+} from "@/features/cart/cartSlice.ts";
+import { FaMinus, FaPlus, FaTrash } from "react-icons/fa6";
 
 export default function Order() {
   const dispatch = useDispatch();
@@ -30,6 +40,13 @@ export default function Order() {
 
   const handleRemoveProduct = (id: number) => {
     dispatch(removeFromCart(id));
+  };
+
+  const handleAddProductToCart = (product: IProductAddedToCart) => {
+    dispatch(addProductToCart({ ...product, quantity: 1 }));
+  };
+  const handleMinusProductFromCart = (product: IProductAddedToCart) => {
+    dispatch(addProductToCart({ ...product, quantity: -1 }));
   };
 
   useEffect(() => {
@@ -47,10 +64,20 @@ export default function Order() {
     _data: CreateOrderData,
     actions: CreateOrderActions
   ) => {
-    const totalPrice = products.reduce(
-      (acc, product) => acc + product.price * product.quantity,
-      0
-    );
+    const totalPrice =
+      products.reduce(
+        (acc, product) =>
+          acc +
+          Number(
+            calculateFinalPrice(
+              product?.price ?? 0,
+              product.quantity,
+              product?.discount ?? 0,
+              0
+            )
+          ),
+        0
+      ) + SHIPPING_FEE;
     const orderId = await actions.order.create({
       intent: "CAPTURE",
       purchase_units: [
@@ -113,73 +140,269 @@ export default function Order() {
 
   return (
     <div>
-      <div className="bg-list-product-color secondary-color pt-16 flex justify-center items-center w-full">
+      <div className="bg-list-product-color secondary-color pt-5 flex justify-center items-center w-full">
         <div className="w-1/2">
-          <h1 className="text-5xl font-semibold text-center">Order</h1>
+          <h1 className="text-5xl font-semibold text-center">Shopping Cart</h1>
         </div>
       </div>
-      <div className="bg-list-product-color secondary-color p-16 flex justify-center items-center w-full">
-        <div className="w-1/2">
-          {products.map((product) => {
-            return (
-              <div
-                key={product.id}
-                className="flex items-center justify-between mb-3"
-              >
-                <div>
-                  <img
-                    src={product.img}
-                    alt=""
-                    className="w-36 h-36 object-cover rounded-lg"
-                  />
-                </div>
-                <div>
-                  <h3 className="text-lg secondary-color">
-                    {product.name} x {product.quantity}
-                  </h3>
-                  <div className="flex">
-                    <h3 className="text-lg secondary-color">
-                      {product.quantity * product.price}.00 $
-                    </h3>
-                  </div>
-                </div>
-                <div>
-                  <button
-                    type="button"
-                    className="text-white bg-main-color rounded-xl p-2"
-                    onClick={() => handleRemoveProduct(product.id)}
+      <div className="bg-list-product-color secondary-color p-5 flex justify-center items-center w-full">
+        <div className="flex justify-center" style={{ minWidth: "750px" }}>
+          <table>
+            <tbody>
+              {products.map((product) => {
+                return (
+                  <tr
+                    key={product.id}
+                    className="flex items-center justify-between mb-5"
                   >
-                    Remove
-                  </button>
-                </div>
-              </div>
-            );
-          })}
+                    <td>
+                      <img
+                        src={product.img}
+                        alt=""
+                        className="w-40 h-40 object-cover rounded-lg"
+                      />
+                    </td>
+                    <td className="pl-5 pr-5">
+                      <div className="flex text-black font-bold text-left text-2xl max-w-96 w-96">
+                        {product.name}
+                      </div>
+                      <div className="mb-2">
+                        <table>
+                          <tbody className="text-left">
+                            <tr>
+                              <td>Size:</td>
+                              <td className="text-black font-bold pl-2">
+                                {product.size_name}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Color:</td>
+                              <td className="text-black font-bold pl-2">
+                                {product.color_name}
+                              </td>
+                              <td>
+                                <span
+                                  className="ml-1 inline-block rounded-full cursor-pointer"
+                                  style={{
+                                    backgroundColor:
+                                      product?.color_code ?? "#FFFFFF",
+                                    lineHeight: "1rem",
+                                    width: "1rem",
+                                  }}
+                                >
+                                  &nbsp;
+                                </span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <table className="w-full text-left rtl:text-right border border-black">
+                          <thead className="text-xs uppercase text-black">
+                            <tr className="border border-black text-center">
+                              <th className="border border-black" scope="col">
+                                Length
+                              </th>
+                              <th className="border border-black" scope="col">
+                                Width
+                              </th>
+                              <th className="border border-black" scope="col">
+                                Height
+                              </th>
+                              <th className="border border-black" scope="col">
+                                Weight
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr className="border border-black text-center text-xl">
+                              <td className="border border-black">
+                                {product?.length} cm
+                              </td>
+                              <td className="border border-black">
+                                {product?.width} cm
+                              </td>
+                              <td className="border border-black">
+                                {product?.height} cm
+                              </td>
+                              <td className="border border-black">
+                                {product?.weight} gram
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </td>
+                    <td>
+                      <table>
+                        <tbody className="text-left">
+                          <tr>
+                            <td colSpan={2}>
+                              <div className="flex gap-5 justify-center border border-green-700 rounded-xl max-w-24 font-bold text-black pl-1 pr-1">
+                                {product.quantity > 1 && (
+                                  <div
+                                    className="flex items-center"
+                                    onClick={() => {
+                                      handleMinusProductFromCart(product);
+                                    }}
+                                  >
+                                    <FaMinus />
+                                  </div>
+                                )}
+                                {product.quantity === 1 && (
+                                  <div
+                                    className="flex items-center"
+                                    onClick={() =>
+                                      handleRemoveProduct(product.id)
+                                    }
+                                  >
+                                    <FaTrash />
+                                  </div>
+                                )}
+                                <div className="flex items-center">
+                                  {product.quantity}
+                                </div>
+                                <div
+                                  className="flex items-center"
+                                  onClick={() => {
+                                    handleAddProductToCart(product);
+                                  }}
+                                >
+                                  <FaPlus />
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>Price/unit: </td>
+                            <td className="font-bold text-black pl-2">
+                              ${product.price}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>Discount percent: </td>
+                            <td className="font-bold text-black pl-2">
+                              {product.discount}%
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>Total Discount: </td>
+                            <td className="font-bold text-black pl-2">
+                              - $
+                              {calculateTotalDiscount(
+                                product?.price ?? 0,
+                                product?.discount ?? 0,
+                                product.quantity
+                              )}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>Total price: </td>
+                            <td className="font-bold text-black pl-2">
+                              $
+                              {calculateFinalPrice(
+                                product?.price ?? 0,
+                                product.quantity,
+                                product?.discount ?? 0,
+                                0
+                              )}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              className="cursor-pointer text-blue-500"
+                              onClick={() => handleRemoveProduct(product.id)}
+                            >
+                              delete
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+          {products.length > 0 && (
+            <div className="ml-10 border border-black rounded-xl p-5 max-w-64 max-h-72">
+              <table>
+                <tbody className="text-left">
+                  <tr className="text-xl">
+                    <td className="font-bold">Total Price:</td>
+                    <td className="text-black font-bold text-right">
+                      $
+                      {products.reduce(
+                        (acc, product) =>
+                          acc +
+                          Number(
+                            calculateFinalPrice(
+                              product?.price ?? 0,
+                              product.quantity,
+                              product?.discount ?? 0,
+                              0
+                            )
+                          ),
+                        0
+                      ) + SHIPPING_FEE}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="pb-3 text-sm" colSpan={2}>
+                      The total price includes a shipping fee of ${SHIPPING_FEE}
+                      . Happy shopping!
+                      <p className="text-left secondary-color">⸜(｡˃ ᵕ ˂ )⸝♡</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="pb-3" colSpan={2}>
+                      <div className="rounded-xl">
+                        <PayPalScriptProvider options={paypalConfig}>
+                          <PayPalButtons
+                            style={styles}
+                            createOrder={handleCreateOrder}
+                            onApprove={handleApproveOrder}
+                          />
+                        </PayPalScriptProvider>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colSpan={2}>
+                      <hr className="border-black" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="pt-5">Ships from:</td>
+                    <td className="pt-5 text-right font-bold text-black">
+                      Viet Nam
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="secondary-color">Deliver to:</td>
+                    <td className="text-right font-bold text-black">USA</td>
+                  </tr>
+                  <tr>
+                    <td className="secondary-color">Delivery ETA:</td>
+                    <td className="text-right font-bold text-black">5 days</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          )}
+          {products.length === 0 && (
+            <h1 className="text-3xl secondary-color flex">
+              Your cart is empty.{" "}
+              <span
+                onClick={handleShopping}
+                className="ml-2 flex items-center justify-center text-green-800 hover:cursor-pointer"
+              >
+                Shopping now <CiShoppingCart />
+              </span>
+            </h1>
+          )}
         </div>
-      </div>
-      <div className="flex justify-center items-center mb-16">
-        {products.length > 0 && (
-          <div className="w-1/6 rounded-xl">
-            <PayPalScriptProvider options={paypalConfig}>
-              <PayPalButtons
-                style={styles}
-                createOrder={handleCreateOrder}
-                onApprove={handleApproveOrder}
-              />
-            </PayPalScriptProvider>
-          </div>
-        )}
-        {products.length === 0 && (
-          <h1 className="text-3xl secondary-color flex">
-            Your cart is empty.{" "}
-            <span
-              onClick={handleShopping}
-              className="ml-2 flex items-center justify-center text-green-800 hover:cursor-pointer"
-            >
-              Shopping now <CiShoppingCart />
-            </span>
-          </h1>
-        )}
       </div>
     </div>
   );

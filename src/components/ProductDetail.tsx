@@ -16,12 +16,19 @@ import { Spinning } from "@/components/Spinning.tsx";
 import { ReactNode, useEffect, useState } from "react";
 import { getProductDetailById } from "@/api/product.ts";
 import StarContainer from "@/components/StarContainer.tsx";
-import { calculateDiscount, sleep } from "@/utils/helper.ts";
+import {
+  calculateDiscount,
+  calculateFinalPrice,
+  calculateTotalDiscount,
+  SHIPPING_FEE,
+  sleep,
+} from "@/utils/helper.ts";
 import { addProductToCart } from "@/features/cart/cartSlice.ts";
 import { Product, ProductDetail as PDetail } from "mewmew-api-type";
 import { orderProduct, preOrderProduct } from "@/api/product-order.ts";
 import { CreateOrderActions, CreateOrderData } from "@paypal/paypal-js";
 import { showMessageError, showMessageSuccess } from "@/alerts/alert.ts";
+import SingleSelect from "@/components/SingleSelect.tsx";
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -31,9 +38,7 @@ export default function ProductDetail() {
     useState<PDetail["details"][number]>();
   const [product, setProduct] = useState<Product>();
   const [quantity, setQuantity] = useState<number>(1);
-  const [totalPrice, setTotalPrice] = useState(
-    productDetail?.price ? productDetail?.price : 0
-  );
+  const [totalPrice, setTotalPrice] = useState("0");
   const dispatch = useDispatch();
   const [isSpinner, setIsSpinner] = useState(false);
   const styles: PayPalButtonsComponentProps["style"] = {
@@ -45,8 +50,12 @@ export default function ProductDetail() {
 
   useEffect(() => {
     setTotalPrice(
-      (isNaN(quantity) ? 0 : quantity) *
-        (productDetail?.price ? productDetail?.price : 0)
+      calculateFinalPrice(
+        productDetail?.price ?? 0,
+        quantity,
+        productDetail?.discount ?? 0,
+        SHIPPING_FEE
+      )
     );
   }, [quantity, productDetail]);
 
@@ -54,6 +63,7 @@ export default function ProductDetail() {
     getProductDetailById(id).then((response) => {
       setProduct(response.data.product);
       setProductDetail(response.data.details[0]);
+      setImageDisplay(response.data.details[0].img_urls.split(",")[0]);
       setProductDetails(response.data.details);
     });
   }, [id]);
@@ -66,6 +76,14 @@ export default function ProductDetail() {
           addProductToCart({
             id: productDetail.id,
             name: product.name,
+            color_name: productDetail.color_name,
+            color_code: productDetail.color_code,
+            size_name: productDetail.size_name,
+            length: productDetail.length,
+            height: productDetail.height,
+            width: productDetail.width,
+            weight: productDetail.weight,
+            discount: productDetail.discount,
             quantity,
             price: productDetail.price,
             img: imageDisplay,
@@ -87,7 +105,7 @@ export default function ProductDetail() {
         {
           amount: {
             currency_code: "USD",
-            value: `${totalPrice}`,
+            value: totalPrice,
           },
         },
       ],
@@ -137,6 +155,11 @@ export default function ProductDetail() {
     return <>{img}</>;
   };
 
+  const chooseProductDetail = (e: PDetail["details"][number]) => {
+    setImageDisplay(e.img_urls.split(",")[0]);
+    setProductDetail(e);
+  };
+
   return (
     <div className="bg-white">
       <div className="w-full flex justify-center">
@@ -174,9 +197,7 @@ export default function ProductDetail() {
             </div>
           </div>
           <div className="p-6 max-w-xl">
-            <h1 className="flex secondary-color text-left max-w-80">
-              {product?.name}
-            </h1>
+            <h1 className="flex text-left max-w-80">{product?.name}</h1>
             <div className="relative mb-10">
               <StarContainer
                 average_star={+(product?.average_star ?? 0)}
@@ -199,129 +220,82 @@ export default function ProductDetail() {
                 </span>
               </span>
             </div>
-            <div className="secondary-color text-sm w-full flex mb-5">
+            <div className="secondary-color text-sm w-full flex mb-3">
               <span>
                 Original price:{" "}
                 <span className="line-through">${productDetail?.price}</span>
               </span>
             </div>
-            <hr className="mb-5 border-black" />
-            <div className="secondary-color text-sm w-full flex mb-3">
+            <div className="secondary-color text-sm w-full flex">
               <span>
                 Size:{" "}
-                <span className="text-black">{productDetail?.size_name}</span>
+                <span className="text-black font-bold">
+                  {productDetail?.size_name}
+                </span>
               </span>
             </div>
-            <div className="secondary-color text-sm w-full flex mb-3">
-              <span>
-                Color:{" "}
-                <span className="text-black">{productDetail?.color_name}</span>
-              </span>
-            </div>
-            <div className="secondary-color text-sm max-w-80 flex mb-4 flex-wrap">
-              {[1, 2, 3, 4, 5, 6, 7].map((e) => {
+            <div className="secondary-color text-sm max-w-80 flex mb-3 flex-wrap">
+              {productDetails?.map((e) => {
                 return (
-                  <div className="border border-black p-3 mr-1 mb-1" key={e}>
-                    <div>{productDetail?.size_name}</div>
-                    <div>
-                      $
-                      {calculateDiscount(
-                        productDetail?.price,
-                        productDetail?.discount
-                      )}
-                    </div>
-                    <span className="line-through">
-                      ${productDetail?.price}
-                    </span>
+                  <div
+                    className={
+                      "border border-black rounded-lg p-3 mr-1 mb-1 cursor-pointer" +
+                      (productDetail?.id === e.id
+                        ? " bg-main-color text-white"
+                        : "")
+                    }
+                    key={e.id}
+                    onClick={() => {
+                      chooseProductDetail(e);
+                    }}
+                  >
+                    <div>{e?.size_name}</div>
                   </div>
                 );
               })}
             </div>
-            <form className="mb-5">
-              <div className="flex max-w-[8rem] shadow-lg shadow-lime-800/50 rounded-b">
-                <button
-                  type="button"
-                  id="decrement-button"
-                  data-input-counter-decrement="quantity-input"
-                  className="bg-main-color border-x-0 border-gray-300 rounded-s-lg p-3 h-11"
-                  onClick={() =>
-                    setQuantity(quantity - 1 > 0 ? quantity - 1 : 1)
-                  }
-                >
-                  <svg
-                    className="w-3 h-3 text-white"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 18 2"
+            <div className="secondary-color text-sm w-full flex items-center">
+              <span>
+                Color:{" "}
+                <span className="text-black font-bold">
+                  {productDetail?.color_name}
+                </span>
+              </span>
+            </div>
+            <div className="secondary-color text-sm max-w-80 flex mb-3 flex-wrap">
+              {productDetails?.map((e) => {
+                return (
+                  <span
+                    key={e.id}
+                    onClick={() => {
+                      chooseProductDetail(e);
+                    }}
+                    className="mr-2 inline-block rounded-full cursor-pointer"
+                    style={{
+                      backgroundColor: e?.color_code ?? "#FFFFFF",
+                      lineHeight: "2rem",
+                      width: "2rem",
+                    }}
                   >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M1 1h16"
-                    />
-                  </svg>
-                </button>
-                <input
-                  type="number"
-                  id="quantity-input"
-                  aria-describedby="helper-text-explanation"
-                  className="bg-main-color border-0 border-gray-300 h-11 text-center text-white text-sm block w-full py-2.5 dark:text-white"
-                  placeholder="0"
-                  value={quantity}
-                  onChange={(e) => setQuantity(parseInt(e.target.value))}
-                  required
-                />
-                <button
-                  type="button"
-                  id="increment-button"
-                  data-input-counter-increment="quantity-input"
-                  className="bg-main-color border-x-0 border-gray-300 rounded-e-lg p-3 h-11"
-                  onClick={() => setQuantity(quantity + 1)}
-                >
-                  <svg
-                    className="w-3 h-3 text-gray-900 dark:text-white"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 18 18"
-                  >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M9 1v16M1 9h16"
-                    />
-                  </svg>
-                </button>
-              </div>
-            </form>
-            <button
-              type="button"
-              className="text-white bg-main-color w-full rounded-lg shadow-lg shadow-lime-800/50 size-12 mb-5"
-              onClick={addToCart}
-            >
-              {isSpinner && <Spinning />}
-              {!isSpinner && "Add to cart"}
-            </button>
-            <PayPalScriptProvider options={paypalConfig}>
-              <PayPalButtons
-                style={styles}
-                createOrder={handleCreateOrder}
-                onApprove={handleApproveOrder}
-              />
-            </PayPalScriptProvider>
+                    &nbsp;
+                  </span>
+                );
+              })}
+            </div>
+
             <p id="result-message"></p>
 
             <div className="mt-2">
-              <div className="flex mb-5">
-                <h3 style={{ fontSize: 25 }}>Custom by MewMew! ʕ •ɷ•ʔฅ</h3>
+              <div className="flex">
+                <h3
+                  style={{ fontSize: 20 }}
+                  className="secondary-color font-bold"
+                >
+                  Product detail
+                </h3>
               </div>
               <div className="mb-5">
-                <table className="w-full text-left rtl:text-right secondary-color border border-black">
+                <table className="w-full text-left rtl:text-right border border-black">
                   <thead className="text-xs uppercase text-black">
                     <tr className="border border-black text-center">
                       <th className="border border-black" scope="col">
@@ -339,7 +313,7 @@ export default function ProductDetail() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className="border border-black text-center text-black">
+                    <tr className="border border-black text-center text-xl">
                       <td className="border border-black">
                         {productDetail?.length} cm
                       </td>
@@ -356,10 +330,122 @@ export default function ProductDetail() {
                   </tbody>
                 </table>
               </div>
+              <div className="flex">
+                <h3
+                  style={{ fontSize: 20 }}
+                  className="secondary-color font-bold"
+                >
+                  About product
+                </h3>
+              </div>
               <div className="flex whitespace-pre-wrap text-left">
                 {product?.story}
               </div>
             </div>
+          </div>
+          <div className="p-3 border m-6 rounded-xl max-w-72">
+            <div className="flex w-full mb-3">
+              <h3 className="text-3xl">${totalPrice}</h3>
+            </div>
+            <div className="mb-4">
+              <p className="text-sm text-left secondary-color">
+                The total cost of your order includes the product price,
+                shipping fee, applicable VAT,... And discount already. Happy
+                shopping
+              </p>
+              <p className="text-left secondary-color">⸜(｡˃ ᵕ ˂ )⸝♡</p>
+            </div>
+            <div>
+              <p className="text-xl text-left main-color font-bold">In Stock</p>
+            </div>
+            <div className="mb-4 flex">
+              <SingleSelect
+                title={"Quantity: 1"}
+                options={[
+                  { value: "1", label: "1", id: 1 },
+                  { value: "2", label: "2", id: 2 },
+                  { value: "3", label: "3", id: 3 },
+                  { value: "4", label: "4", id: 4 },
+                  { value: "5", label: "5", id: 5 },
+                  { value: "6", label: "6", id: 6 },
+                  { value: "7", label: "7", id: 7 },
+                  { value: "8", label: "8", id: 8 },
+                  { value: "9", label: "9", id: 9 },
+                  { value: "10", label: "10", id: 10 },
+                ]}
+                onChange={(selectedValue) => {
+                  setQuantity(selectedValue);
+                }}
+              />
+            </div>
+            <button
+              type="button"
+              className="text-white bg-main-color w-full rounded-lg shadow-lg shadow-lime-800/50 size-12 mb-4"
+              onClick={addToCart}
+            >
+              {isSpinner && <Spinning />}
+              {!isSpinner && "Add to cart"}
+            </button>
+            <div className="mb-4">
+              <table className="text-left">
+                <tbody>
+                  <tr>
+                    <td className="secondary-color">Ships from:</td>
+                    <td className="pl-5">VietNam</td>
+                  </tr>
+                  <tr>
+                    <td className="secondary-color">Deliver to:</td>
+                    <td className="pl-5">USA</td>
+                  </tr>
+                  <tr>
+                    <td className="secondary-color">Delivery ETA:</td>
+                    <td className="pl-5">5 days</td>
+                  </tr>
+                  <tr>
+                    <td className="secondary-color">Subtotal:</td>
+                    <td className="pl-5">
+                      {quantity} item{quantity > 1 ? "s" : ""}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="secondary-color">Price/unit:</td>
+                    <td className="pl-5">${productDetail?.price ?? 0}</td>
+                  </tr>
+                  <tr>
+                    <td className="secondary-color">Shipping Fee:</td>
+                    <td className="pl-5">${SHIPPING_FEE}</td>
+                  </tr>
+                  <tr>
+                    <td className="secondary-color">Discount:</td>
+                    <td className="pl-5">
+                      - $
+                      {calculateTotalDiscount(
+                        productDetail?.price ?? 0,
+                        productDetail?.discount ?? 0,
+                        quantity
+                      )}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colSpan={2}>
+                      <hr />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="secondary-color">Total price:</td>
+                    <td className="pl-5">${totalPrice}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <PayPalScriptProvider options={paypalConfig}>
+              <PayPalButtons
+                style={styles}
+                createOrder={handleCreateOrder}
+                onApprove={handleApproveOrder}
+              />
+            </PayPalScriptProvider>
           </div>
         </div>
       </div>

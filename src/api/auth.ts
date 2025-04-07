@@ -67,3 +67,12 @@ export const verifyEmailAPI = async (
   });
   return response.data;
 };
+
+export const checkVerifyEmailAPI = async (
+  email: string
+): Promise<ApiResponse<boolean>> => {
+  const response = await backendService.get(
+    `/api/v1/auth/check-verify-email?email=${email}`
+  );
+  return response.data;
+};
