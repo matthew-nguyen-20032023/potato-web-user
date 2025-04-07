@@ -7,11 +7,15 @@ import {
   selectProductsAddedToCart,
 } from "@/features/cart/cartSelector.ts";
 import {
+  addProductToCart,
   removeFromCart,
   triggerOpenAndHideCart,
 } from "@/features/cart/cartSlice.ts";
 import { useDispatch, useSelector } from "react-redux";
 import { RefObject, useEffect, useRef, useState } from "react";
+import { FaMinus, FaPlus, FaTrash } from "react-icons/fa6";
+import { IProductAddedToCart } from "@/types.ts";
+import { calculateFinalPrice } from "@/utils/helper.ts";
 
 export default function Cart({
   cartButtonRef,
@@ -27,6 +31,12 @@ export default function Cart({
 
   const handleRemoveProduct = (id: number) => {
     dispatch(removeFromCart(id));
+  };
+  const handleAddProductToCart = (product: IProductAddedToCart) => {
+    dispatch(addProductToCart({ ...product, quantity: 1 }));
+  };
+  const handleMinusProductFromCart = (product: IProductAddedToCart) => {
+    dispatch(addProductToCart({ ...product, quantity: -1 }));
   };
 
   useEffect(() => {
@@ -65,75 +75,169 @@ export default function Cart({
     <div
       id="your-cart"
       tabIndex={-1}
-      className="hidden fixed top-0 right-0 z-50 w-1/6 p-4 overflow-x-hidden overflow-y-auto scroll-container"
+      className="hidden fixed top-5 right-0 z-50 w-1/4 max-h-[950px] p-4"
       ref={modalRef}
     >
-      <div className="relative w-full max-w-md max-h-full top-0 right-0">
-        <div className="relative bg-white rounded-lg shadow bg-list-product-color">
+      <div className="w-full top-0 right-0 justify-end max-h-[700px]">
+        <div className="w-full bg-white shadow bg-list-product-color overflow-x-hidden overflow-y-auto scroll-container rounded-tl-xl max-h-[700px]">
           <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
             <h2 className="text-2xl secondary-color w-full flex justify-start">
               <strong>Your cart</strong>
             </h2>
           </div>
           <div className="p-4 md:p-5 space-y-4">
-            {products.map((product) => {
-              return (
-                <div
-                  key={product.id}
-                  className="flex items-center justify-between"
-                >
-                  <div>
-                    <img
-                      src={product.img}
-                      alt=""
-                      className="w-20 h-20 object-cover rounded-lg"
-                    />
-                  </div>
-                  <div>
-                    <h3 className="text-lg secondary-color">
-                      {product.name} x {product.quantity}
-                    </h3>
-                    <div className="flex">
-                      <h3 className="text-lg secondary-color">
-                        {product.quantity * product.price}.00 $
-                      </h3>
-                    </div>
-                  </div>
-                  <div>
-                    <button
-                      type="button"
-                      className="text-white bg-main-color rounded-xl p-2"
-                      onClick={() => handleRemoveProduct(product.id)}
+            <table className="w-full">
+              <tbody>
+                {products.map((product) => {
+                  return (
+                    <tr
+                      key={product.id}
+                      className="flex items-center justify-between mb-5"
                     >
-                      Remove
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
+                      <td>
+                        <img
+                          src={product.img}
+                          alt=""
+                          className="min-w-32 w-32 h-32 object-cover rounded-lg"
+                        />
+                      </td>
+                      <td className="pl-3 pt-2">
+                        <div className="mb-2">
+                          <table>
+                            <tbody className="text-left">
+                              <tr>
+                                <td className="text-black font-bold">
+                                  {product.name}
+                                </td>
+                              </tr>
+                              <tr>
+                                <td
+                                  colSpan={2}
+                                  className="text-black font-bold"
+                                >
+                                  {product.size_name}-
+                                  <span
+                                    className="ml-1 inline-block rounded-full cursor-pointer"
+                                    style={{
+                                      backgroundColor:
+                                        product?.color_code ?? "#FFFFFF",
+                                      lineHeight: "1rem",
+                                      width: "1rem",
+                                    }}
+                                  >
+                                    &nbsp;
+                                  </span>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td></td>
+                              </tr>
+                              <tr>
+                                <td colSpan={2}>
+                                  <div className="flex gap-5 justify-center border border-green-700 rounded-xl max-w-24 font-bold text-black pl-1 pr-1">
+                                    {product.quantity > 1 && (
+                                      <div
+                                        className="flex items-center cursor-pointer"
+                                        onClick={() => {
+                                          handleMinusProductFromCart(product);
+                                        }}
+                                      >
+                                        <FaMinus />
+                                      </div>
+                                    )}
+                                    {product.quantity === 1 && (
+                                      <div
+                                        className="flex items-center cursor-pointer"
+                                        onClick={() =>
+                                          handleRemoveProduct(product.id)
+                                        }
+                                      >
+                                        <FaTrash />
+                                      </div>
+                                    )}
+                                    <div className="flex items-center">
+                                      {product.quantity}
+                                    </div>
+                                    <div
+                                      className="flex items-center cursor-pointer"
+                                      onClick={() => {
+                                        handleAddProductToCart(product);
+                                      }}
+                                    >
+                                      <FaPlus />
+                                    </div>
+                                  </div>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td className="pt-3" colSpan={2}>
+                                  Total price:
+                                  <span className="pr-3 pl-2 text-black font-bold">
+                                    $
+                                    {calculateFinalPrice(
+                                      product.price,
+                                      product.quantity,
+                                      product.discount,
+                                      0
+                                    )}
+                                  </span>
+                                  <span className="line-through">
+                                    $
+                                    {(
+                                      product.price * product.quantity
+                                    ).toFixed()}
+                                  </span>{" "}
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
-          <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700 mb-5" />
-          <div>
-            <div className="flex justify-center w-full mb-3">
-              <h3 className="w-full text-2xl secondary-color flex justify-start ml-5">
-                <strong>Estimated total</strong>
-              </h3>
-              <h3 className="w-full flex text-2xl secondary-color justify-end mr-6">
-                ${products.reduce((acc, p) => acc + p.quantity * p.price, 0)}
-                .00 USD
-              </h3>
-            </div>
-            <div className="w-full flex ml-5">
-              Taxes, discounts and shipping calculated at checkout.
-            </div>
-            <div className="flex items-center justify-center">
-              <Link
-                to="/order"
-                className="w-full rounded-xl p-3 m-5 text-white bg-main-color"
-              >
-                Checkout
-              </Link>
-            </div>
+        </div>
+        <div className="bg-list-product-color rounded-bl-xl">
+          <div className="flex justify-center w-full mb-3">
+            <h3 className="w-full text-2xl secondary-color flex justify-start ml-5">
+              <strong>
+                Subtotal ({products.length} item
+                {products.length > 1 ? "s" : ""})
+              </strong>
+            </h3>
+            <h3 className="w-full flex text-2xl text-black font-bold justify-end mr-6">
+              $
+              {products
+                .reduce(
+                  (acc, product) =>
+                    acc +
+                    Number(
+                      calculateFinalPrice(
+                        product?.price ?? 0,
+                        product.quantity,
+                        product?.discount ?? 0,
+                        0
+                      )
+                    ),
+                  0
+                )
+                .toFixed(2)}
+            </h3>
+          </div>
+          <div className="w-full ml-5 text-left">
+            Taxes, shipping will be calculated at checkout. Happy shopping!
+            <p className="text-left secondary-color">⸜(｡˃ ᵕ ˂ )⸝♡</p>
+          </div>
+          <div className="flex items-center justify-center">
+            <Link
+              to="/order"
+              className="w-full rounded-xl p-3 m-5 text-white bg-main-color"
+            >
+              Checkout
+            </Link>
           </div>
         </div>
       </div>

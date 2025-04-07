@@ -247,7 +247,7 @@ export default function Order() {
                               <div className="flex gap-5 justify-center border border-green-700 rounded-xl max-w-24 font-bold text-black pl-1 pr-1">
                                 {product.quantity > 1 && (
                                   <div
-                                    className="flex items-center"
+                                    className="flex items-center cursor-pointer"
                                     onClick={() => {
                                       handleMinusProductFromCart(product);
                                     }}
@@ -257,7 +257,7 @@ export default function Order() {
                                 )}
                                 {product.quantity === 1 && (
                                   <div
-                                    className="flex items-center"
+                                    className="flex items-center cursor-pointer"
                                     onClick={() =>
                                       handleRemoveProduct(product.id)
                                     }
@@ -269,7 +269,7 @@ export default function Order() {
                                   {product.quantity}
                                 </div>
                                 <div
-                                  className="flex items-center"
+                                  className="flex items-center cursor-pointer"
                                   onClick={() => {
                                     handleAddProductToCart(product);
                                   }}
