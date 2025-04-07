@@ -1,18 +1,24 @@
+import { AppError } from "@/types.ts";
 import React, { useState } from "react";
 import { Product } from "mewmew-api-type";
 import { useDispatch } from "react-redux";
-import { showMessageSuccess } from "@/alerts/alert.ts";
+import { getProductDetailById } from "@/api/product.ts";
 import StarContainer from "@/components/StarContainer.tsx";
 import { addProductToCart } from "@/features/cart/cartSlice.ts";
+import { showMessageError, showMessageSuccess } from "@/alerts/alert.ts";
 
 export default function Info({ productInfo }: { productInfo: Product }) {
   const dispatch = useDispatch();
   const [isSpinner, setIsSpinner] = useState(false);
 
-  const addToCart = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const addToCart = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
-    setIsSpinner(true);
-    setTimeout(() => {
+    try {
+      setIsSpinner(true);
+      const productDetailResponse = await getProductDetailById(
+        productInfo?.id.toString()
+      );
+      const productDetail = productDetailResponse.data.details[0];
       dispatch(
         addProductToCart({
           id: productInfo.id,
@@ -20,11 +26,22 @@ export default function Info({ productInfo }: { productInfo: Product }) {
           quantity: 1,
           price: productInfo.price,
           img: productInfo.img_urls.split(",")[0],
+          color_name: productDetail.color_name,
+          size_name: productDetail.size_name,
+          discount: productDetail.discount,
+          length: productDetail.length,
+          width: productDetail.width,
+          height: productDetail.height,
+          weight: productDetail.weight,
+          color_code: productDetail.color_code,
         })
       );
-      setIsSpinner(false);
       showMessageSuccess("Product added to cart");
-    }, 300);
+    } catch (error) {
+      showMessageError(error as AppError);
+    } finally {
+      setIsSpinner(false);
+    }
   };
 
   return (
