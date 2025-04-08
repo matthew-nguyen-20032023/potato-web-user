@@ -75,17 +75,17 @@ export default function Cart({
     <div
       id="your-cart"
       tabIndex={-1}
-      className="hidden fixed top-5 right-0 z-50 w-1/4 max-h-[950px] p-4"
+      className="hidden fixed top-1 right-0 z-50 w-1/4 max-h-[95vh] p-4"
       ref={modalRef}
     >
-      <div className="w-full top-0 right-0 justify-end max-h-[700px]">
-        <div className="w-full bg-white shadow bg-list-product-color overflow-x-hidden overflow-y-auto scroll-container rounded-tl-xl max-h-[700px]">
+      <div className="w-full top-0 right-0 justify-end max-h-[75vh]">
+        <div className="w-full bg-white shadow bg-list-product-color overflow-x-hidden overflow-y-auto scroll-container rounded-tl-xl max-h-[75vh]">
           <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
             <h2 className="text-2xl secondary-color w-full flex justify-start">
               <strong>Your cart</strong>
             </h2>
           </div>
-          <div className="p-4 md:p-5 space-y-4">
+          <div className="p-5 text-[1vw] space-y-4">
             <table className="w-full">
               <tbody>
                 {products.map((product) => {
@@ -98,100 +98,93 @@ export default function Cart({
                         <img
                           src={product.img}
                           alt=""
-                          className="min-w-32 w-32 h-32 object-cover rounded-lg"
+                          className="w-[15vh] h-[15vh] object-cover rounded-lg"
                         />
                       </td>
                       <td className="pl-3 pt-2">
-                        <div className="mb-2">
-                          <table>
-                            <tbody className="text-left">
-                              <tr>
-                                <td className="text-black font-bold">
-                                  {product.name}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td
-                                  colSpan={2}
-                                  className="text-black font-bold"
+                        <table>
+                          <tbody className="text-left">
+                            <tr>
+                              <td className="text-black font-bold">
+                                {product.name}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td colSpan={2} className="text-black font-bold">
+                                {product.size_name}-
+                                <span
+                                  className="ml-1 inline-block rounded-full cursor-pointer"
+                                  style={{
+                                    backgroundColor:
+                                      product?.color_code ?? "#FFFFFF",
+                                    lineHeight: "1rem",
+                                    width: "1rem",
+                                  }}
                                 >
-                                  {product.size_name}-
-                                  <span
-                                    className="ml-1 inline-block rounded-full cursor-pointer"
-                                    style={{
-                                      backgroundColor:
-                                        product?.color_code ?? "#FFFFFF",
-                                      lineHeight: "1rem",
-                                      width: "1rem",
-                                    }}
-                                  >
-                                    &nbsp;
-                                  </span>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td></td>
-                              </tr>
-                              <tr>
-                                <td colSpan={2}>
-                                  <div className="flex gap-5 justify-center border border-green-700 rounded-xl max-w-24 font-bold text-black pl-1 pr-1">
-                                    {product.quantity > 1 && (
-                                      <div
-                                        className="flex items-center cursor-pointer"
-                                        onClick={() => {
-                                          handleMinusProductFromCart(product);
-                                        }}
-                                      >
-                                        <FaMinus />
-                                      </div>
-                                    )}
-                                    {product.quantity === 1 && (
-                                      <div
-                                        className="flex items-center cursor-pointer"
-                                        onClick={() =>
-                                          handleRemoveProduct(product.id)
-                                        }
-                                      >
-                                        <FaTrash />
-                                      </div>
-                                    )}
-                                    <div className="flex items-center">
-                                      {product.quantity}
-                                    </div>
+                                  &nbsp;
+                                </span>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                            </tr>
+                            <tr>
+                              <td colSpan={2}>
+                                <div className="flex gap-5 justify-center border border-green-700 rounded-xl w-[5vw] font-bold text-black pl-1 pr-1">
+                                  {product.quantity > 1 && (
                                     <div
                                       className="flex items-center cursor-pointer"
                                       onClick={() => {
-                                        handleAddProductToCart(product);
+                                        handleMinusProductFromCart(product);
                                       }}
                                     >
-                                      <FaPlus />
+                                      <FaMinus />
                                     </div>
+                                  )}
+                                  {product.quantity === 1 && (
+                                    <div
+                                      className="flex items-center cursor-pointer"
+                                      onClick={() =>
+                                        handleRemoveProduct(product.id)
+                                      }
+                                    >
+                                      <FaTrash />
+                                    </div>
+                                  )}
+                                  <div className="flex items-center">
+                                    {product.quantity}
                                   </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td className="pt-3" colSpan={2}>
-                                  Total price:
-                                  <span className="pr-3 pl-2 text-black font-bold">
-                                    $
-                                    {calculateFinalPrice(
-                                      product.price,
-                                      product.quantity,
-                                      product.discount,
-                                      0
-                                    )}
-                                  </span>
-                                  <span className="line-through">
-                                    $
-                                    {(
-                                      product.price * product.quantity
-                                    ).toFixed()}
-                                  </span>{" "}
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
+                                  <div
+                                    className="flex items-center cursor-pointer"
+                                    onClick={() => {
+                                      handleAddProductToCart(product);
+                                    }}
+                                  >
+                                    <FaPlus />
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td className="pt-3" colSpan={2}>
+                                Total price:
+                                <span className="pr-3 pl-2 text-black font-bold">
+                                  $
+                                  {calculateFinalPrice(
+                                    product.price,
+                                    product.quantity,
+                                    product.discount,
+                                    0
+                                  )}
+                                </span>
+                                <span className="line-through">
+                                  $
+                                  {(product.price * product.quantity).toFixed()}
+                                </span>{" "}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </td>
                     </tr>
                   );
@@ -201,8 +194,8 @@ export default function Cart({
           </div>
         </div>
         <div className="bg-list-product-color rounded-bl-xl">
-          <div className="flex justify-center w-full mb-3">
-            <h3 className="w-full text-2xl secondary-color flex justify-start ml-5">
+          <div className="flex justify-center w-full">
+            <h3 className="w-full text-[1.35vw] secondary-color flex justify-start ml-5">
               <strong>
                 Subtotal ({products.length} item
                 {products.length > 1 ? "s" : ""})
@@ -227,7 +220,7 @@ export default function Cart({
                 .toFixed(2)}
             </h3>
           </div>
-          <div className="w-full ml-5 text-left">
+          <div className="w-full ml-5 text-left text-[0.8vw]">
             Taxes, shipping will be calculated at checkout. Happy shopping!
             <p className="text-left secondary-color">⸜(｡˃ ᵕ ˂ )⸝♡</p>
           </div>
