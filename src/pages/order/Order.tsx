@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { AppError, IProductAddedToCart } from "@/types.ts";
 import {
   calculateFinalPrice,
@@ -37,6 +37,8 @@ export default function Order() {
   const dispatch = useDispatch();
   const products = useSelector(selectProductsAddedToCart);
   const isCartLoad = useSelector(selectLoadCart);
+  const [subTotal, setSubTotal] = useState("0"); // not include shipping fee
+  const [totalPrice, setTotalPrice] = useState("0"); // include shipping fee
 
   const handleRemoveProduct = (id: number) => {
     dispatch(removeFromCart(id));
@@ -50,7 +52,24 @@ export default function Order() {
   };
 
   useEffect(() => {
-    if (isCartLoad) localStorage.setItem(cacheCart, JSON.stringify(products));
+    if (isCartLoad) {
+      localStorage.setItem(cacheCart, JSON.stringify(products));
+      const finalPrice = products.reduce(
+        (acc, product) =>
+          acc +
+          Number(
+            calculateFinalPrice(
+              product?.price ?? 0,
+              product.quantity,
+              product?.discount ?? 0,
+              0
+            )
+          ),
+        0
+      );
+      setSubTotal(finalPrice.toFixed(2));
+      setTotalPrice((finalPrice + SHIPPING_FEE).toFixed(2));
+    }
   }, [products, isCartLoad]);
 
   const styles: PayPalButtonsComponentProps["style"] = {
@@ -64,20 +83,6 @@ export default function Order() {
     _data: CreateOrderData,
     actions: CreateOrderActions
   ) => {
-    const totalPrice =
-      products.reduce(
-        (acc, product) =>
-          acc +
-          Number(
-            calculateFinalPrice(
-              product?.price ?? 0,
-              product.quantity,
-              product?.discount ?? 0,
-              0
-            )
-          ),
-        0
-      ) + SHIPPING_FEE;
     const orderId = await actions.order.create({
       intent: "CAPTURE",
       purchase_units: [
@@ -242,7 +247,7 @@ export default function Order() {
                               <div className="flex gap-5 justify-center border border-green-700 rounded-xl max-w-24 font-bold text-black pl-1 pr-1">
                                 {product.quantity > 1 && (
                                   <div
-                                    className="flex items-center"
+                                    className="flex items-center cursor-pointer"
                                     onClick={() => {
                                       handleMinusProductFromCart(product);
                                     }}
@@ -252,7 +257,7 @@ export default function Order() {
                                 )}
                                 {product.quantity === 1 && (
                                   <div
-                                    className="flex items-center"
+                                    className="flex items-center cursor-pointer"
                                     onClick={() =>
                                       handleRemoveProduct(product.id)
                                     }
@@ -264,7 +269,7 @@ export default function Order() {
                                   {product.quantity}
                                 </div>
                                 <div
-                                  className="flex items-center"
+                                  className="flex items-center cursor-pointer"
                                   onClick={() => {
                                     handleAddProductToCart(product);
                                   }}
@@ -326,26 +331,33 @@ export default function Order() {
             </tbody>
           </table>
           {products.length > 0 && (
-            <div className="ml-10 border border-black rounded-xl p-5 max-w-64 max-h-72">
+            <div className="ml-10 border border-black rounded-xl p-5 max-w-72 max-h-96">
               <table>
                 <tbody className="text-left">
                   <tr className="text-xl">
-                    <td className="font-bold">Total Price:</td>
+                    <td className="font-bold">
+                      Subtotal ({products.length} item
+                      {products.length > 0 ? "s" : ""}):
+                    </td>
                     <td className="text-black font-bold text-right">
-                      $
-                      {products.reduce(
-                        (acc, product) =>
-                          acc +
-                          Number(
-                            calculateFinalPrice(
-                              product?.price ?? 0,
-                              product.quantity,
-                              product?.discount ?? 0,
-                              0
-                            )
-                          ),
-                        0
-                      ) + SHIPPING_FEE}
+                      ${subTotal}
+                    </td>
+                  </tr>
+                  <tr className="text-xl">
+                    <td className="font-bold">Shipping fee:</td>
+                    <td className="text-black font-bold text-right">
+                      ${SHIPPING_FEE}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colSpan={2} className="pb-3 pt-3">
+                      <hr className="border-black" />
+                    </td>
+                  </tr>
+                  <tr className="text-xl">
+                    <td className="font-bold">Total price:</td>
+                    <td className="text-black font-bold text-right">
+                      ${totalPrice}
                     </td>
                   </tr>
                   <tr>

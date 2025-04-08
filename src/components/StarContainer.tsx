@@ -1,9 +1,9 @@
 import { IoMdStar } from "react-icons/io";
 function Star() {
-  return <IoMdStar style={{ color: "#656E37" }} size={25} />;
+  return <IoMdStar style={{ color: "#656E37" }} className="size-[2vh]" />;
 }
 function NoStar() {
-  return <IoMdStar style={{ color: "#d4c7c7" }} size={25} />;
+  return <IoMdStar style={{ color: "#d4c7c7" }} className="size-[2vh]" />;
 }
 
 export default function StarContainer({

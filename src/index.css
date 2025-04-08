@@ -69,7 +69,6 @@ button {
 
 .pagination li.active {
   border-bottom: 1px solid green;
-  font-size: 1.5em;
 }
 .pagination li.active a {
   color: green;
