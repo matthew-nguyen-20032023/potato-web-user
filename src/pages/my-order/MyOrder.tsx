@@ -43,19 +43,19 @@ export default function MyOrder() {
     <div>
       <div className="bg-list-product-color secondary-color pt-5 pb-5 flex justify-center items-center w-full">
         <div className="w-1/2">
-          <h1 className="text-5xl font-semibold text-center">My Order</h1>
+          <h1 className="text-[4vh] font-semibold text-center">My Order</h1>
         </div>
       </div>
       <div className="flex items-center justify-center">
         <input
-          className="bg-white m-1 border border-gray-300 text-md rounded-lg block py-3 ps-4 pe-9 w-1/6 secondary-color"
+          className="bg-white m-1 border border-gray-300 text-[2vh] rounded-lg block py-3 ps-4 pe-9 w-[35vh] h-[5.4vh] secondary-color"
           type="text"
           placeholder="Paypal order id..."
           onChange={(e) => setPaypalOrderId(e.target.value)}
         />
         <button
           type="button"
-          className="m-1 p-2.5 bg-main-color text-white font-medium rounded-lg text-md text-center hover:scale-110"
+          className="m-1 p-[1.4vh] bg-main-color text-white font-medium rounded-lg text-[1.6vh] text-center hover:scale-110"
           onClick={handleSearch}
         >
           {isSpinner && <Spinning />}
@@ -63,8 +63,8 @@ export default function MyOrder() {
         </button>
       </div>
       <div className="bg-list-product-color secondary-color flex justify-center items-center w-full p-5">
-        <table className="w-3/4 text-sm text-left rtl:text-right secondary-color border border-black">
-          <thead className="text-xs text-gray-700 uppercase secondary-color">
+        <table className="w-3/4 text-[1.3vh] text-left rtl:text-right secondary-color border border-black">
+          <thead className="text-gray-700 uppercase secondary-color">
             <tr className="border border-black text-center">
               <th className="border border-black" scope="col">
                 Order Id
@@ -140,8 +140,8 @@ export default function MyOrder() {
                   {order.id === orderDetail?.id && (
                     <tr>
                       <td colSpan={12}>
-                        <table className="w-full text-sm text-left rtl:text-right secondary-color border border-green-700">
-                          <thead className="text-xs text-gray-700 uppercase secondary-color">
+                        <table className="w-full text-[1.3vh] text-left rtl:text-right secondary-color border border-green-700">
+                          <thead className="text-gray-700 uppercase secondary-color">
                             <tr className="border border-green-700 text-center">
                               <th
                                 className="border border-green-700"
@@ -239,7 +239,7 @@ export default function MyOrder() {
       </div>
       <div className="bg-list-product-color secondary-color flex justify-center items-center w-full pb-5">
         <ReactPaginate
-          className="inline-flex -space-x-px text-xl pagination"
+          className="inline-flex -space-x-px text-[1.7vh] pagination"
           breakLabel="..."
           nextLabel="Next >"
           onPageChange={handlePageClick}
