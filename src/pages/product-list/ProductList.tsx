@@ -106,7 +106,7 @@ export default function ProductList() {
             id="searchName"
             onChange={(e) => setSearchName(e.target.value)}
             placeholder="Search..."
-            className="bg-white m-1 border border-gray-300 text-md rounded-lg block py-3 ps-4 pe-9 w-full secondary-color"
+            className="bg-white m-1 border border-gray-300 text-md rounded-lg block py-3 ps-4 pe-9 w-[30vh] secondary-color text-[1.5vh]"
           />
           <MultiSelect
             title="Select Category..."
@@ -114,6 +114,7 @@ export default function ProductList() {
             onChange={(values) => {
               setSearchCategory(values);
             }}
+            className={"w-[29vh]"}
           />
           <MultiSelect
             title="Select Color..."
@@ -121,10 +122,11 @@ export default function ProductList() {
             onChange={(values) => {
               setSearchColor(values);
             }}
+            className={"w-[29vh]"}
           />
           <button
             type="button"
-            className="m-1 p-2.5 bg-main-color text-white font-medium rounded-lg text-md text-center hover:scale-110 w-1/6"
+            className="m-1 p-2.5 bg-main-color text-white font-medium rounded-lg text-[1.4vh] text-center hover:scale-110 w-[10vh]"
             onClick={listProductHandler}
           >
             {isSpinner && <Spinning />}
@@ -146,7 +148,7 @@ export default function ProductList() {
               return (
                 <div
                   key={product.id}
-                  className="relative overflow-hidden shadow-lg rounded-xl group max-h-56 border hover:cursor-pointer"
+                  className="relative overflow-hidden shadow-lg rounded-xl group h-[20vh] border hover:cursor-pointer"
                   onClick={handleClick.bind(null, product.id)}
                 >
                   <img
@@ -163,7 +165,7 @@ export default function ProductList() {
       )}
       <div className="w-full flex justify-center bg-list-product-color pb-5">
         <ReactPaginate
-          className="inline-flex -space-x-px text-xl p-2 pagination"
+          className="inline-flex -space-x-px text-[1.7vh] p-2 pagination"
           breakLabel="..."
           nextLabel="Next >"
           onPageChange={handlePageClick}

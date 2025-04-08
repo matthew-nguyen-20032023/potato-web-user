@@ -47,19 +47,19 @@ export default function Info({ productInfo }: { productInfo: Product }) {
   return (
     <div className="absolute w-full bottom-0 left-0 bg-secondary-color secondary-color px-3 py-1 rounded-lg text-sm font-medium opacity-0 group-hover:opacity-80 transition-opacity duration-300">
       <a href="#">
-        <h5 className="text-xl font-semibold tracking-tight">
+        <h5 className="text-[2vh] font-semibold tracking-tight">
           {productInfo.name}
         </h5>
       </a>
-      <div className="flex items-center mt-2.5 mb-5">
+      <div className="flex items-center mt-2.5 mb-7">
         <StarContainer average_star={+productInfo.average_star} />
       </div>
       <div className="flex items-center justify-between">
-        <span className="text-3xl font-bold">${productInfo.price}</span>
+        <span className="text-[2vh] font-bold">${productInfo.price}</span>
         <button
           type="button"
           onClick={addToCart}
-          className="text-white bg-gradient-to-r bg-lime-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 min-w-28 z-20"
+          className="text-white bg-lime-900 font-medium rounded-lg text-[1.4vh] text-center w-[11vh] z-20"
         >
           {isSpinner && (
             <svg

@@ -85,7 +85,7 @@ export default function Cart({
               <strong>Your cart</strong>
             </h2>
           </div>
-          <div className="p-5 text-[1vw] space-y-4">
+          <div className="p-5 text-[1.8vh] space-y-4">
             <table className="w-full">
               <tbody>
                 {products.map((product) => {

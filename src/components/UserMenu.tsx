@@ -49,7 +49,9 @@ export default function UserMenu() {
             alt="user photo"
           />
         )}
-        {!profile?.profile_img_url && <FaRegCircleUser size={28} />}
+        {!profile?.profile_img_url && (
+          <FaRegCircleUser className="size-[3.3vh]" />
+        )}
       </button>
       <div
         id="dropdownAvatar"
