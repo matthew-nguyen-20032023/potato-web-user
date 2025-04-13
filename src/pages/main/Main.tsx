@@ -32,7 +32,13 @@ export default function Main() {
       <Header cartButtonRef={cartButtonRef} />
       <Intro />
       {showProductList && <Event />}
-      <ToastContainer />
+      <ToastContainer
+        toastStyle={{
+          width: "17vw",
+          fontSize: "1.5vh",
+          height: "5vh",
+        }}
+      />
       <Outlet />
       <Footer />
       <Cart cartButtonRef={cartButtonRef} />
