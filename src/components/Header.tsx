@@ -47,7 +47,7 @@ export default function Header({
 
   return (
     <div
-      className={`header bg-secondary-color pt-5 ${
+      className={`header bg-secondary-color pt-2 ${
         isScrolled ? "fixed z-10 top-0 w-full" : "relative"
       }`}
     >

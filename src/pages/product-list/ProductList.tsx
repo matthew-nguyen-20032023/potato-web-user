@@ -21,7 +21,7 @@ export default function ProductList() {
     { value: string; label: string; id: number }[]
   >([]);
 
-  const perPage = 8;
+  const perPage = 12;
   const [page, setPage] = useState(1);
   const [searchName, setSearchName] = useState("");
   const [isSpinner, setIsSpinner] = useState(false);
@@ -100,7 +100,7 @@ export default function ProductList() {
   return (
     <div className="bg-white">
       <div className="flex justify-center pt-4 items-center">
-        <div className="flex justify-center items-center w-3/6 p-3">
+        <div className="flex justify-center items-center w-3/6 pl-3 pr-3">
           <input
             type="text"
             id="searchName"
