@@ -98,15 +98,15 @@ export default function ProductList() {
   }, [page]);
 
   return (
-    <div>
-      <div className="bg-list-product-color flex justify-center pt-4 items-center">
-        <div className="bg-list-product-color flex justify-center items-center w-3/6 p-3">
+    <div className="bg-white">
+      <div className="flex justify-center pt-4 items-center">
+        <div className="flex justify-center items-center w-3/6 p-3">
           <input
             type="text"
             id="searchName"
             onChange={(e) => setSearchName(e.target.value)}
             placeholder="Search..."
-            className="bg-white m-1 border border-gray-300 text-md rounded-lg block py-3 ps-4 pe-9 w-[30vh] secondary-color text-[1.5vh]"
+            className="bg-white m-1 border border-gray-300 rounded-lg block py-3 ps-4 pe-9 w-[30vh] secondary-color text-[1.5vh] h-[3vh]"
           />
           <MultiSelect
             title="Select Category..."
@@ -114,7 +114,7 @@ export default function ProductList() {
             onChange={(values) => {
               setSearchCategory(values);
             }}
-            className={"w-[29vh]"}
+            className={"w-[29vh] h-[3vh]"}
           />
           <MultiSelect
             title="Select Color..."
@@ -122,11 +122,11 @@ export default function ProductList() {
             onChange={(values) => {
               setSearchColor(values);
             }}
-            className={"w-[29vh]"}
+            className={"w-[29vh] h-[3vh]"}
           />
           <button
             type="button"
-            className="m-1 p-2.5 bg-main-color text-white font-medium rounded-lg text-[1.4vh] text-center hover:scale-110 w-[10vh]"
+            className="flex items-center justify-center m-1 bg-main-color text-white rounded-lg text-[1.4vh] hover:scale-110 w-[10vh] h-[3vh]"
             onClick={listProductHandler}
           >
             {isSpinner && <Spinning />}
@@ -142,8 +142,8 @@ export default function ProductList() {
         </div>
       )}
       {products.length > 0 && (
-        <div className="w-full flex justify-center bg-list-product-color">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 p-4 bg-list-product-color w-3/6">
+        <div className="w-full flex justify-center">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 p-4 w-3/6">
             {products.map((product) => {
               return (
                 <div
@@ -163,7 +163,7 @@ export default function ProductList() {
           </div>
         </div>
       )}
-      <div className="w-full flex justify-center bg-list-product-color pb-5">
+      <div className="w-full flex justify-center pb-5">
         <ReactPaginate
           className="inline-flex -space-x-px text-[1.7vh] p-2 pagination"
           breakLabel="..."

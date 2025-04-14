@@ -28,9 +28,8 @@ export default function Main() {
 
   return (
     <div className="max-h-screen overflow-y-auto scroll-container bg-list-product-color">
-      <Welcome />
-      <Header cartButtonRef={cartButtonRef} />
-      <Intro />
+      {showProductList && <Welcome />} <Header cartButtonRef={cartButtonRef} />
+      {showProductList && <Intro />}
       {showProductList && <Event />}
       <ToastContainer
         toastStyle={{
