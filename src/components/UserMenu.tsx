@@ -50,7 +50,7 @@ export default function UserMenu() {
           />
         )}
         {!profile?.profile_img_url && (
-          <FaRegCircleUser className="size-[3.3vh]" />
+          <FaRegCircleUser className="size-[2.4vh]" />
         )}
       </button>
       <div

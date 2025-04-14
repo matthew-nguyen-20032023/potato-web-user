@@ -47,18 +47,18 @@ export default function Header({
 
   return (
     <div
-      className={`header bg-secondary-color pt-5 ${
+      className={`header bg-secondary-color pt-2 ${
         isScrolled ? "fixed z-10 top-0 w-full" : "relative"
       }`}
     >
       <div className="flex justify-center items-center">
         <button className="bg-secondary-color hover:scale-110" type="button">
-          <IoSearchOutline className="size-[3.5vh]" />
+          <IoSearchOutline className="size-[2.5vh]" />
         </button>
         <h1 className="flex justify-center pr-[18vh] pl-[18vh]">
           <img
             onClick={() => (window.location.href = "/")}
-            className="w-[30vh] hover:cursor-pointer hover:scale-110"
+            className="w-[25vh] hover:cursor-pointer hover:scale-110"
             src="/src/assets/logo.png"
             alt=""
           />
@@ -68,7 +68,7 @@ export default function Header({
           onClick={handleCartClick}
           ref={cartButtonRef}
         >
-          <RiShoppingBag3Line className="size-[3.5vh]" />
+          <RiShoppingBag3Line className="size-[2.5vh]" />
           {products.length > 0 && (
             <span className="absolute top-1 right-2 transform translate-x-1/4 -translate-y-1/4 inline-flex items-center justify-center w-[1.8vh] h-[1.8vh] text-[1.2vh] font-bold text-red-100 bg-main-color rounded-full">
               {products.reduce((acc, product) => acc + product.quantity, 0)}
@@ -111,7 +111,7 @@ export default function Header({
             className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
             id="navbar-sticky"
           >
-            <ul className="flex text-[1.8vh]">
+            <ul className="flex text-[1.5vh]">
               <li>
                 <Link className="block py-2 px-3 hover:scale-110" to="/">
                   Home

@@ -11,7 +11,7 @@ export default function LoginOrRegister() {
         className="bg-secondary-color text-sm px-5 py-2.5 text-center inline-flex items-center hover:scale-110"
         type="button"
       >
-        <FaUser className="size-[3vh]" />{" "}
+        <FaUser className="size-[2.2vh]" />{" "}
         <svg
           className="w-2.5 h-2.5 ms-3"
           aria-hidden="true"
