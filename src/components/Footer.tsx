@@ -10,7 +10,7 @@ export default function Footer() {
             <div className="mb-6 md:mb-0">
               <a href="/" className="flex items-center hover:scale-110">
                 <img
-                  src="/src/assets/logo-short.png"
+                  src="/logo-short.png"
                   className="h-[8vh] me-3"
                   alt="FlowBite Logo"
                 />

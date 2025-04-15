@@ -15,7 +15,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSpinner, setIsSpinner] = useState(false);
-  const [image, setImage] = useState("/src/assets/password-1.png");
+  const [image, setImage] = useState("/password-1.png");
 
   // if user already login, redirect to home page
   const navigate = useNavigate();
@@ -47,18 +47,14 @@ export default function Login() {
 
   const handleInputPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value === "") {
-      const images = [
-        "/src/assets/password-4.png",
-        "/src/assets/password-3.png",
-        "/src/assets/password-2.png",
-      ];
+      const images = ["/password-4.png", "/password-3.png", "/password-2.png"];
       renderMewAction(images);
-    } else if (image === "/src/assets/password-2.png") {
+    } else if (image === "/password-2.png") {
       handleMewCloseEye();
       renderMewAction([
-        "/src/assets/password-3.png",
-        "/src/assets/password-4.png",
-        "/src/assets/password-5.png",
+        "/password-3.png",
+        "/password-4.png",
+        "/password-5.png",
       ]);
     }
     setPassword(event.target.value);
@@ -73,20 +69,20 @@ export default function Login() {
   };
 
   const handleMewCloseEye = () => {
-    const images = ["/src/assets/password-2.png"];
+    const images = ["/password-2.png"];
     renderMewAction(images);
   };
 
   const handleMewOpenEye = () => {
     if (password === "") {
-      setImage("/src/assets/password-1.png");
+      setImage("/password-1.png");
       return;
     }
     const images = [
-      "/src/assets/password-4.png",
-      "/src/assets/password-3.png",
-      "/src/assets/password-2.png",
-      "/src/assets/password-1.png",
+      "/password-4.png",
+      "/password-3.png",
+      "/password-2.png",
+      "/password-1.png",
     ];
     renderMewAction(images);
   };

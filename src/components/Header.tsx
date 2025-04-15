@@ -59,7 +59,7 @@ export default function Header({
           <img
             onClick={() => (window.location.href = "/")}
             className="w-[25vh] hover:cursor-pointer hover:scale-110"
-            src="/src/assets/logo.png"
+            src="/logo.png"
             alt=""
           />
         </h1>
