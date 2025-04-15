@@ -43,19 +43,19 @@ export default function MyOrder() {
     <div>
       <div className="bg-list-product-color secondary-color pt-5 pb-5 flex justify-center items-center w-full">
         <div className="w-1/2">
-          <h1 className="text-[4vh] font-semibold text-center">My Order</h1>
+          <h1 className="text-[3vh] font-semibold text-center">My Order</h1>
         </div>
       </div>
       <div className="flex items-center justify-center">
         <input
-          className="bg-white m-1 border border-gray-300 text-[2vh] rounded-lg block py-3 ps-4 pe-9 w-[35vh] h-[5.4vh] secondary-color"
+          className="bg-white m-1 border border-gray-300 text-[2vh] rounded-lg block py-3 ps-4 pe-9 w-[35vh] h-[4.4vh] secondary-color"
           type="text"
           placeholder="Paypal order id..."
           onChange={(e) => setPaypalOrderId(e.target.value)}
         />
         <button
           type="button"
-          className="m-1 p-[1.4vh] bg-main-color text-white font-medium rounded-lg text-[1.6vh] text-center hover:scale-110"
+          className="m-1 p-[0.9vh] bg-main-color text-white font-medium rounded-lg text-[1.6vh] text-center hover:scale-110"
           onClick={handleSearch}
         >
           {isSpinner && <Spinning />}

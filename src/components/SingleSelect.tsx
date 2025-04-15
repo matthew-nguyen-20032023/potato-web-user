@@ -6,11 +6,13 @@ const SingleSelect = ({
   options,
   onChange,
   value,
+  className = "",
 }: {
   title: string;
   options: { value: string; label: string; id: number }[];
   onChange: (selectedValue: number) => void;
   value?: string;
+  className?: string;
 }) => {
   const [selected, setSelected] = useState<string>(title);
   const [isOpen, setIsOpen] = useState(false);
@@ -36,11 +38,14 @@ const SingleSelect = ({
   );
 
   return (
-    <div className="relative w-full secondary-color">
+    <div className={"relative w-full secondary-color " + className}>
       {/* Button */}
       <button
         type="button"
-        className="relative py-3 ps-4 pe-9 flex gap-x-2 w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-md"
+        className={
+          "py-3 ps-4 pe-9 flex items-center gap-x-2 w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-[1.5vh] " +
+          className
+        }
         onClick={toggleDropdown}
       >
         <span>{selected ? selected : title}</span>
@@ -67,7 +72,10 @@ const SingleSelect = ({
           placeholder="Search..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="rounded-t-lg w-full p-2 border-b border-gray-200 outline-none text-md bg-white"
+          className={
+            "rounded-t-lg w-full p-2 border-b border-gray-200 outline-none text-[1.5vh] bg-white " +
+            className
+          }
         />
 
         {/* Options List */}
@@ -76,7 +84,7 @@ const SingleSelect = ({
             filteredOptions.map((option) => (
               <div
                 key={option.value}
-                className="py-2 px-4 flex justify-between items-center text-md secondary-color cursor-pointer hover:bg-gray-100"
+                className="py-2 px-4 flex justify-between items-center text-[1.5vh] secondary-color cursor-pointer hover:bg-gray-100"
                 onClick={() => toggleOption(option)}
               >
                 <span>{option.label}</span>
@@ -86,7 +94,9 @@ const SingleSelect = ({
               </div>
             ))
           ) : (
-            <p className="text-sm text-gray-500 px-4 py-2">No results found</p>
+            <p className="text-[1.5vh] text-gray-500 px-4 py-2">
+              No results found
+            </p>
           )}
         </div>
       </div>

@@ -2,10 +2,10 @@ export default function ShippingReturn() {
   return (
     <div className="bg-list-product-color secondary-color p-16 flex justify-center items-center w-full">
       <div className="w-1/2">
-        <h1 className="text-5xl font-semibold text-center">
+        <h1 className="text-[3vh] font-semibold text-center">
           Shipping &amp; Returns
         </h1>
-        <p className="text-center mt-4">
+        <p className="text-center mt-4 text-[1.5vh]">
           Welcome to Mew Mew shop, where craftsmanship meets passion! We are a
           small, dedicated team led by a passionate artisan who loves creating
           beautiful, high-quality handmade products. Every item in our shop is
