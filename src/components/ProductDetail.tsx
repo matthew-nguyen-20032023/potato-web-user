@@ -173,8 +173,7 @@ export default function ProductDetail() {
                     : productDetail?.img_urls.split(",")[0]
                 }
                 alt=""
-                className="rounded-xl object-cover"
-                style={{ height: "30rem", width: "30rem" }}
+                className="rounded-xl object-cover w-[50vh] h-[50vh]"
               />
             </Zoom>
             <div className="mt-3 flex items-center justify-start max-w-96 overflow-y-auto scroll-container pb-3">
@@ -185,7 +184,7 @@ export default function ProductDetail() {
                       key={`${pDetail.id}-${index}`}
                       src={img}
                       alt=""
-                      className="rounded-xl h-28 w-28 object-cover mr-3 hover:cursor-pointer flex-shrink-0"
+                      className="rounded-xl h-[11vh] w-[11vh] object-cover mr-3 hover:cursor-pointer flex-shrink-0"
                       onClick={() => {
                         setImageDisplay(img);
                         setProductDetail(pDetail);
@@ -197,7 +196,9 @@ export default function ProductDetail() {
             </div>
           </div>
           <div className="p-6 max-w-xl">
-            <h1 className="flex text-left max-w-80">{product?.name}</h1>
+            <div className="flex text-left max-w-80 text-[3vh] font-bold">
+              {product?.name}
+            </div>
             <div className="relative mb-10">
               <StarContainer
                 average_star={+(product?.average_star ?? 0)}
@@ -206,12 +207,12 @@ export default function ProductDetail() {
             </div>
             <hr className="mb-5 border-black" />
 
-            <div className="secondary-color text-3xl w-full flex">
+            <div className="secondary-color text-[2.8vh] w-full flex">
               <span className="text-red-800 mr-4">
                 -{productDetail?.discount}%
               </span>
               <span className="relative w-4/12">
-                <span className="absolute text-sm left-1">$</span>
+                <span className="absolute text-[1.5vh] left-1">$</span>
                 <span className="absolute left-3">
                   {calculateDiscount(
                     productDetail?.price,
@@ -220,13 +221,13 @@ export default function ProductDetail() {
                 </span>
               </span>
             </div>
-            <div className="secondary-color text-sm w-full flex mb-3">
+            <div className="secondary-color text-[1.5vh] w-full flex mb-3">
               <span>
                 Original price:{" "}
                 <span className="line-through">${productDetail?.price}</span>
               </span>
             </div>
-            <div className="secondary-color text-sm w-full flex">
+            <div className="secondary-color text-[1.5vh] w-full flex">
               <span>
                 Size:{" "}
                 <span className="text-black font-bold">
@@ -234,7 +235,7 @@ export default function ProductDetail() {
                 </span>
               </span>
             </div>
-            <div className="secondary-color text-sm max-w-80 flex mb-3 flex-wrap">
+            <div className="secondary-color text-[1.5vh] max-w-80 flex mb-3 flex-wrap">
               {productDetails?.map((e) => {
                 return (
                   <div
@@ -254,7 +255,7 @@ export default function ProductDetail() {
                 );
               })}
             </div>
-            <div className="secondary-color text-sm w-full flex items-center">
+            <div className="secondary-color text-[1.5vh] w-full flex items-center">
               <span>
                 Color:{" "}
                 <span className="text-black font-bold">
@@ -262,7 +263,7 @@ export default function ProductDetail() {
                 </span>
               </span>
             </div>
-            <div className="secondary-color text-sm max-w-80 flex mb-3 flex-wrap">
+            <div className="secondary-color text-[1.5vh] max-w-80 flex mb-3 flex-wrap">
               {productDetails?.map((e) => {
                 return (
                   <span
@@ -296,7 +297,7 @@ export default function ProductDetail() {
               </div>
               <div className="mb-5">
                 <table className="w-full text-left rtl:text-right border border-black">
-                  <thead className="text-xs uppercase text-black">
+                  <thead className="text-[1.3vh] uppercase text-black">
                     <tr className="border border-black text-center">
                       <th className="border border-black" scope="col">
                         Length
@@ -313,7 +314,7 @@ export default function ProductDetail() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className="border border-black text-center text-xl">
+                    <tr className="border border-black text-center text-[2vh]">
                       <td className="border border-black">
                         {productDetail?.length} cm
                       </td>
@@ -343,12 +344,12 @@ export default function ProductDetail() {
               </div>
             </div>
           </div>
-          <div className="p-3 border m-6 rounded-xl max-w-72">
+          <div className="p-3 border m-6 rounded-xl max-w-[30vh]">
             <div className="flex w-full mb-3">
-              <h3 className="text-3xl">${totalPrice}</h3>
+              <h3 className="text-[3vh]">${totalPrice}</h3>
             </div>
             <div className="mb-4">
-              <p className="text-sm text-left secondary-color">
+              <p className="text-[1.5vh] text-left secondary-color">
                 The total cost of your order includes the product price,
                 shipping fee, applicable VAT,... And discount already. Happy
                 shopping
@@ -356,7 +357,9 @@ export default function ProductDetail() {
               <p className="text-left secondary-color">⸜(｡˃ ᵕ ˂ )⸝♡</p>
             </div>
             <div>
-              <p className="text-xl text-left main-color font-bold">In Stock</p>
+              <p className="text-[2vh] text-left main-color font-bold">
+                In Stock
+              </p>
             </div>
             <div className="mb-4 flex">
               <SingleSelect
@@ -376,6 +379,7 @@ export default function ProductDetail() {
                 onChange={(selectedValue) => {
                   setQuantity(selectedValue);
                 }}
+                className={"h-[4.5vh]"}
               />
             </div>
             <button
@@ -387,7 +391,7 @@ export default function ProductDetail() {
               {!isSpinner && "Add to cart"}
             </button>
             <div className="mb-4">
-              <table className="text-left">
+              <table className="text-left text-[1.6vh]">
                 <tbody>
                   <tr>
                     <td className="secondary-color">Ships from:</td>
