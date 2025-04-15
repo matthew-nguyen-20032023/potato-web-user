@@ -147,33 +147,35 @@ export default function Order() {
     <div>
       <div className="bg-list-product-color secondary-color pt-5 flex justify-center items-center w-full">
         <div className="w-1/2">
-          <h1 className="text-5xl font-semibold text-center">Shopping Cart</h1>
+          <h1 className="text-[3vh] font-semibold text-center">
+            Shopping Cart
+          </h1>
         </div>
       </div>
-      <div className="bg-list-product-color secondary-color p-5 flex justify-center items-center w-full">
-        <div className="flex justify-center" style={{ minWidth: "750px" }}>
+      <div className="bg-list-product-color secondary-color p-5 flex justify-center items-center w-[200vh]">
+        <div className="flex justify-center">
           <table>
             <tbody>
               {products.map((product) => {
                 return (
                   <tr
                     key={product.id}
-                    className="flex items-center justify-between mb-5"
+                    className="flex items-start justify-between mb-[2vh]"
                   >
                     <td>
                       <img
                         src={product.img}
                         alt=""
-                        className="w-40 h-40 object-cover rounded-lg"
+                        className="w-[17vh] h-[17vh] object-cover rounded-lg"
                       />
                     </td>
                     <td className="pl-5 pr-5">
-                      <div className="flex text-black font-bold text-left text-2xl max-w-96 w-96">
+                      <div className="flex text-black font-bold text-left text-[2.3vh] w-[30vh]">
                         {product.name}
                       </div>
-                      <div className="mb-2">
+                      <div className="mb-[1vh]">
                         <table>
-                          <tbody className="text-left">
+                          <tbody className="text-left text-[1.7vh]">
                             <tr>
                               <td>Size:</td>
                               <td className="text-black font-bold pl-2">
@@ -191,8 +193,8 @@ export default function Order() {
                                   style={{
                                     backgroundColor:
                                       product?.color_code ?? "#FFFFFF",
-                                    lineHeight: "1rem",
-                                    width: "1rem",
+                                    lineHeight: "2vh",
+                                    width: "2vh",
                                   }}
                                 >
                                   &nbsp;
@@ -203,8 +205,8 @@ export default function Order() {
                         </table>
                       </div>
                       <div>
-                        <table className="w-full text-left rtl:text-right border border-black">
-                          <thead className="text-xs uppercase text-black">
+                        <table className="w-[30vh] text-left rtl:text-right border border-black">
+                          <thead className="text-[1.3vh] uppercase text-black">
                             <tr className="border border-black text-center">
                               <th className="border border-black" scope="col">
                                 Length
@@ -221,7 +223,7 @@ export default function Order() {
                             </tr>
                           </thead>
                           <tbody>
-                            <tr className="border border-black text-center text-xl">
+                            <tr className="border border-black text-center text-[1.8vh]">
                               <td className="border border-black">
                                 {product?.length} cm
                               </td>
@@ -244,7 +246,7 @@ export default function Order() {
                         <tbody className="text-left">
                           <tr>
                             <td colSpan={2}>
-                              <div className="flex gap-5 justify-center border border-green-700 rounded-xl max-w-24 font-bold text-black pl-1 pr-1">
+                              <div className="flex gap-[2vh] justify-center border border-green-700 rounded-xl w-[9.5vh] font-bold text-black pl-1 pr-1">
                                 {product.quantity > 1 && (
                                   <div
                                     className="flex items-center cursor-pointer"
@@ -252,7 +254,7 @@ export default function Order() {
                                       handleMinusProductFromCart(product);
                                     }}
                                   >
-                                    <FaMinus />
+                                    <FaMinus className="size-[1.6vh]" />
                                   </div>
                                 )}
                                 {product.quantity === 1 && (
@@ -262,10 +264,10 @@ export default function Order() {
                                       handleRemoveProduct(product.id)
                                     }
                                   >
-                                    <FaTrash />
+                                    <FaTrash className="size-[1.6vh]" />
                                   </div>
                                 )}
-                                <div className="flex items-center">
+                                <div className="flex items-center text-[1.7vh]">
                                   {product.quantity}
                                 </div>
                                 <div
@@ -274,24 +276,24 @@ export default function Order() {
                                     handleAddProductToCart(product);
                                   }}
                                 >
-                                  <FaPlus />
+                                  <FaPlus className="size-[1.6vh]" />
                                 </div>
                               </div>
                             </td>
                           </tr>
-                          <tr>
+                          <tr className="text-[1.7vh]">
                             <td>Price/unit: </td>
                             <td className="font-bold text-black pl-2">
                               ${product.price}
                             </td>
                           </tr>
-                          <tr>
+                          <tr className="text-[1.7vh]">
                             <td>Discount percent: </td>
                             <td className="font-bold text-black pl-2">
                               {product.discount}%
                             </td>
                           </tr>
-                          <tr>
+                          <tr className="text-[1.7vh]">
                             <td>Total Discount: </td>
                             <td className="font-bold text-black pl-2">
                               - $
@@ -302,7 +304,7 @@ export default function Order() {
                               )}
                             </td>
                           </tr>
-                          <tr>
+                          <tr className="text-[1.7vh]">
                             <td>Total price: </td>
                             <td className="font-bold text-black pl-2">
                               $
@@ -314,7 +316,7 @@ export default function Order() {
                               )}
                             </td>
                           </tr>
-                          <tr>
+                          <tr className="text-[1.7vh]">
                             <td
                               className="cursor-pointer text-blue-500"
                               onClick={() => handleRemoveProduct(product.id)}
@@ -331,10 +333,10 @@ export default function Order() {
             </tbody>
           </table>
           {products.length > 0 && (
-            <div className="ml-10 border border-black rounded-xl p-5 max-w-72 max-h-96">
+            <div className="ml-10 border border-black rounded-xl p-[1vh] w-[30vh] h-[40vh]">
               <table>
                 <tbody className="text-left">
-                  <tr className="text-xl">
+                  <tr className="text-[2vh]">
                     <td className="font-bold">
                       Subtotal ({products.length} item
                       {products.length > 0 ? "s" : ""}):
@@ -343,7 +345,7 @@ export default function Order() {
                       ${subTotal}
                     </td>
                   </tr>
-                  <tr className="text-xl">
+                  <tr className="text-[2vh]">
                     <td className="font-bold">Shipping fee:</td>
                     <td className="text-black font-bold text-right">
                       ${SHIPPING_FEE}
@@ -354,21 +356,21 @@ export default function Order() {
                       <hr className="border-black" />
                     </td>
                   </tr>
-                  <tr className="text-xl">
+                  <tr className="text-[2vh]">
                     <td className="font-bold">Total price:</td>
                     <td className="text-black font-bold text-right">
                       ${totalPrice}
                     </td>
                   </tr>
                   <tr>
-                    <td className="pb-3 text-sm" colSpan={2}>
+                    <td className="pb-3 text-[1.4vh]" colSpan={2}>
                       The total price includes a shipping fee of ${SHIPPING_FEE}
                       . Happy shopping!
                       <p className="text-left secondary-color">⸜(｡˃ ᵕ ˂ )⸝♡</p>
                     </td>
                   </tr>
                   <tr>
-                    <td className="pb-3" colSpan={2}>
+                    <td className="pb-[1vh]" colSpan={2}>
                       <div className="rounded-xl">
                         <PayPalScriptProvider options={paypalConfig}>
                           <PayPalButtons
@@ -385,17 +387,17 @@ export default function Order() {
                       <hr className="border-black" />
                     </td>
                   </tr>
-                  <tr>
-                    <td className="pt-5">Ships from:</td>
-                    <td className="pt-5 text-right font-bold text-black">
+                  <tr className="text-[1.7vh]">
+                    <td className="pt-[1vh]">Ships from:</td>
+                    <td className="pt-[1vh] text-right font-bold text-black">
                       Viet Nam
                     </td>
                   </tr>
-                  <tr>
+                  <tr className="text-[1.7vh]">
                     <td className="secondary-color">Deliver to:</td>
                     <td className="text-right font-bold text-black">USA</td>
                   </tr>
-                  <tr>
+                  <tr className="text-[1.7vh]">
                     <td className="secondary-color">Delivery ETA:</td>
                     <td className="text-right font-bold text-black">5 days</td>
                   </tr>
@@ -404,7 +406,7 @@ export default function Order() {
             </div>
           )}
           {products.length === 0 && (
-            <h1 className="text-3xl secondary-color flex">
+            <h1 className="text-[3vh] secondary-color flex">
               Your cart is empty.{" "}
               <span
                 onClick={handleShopping}
