@@ -176,7 +176,7 @@ export default function ProductDetail() {
                 className="rounded-xl object-cover w-[50vh] h-[50vh]"
               />
             </Zoom>
-            <div className="mt-3 flex items-center justify-start max-w-96 overflow-y-auto scroll-container pb-3">
+            <div className="mt-3 flex items-center justify-start max-w-[50vh] overflow-y-auto scroll-container pb-3">
               {productDetails?.map((pDetail) => {
                 return pDetail.img_urls.split(",").map((img, index) => {
                   return (
