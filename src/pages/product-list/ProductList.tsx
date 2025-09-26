@@ -156,7 +156,7 @@ export default function ProductList() {
                     src={product.img_urls.split(",")[0]}
                     alt=""
                   />
-                  <Info productInfo={product} />
+                  <Info productId={product.id} />
                 </div>
               );
             })}

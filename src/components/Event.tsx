@@ -65,7 +65,7 @@ export default function Event() {
                       src={product.img_urls}
                       alt=""
                     />
-                    <Info productInfo={product} />
+                    <Info productId={product.id} />
                   </div>
                 );
               });

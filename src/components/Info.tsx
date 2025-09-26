@@ -1,39 +1,42 @@
 import { AppError } from "@/types.ts";
 import React, { useState } from "react";
-import { Product } from "mewmew-api-type";
 import { useDispatch } from "react-redux";
 import { getProductDetailById } from "@/api/product.ts";
 import StarContainer from "@/components/StarContainer.tsx";
 import { addProductToCart } from "@/features/cart/cartSlice.ts";
 import { showMessageError, showMessageSuccess } from "@/alerts/alert.ts";
+import { Product } from "mewmew-api-type";
 
-export default function Info({ productInfo }: { productInfo: Product }) {
+export default function Info({ productId }: { productId: number }) {
   const dispatch = useDispatch();
   const [isSpinner, setIsSpinner] = useState(false);
+  const [productInfo, setProductInfo] = useState<Product>();
 
   const addToCart = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     try {
       setIsSpinner(true);
       const productDetailResponse = await getProductDetailById(
-        productInfo?.id.toString()
+        productId.toString()
       );
       const productDetail = productDetailResponse.data.details[0];
+      const product = productDetailResponse.data.product;
+      setProductInfo(product);
       dispatch(
         addProductToCart({
-          id: productInfo.id,
-          name: productInfo.name,
+          id: product.id,
+          name: product.name,
           quantity: 1,
-          price: productInfo.price,
-          img: productInfo.img_urls.split(",")[0],
-          color_name: productDetail.color_name,
+          price: product.price,
+          img: product.img_urls.split(",")[0],
+          color_name: product.color_name,
           size_name: productDetail.size_name,
           discount: productDetail.discount,
           length: productDetail.length,
           width: productDetail.width,
           height: productDetail.height,
           weight: productDetail.weight,
-          color_code: productDetail.color_code,
+          color_code: product.color_code,
         })
       );
       showMessageSuccess("Product added to cart");
@@ -48,14 +51,14 @@ export default function Info({ productInfo }: { productInfo: Product }) {
     <div className="absolute w-full bottom-0 left-0 bg-secondary-color secondary-color px-3 py-1 rounded-lg text-sm font-medium opacity-0 group-hover:opacity-80 transition-opacity duration-300">
       <a href="#">
         <h5 className="text-[2vh] font-semibold tracking-tight">
-          {productInfo.name}
+          {productInfo?.name}
         </h5>
       </a>
       <div className="flex items-center mt-2.5 mb-7">
-        <StarContainer average_star={+productInfo.average_star} />
+        <StarContainer average_star={+(productInfo?.average_star ?? 5)} />
       </div>
       <div className="flex items-center justify-between">
-        <span className="text-[2vh] font-bold">${productInfo.price}</span>
+        <span className="text-[2vh] font-bold">${productInfo?.price}</span>
         <button
           type="button"
           onClick={addToCart}

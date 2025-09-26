@@ -63,7 +63,7 @@ export default function ProductDetail() {
     getProductDetailById(id).then((response) => {
       setProduct(response.data.product);
       setProductDetail(response.data.details[0]);
-      setImageDisplay(response.data.details[0].img_urls.split(",")[0]);
+      setImageDisplay(response.data.product.img_urls.split(",")[0]);
       setProductDetails(response.data.details);
     });
   }, [id]);
@@ -76,8 +76,8 @@ export default function ProductDetail() {
           addProductToCart({
             id: productDetail.id,
             name: product.name,
-            color_name: productDetail.color_name,
-            color_code: productDetail.color_code,
+            color_name: product.color_name,
+            color_code: product.color_code,
             size_name: productDetail.size_name,
             length: productDetail.length,
             height: productDetail.height,
@@ -156,7 +156,6 @@ export default function ProductDetail() {
   };
 
   const chooseProductDetail = (e: PDetail["details"][number]) => {
-    setImageDisplay(e.img_urls.split(",")[0]);
     setProductDetail(e);
   };
 
@@ -168,30 +167,25 @@ export default function ProductDetail() {
             <Zoom classDialog={"custom-zoom"} ZoomContent={CustomZoomContent}>
               <img
                 src={
-                  imageDisplay
-                    ? imageDisplay
-                    : productDetail?.img_urls.split(",")[0]
+                  imageDisplay ? imageDisplay : product?.img_urls.split(",")[0]
                 }
                 alt=""
                 className="rounded-xl object-cover w-[50vh] h-[50vh]"
               />
             </Zoom>
             <div className="mt-3 flex items-center justify-start max-w-[50vh] overflow-y-auto scroll-container pb-3">
-              {productDetails?.map((pDetail) => {
-                return pDetail.img_urls.split(",").map((img, index) => {
-                  return (
-                    <img
-                      key={`${pDetail.id}-${index}`}
-                      src={img}
-                      alt=""
-                      className="rounded-xl h-[11vh] w-[11vh] object-cover mr-3 hover:cursor-pointer flex-shrink-0"
-                      onClick={() => {
-                        setImageDisplay(img);
-                        setProductDetail(pDetail);
-                      }}
-                    />
-                  );
-                });
+              {product?.img_urls.split(",").map((img, key) => {
+                return (
+                  <img
+                    key={key}
+                    src={img}
+                    alt=""
+                    className="rounded-xl h-[11vh] w-[11vh] object-cover mr-3 hover:cursor-pointer flex-shrink-0"
+                    onClick={() => {
+                      setImageDisplay(img);
+                    }}
+                  />
+                );
               })}
             </div>
           </div>
@@ -259,29 +253,21 @@ export default function ProductDetail() {
               <span>
                 Color:{" "}
                 <span className="text-black font-bold">
-                  {productDetail?.color_name}
+                  {product?.color_name}
                 </span>
               </span>
             </div>
             <div className="secondary-color text-[1.5vh] max-w-80 flex mb-3 flex-wrap">
-              {productDetails?.map((e) => {
-                return (
-                  <span
-                    key={e.id}
-                    onClick={() => {
-                      chooseProductDetail(e);
-                    }}
-                    className="mr-2 inline-block rounded-full cursor-pointer"
-                    style={{
-                      backgroundColor: e?.color_code ?? "#FFFFFF",
-                      lineHeight: "2rem",
-                      width: "2rem",
-                    }}
-                  >
-                    &nbsp;
-                  </span>
-                );
-              })}
+              <span
+                className="mr-2 inline-block rounded-full cursor-pointer"
+                style={{
+                  backgroundColor: product?.color_code ?? "#FFFFFF",
+                  lineHeight: "2rem",
+                  width: "2rem",
+                }}
+              >
+                &nbsp;
+              </span>
             </div>
 
             <p id="result-message"></p>
