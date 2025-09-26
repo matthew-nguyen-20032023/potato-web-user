@@ -76,8 +76,8 @@ export default function ProductDetail() {
           addProductToCart({
             id: productDetail.id,
             name: product.name,
-            color_name: productDetail.color_name,
-            color_code: productDetail.color_code,
+            color_name: product.color_name,
+            color_code: product.color_code,
             size_name: productDetail.size_name,
             length: productDetail.length,
             height: productDetail.height,
@@ -253,29 +253,21 @@ export default function ProductDetail() {
               <span>
                 Color:{" "}
                 <span className="text-black font-bold">
-                  {productDetail?.color_name}
+                  {product?.color_name}
                 </span>
               </span>
             </div>
             <div className="secondary-color text-[1.5vh] max-w-80 flex mb-3 flex-wrap">
-              {productDetails?.map((e) => {
-                return (
-                  <span
-                    key={e.id}
-                    onClick={() => {
-                      chooseProductDetail(e);
-                    }}
-                    className="mr-2 inline-block rounded-full cursor-pointer"
-                    style={{
-                      backgroundColor: e?.color_code ?? "#FFFFFF",
-                      lineHeight: "2rem",
-                      width: "2rem",
-                    }}
-                  >
-                    &nbsp;
-                  </span>
-                );
-              })}
+              <span
+                className="mr-2 inline-block rounded-full cursor-pointer"
+                style={{
+                  backgroundColor: product?.color_code ?? "#FFFFFF",
+                  lineHeight: "2rem",
+                  width: "2rem",
+                }}
+              >
+                &nbsp;
+              </span>
             </div>
 
             <p id="result-message"></p>
