@@ -63,7 +63,7 @@ export default function ProductDetail() {
     getProductDetailById(id).then((response) => {
       setProduct(response.data.product);
       setProductDetail(response.data.details[0]);
-      setImageDisplay(response.data.details[0].img_urls.split(",")[0]);
+      setImageDisplay(response.data.product.img_urls.split(",")[0]);
       setProductDetails(response.data.details);
     });
   }, [id]);
@@ -156,7 +156,6 @@ export default function ProductDetail() {
   };
 
   const chooseProductDetail = (e: PDetail["details"][number]) => {
-    setImageDisplay(e.img_urls.split(",")[0]);
     setProductDetail(e);
   };
 
@@ -168,30 +167,25 @@ export default function ProductDetail() {
             <Zoom classDialog={"custom-zoom"} ZoomContent={CustomZoomContent}>
               <img
                 src={
-                  imageDisplay
-                    ? imageDisplay
-                    : productDetail?.img_urls.split(",")[0]
+                  imageDisplay ? imageDisplay : product?.img_urls.split(",")[0]
                 }
                 alt=""
                 className="rounded-xl object-cover w-[50vh] h-[50vh]"
               />
             </Zoom>
             <div className="mt-3 flex items-center justify-start max-w-[50vh] overflow-y-auto scroll-container pb-3">
-              {productDetails?.map((pDetail) => {
-                return pDetail.img_urls.split(",").map((img, index) => {
-                  return (
-                    <img
-                      key={`${pDetail.id}-${index}`}
-                      src={img}
-                      alt=""
-                      className="rounded-xl h-[11vh] w-[11vh] object-cover mr-3 hover:cursor-pointer flex-shrink-0"
-                      onClick={() => {
-                        setImageDisplay(img);
-                        setProductDetail(pDetail);
-                      }}
-                    />
-                  );
-                });
+              {product?.img_urls.split(",").map((img, key) => {
+                return (
+                  <img
+                    key={key}
+                    src={img}
+                    alt=""
+                    className="rounded-xl h-[11vh] w-[11vh] object-cover mr-3 hover:cursor-pointer flex-shrink-0"
+                    onClick={() => {
+                      setImageDisplay(img);
+                    }}
+                  />
+                );
               })}
             </div>
           </div>
